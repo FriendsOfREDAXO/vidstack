@@ -1,0 +1,14 @@
+{
+    "dependencies": {
+        "media-captions": "^1.0.4",
+        "vidstack": "^1.11.24"
+    },
+    "devDependencies": {
+        "esbuild": "0.23.0"
+    },
+    "scripts": {
+        "build_components": "esbuild config/vs_components.js --bundle --outfile=dist/videostack.js",
+        "build_js": "esbuild config/vs_js.js --bundle --outfile=dist/vs_js_out.js",
+        "build": "npm run build_components && npm run build_js"
+    }
+}
