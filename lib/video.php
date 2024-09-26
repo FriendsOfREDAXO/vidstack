@@ -8,6 +8,7 @@ class Video {
     private array $attributes = [];
     private string $a11yContent = '';
     private string $thumbnails = '';
+    private array $subtitles = [];
 
     public function __construct(string $source, string $title = '') {
         $this->source = $source;
@@ -31,6 +32,16 @@ class Video {
 
     public function setThumbnails(string $thumbnailsUrl): void {
         $this->thumbnails = $thumbnailsUrl;
+    }
+
+    public function addSubtitle(string $src, string $kind, string $label, string $lang, bool $default = false): void {
+        $this->subtitles[] = [
+            'src' => $src,
+            'kind' => $kind,
+            'label' => $label,
+            'lang' => $lang,
+            'default' => $default
+        ];
     }
 
     private function getAlternativeUrl(): string {
@@ -69,9 +80,15 @@ class Video {
         } else {
             $code .= " src=\"{$this->source}\"";
         }
-   $track = '<Track src="https://raw.githubusercontent.com/brenopolanski/html5-video-webvtt-example/refs/heads/master/MIB2-subtitles-pt-BR.vtt" kind="subtitles" label="English" lang="en-US" default />';
-        $code .= "><media-provider></media-provider>"
-                . $track . "<media-video-layout" . ($this->thumbnails ? " thumbnails=\"{$this->thumbnails}\"" : "") . "></media-video-layout>"
+
+        $code .= "><media-provider></media-provider>";
+
+        foreach ($this->subtitles as $subtitle) {
+            $defaultAttr = $subtitle['default'] ? ' default' : '';
+            $code .= "<track src=\"{$subtitle['src']}\" kind=\"{$subtitle['kind']}\" label=\"{$subtitle['label']}\" srclang=\"{$subtitle['lang']}\"{$defaultAttr} />";
+        }
+
+        $code .= "<media-video-layout" . ($this->thumbnails ? " thumbnails=\"{$this->thumbnails}\"" : "") . "></media-video-layout>"
               . "</media-player>"
               . $this->a11yContent
               . "</div>";
