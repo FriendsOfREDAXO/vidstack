@@ -7,8 +7,8 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- */
-$plyr = rex_addon::get('vidstack');
+
+$vs = rex_addon::get('vidstack');
 if (rex::isBackend() && is_object(rex::getUser())) {
     rex_view::addCssFile($vs->getAssetsUrl('vidstack.css'));
     rex_view::addCssFile($vs->getAssetsUrl('vidstack_helper.css'));
