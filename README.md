@@ -1,1 +1,1 @@
-# vidstack for 
+# vidstack for REDAXO
