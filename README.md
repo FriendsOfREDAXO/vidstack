@@ -233,6 +233,22 @@ Jetzt bist du ein Video-Einbettungs-Ninja! Geh raus und mache das Internet zu ei
 
 Viel Spaß beim Coden! 🚀👩‍💻👨‍💻
 
+## 👓 Für die DEVs, Nerds und Geeks
+
+Ihr wollt uns sicher mal bei der Weiterentwicklung helfen. Das geht so: 
+
+### Den Vendor aktualisieren und ein frisches Build erstellen
+
+Im Ordner build ist alles drin was man braucht. 
+- Also forken, lokal runterladen. 
+- npm install ausführen
+- npm npm run build ausführen 
+PR erstellen 😀
+
+### Alles andere
+
+…fliegt hier so im Repo rum, Einfach mal reinschauen. 
+
 
 ## Autor
 
