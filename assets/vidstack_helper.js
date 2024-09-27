@@ -70,11 +70,15 @@
                 if (consented) {
                     loadVideo(placeholder);
                 } else {
-                    consentButton.addEventListener('click', () => {
-                        setConsent(platform);
-                        updatePlaceholder(placeholder, true);
-                        loadVideo(placeholder);
-                    });
+                    if (consentButton) {
+                        consentButton.addEventListener('click', () => {
+                            setConsent(platform);
+                            updatePlaceholder(placeholder, true);
+                            loadVideo(placeholder);
+                        });
+                    } else {
+                        console.error('Consent button not found in placeholder');
+                    }
                 }
             });
         }
