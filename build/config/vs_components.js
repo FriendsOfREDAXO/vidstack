@@ -1,5 +1,6 @@
 import "vidstack/player";
 import "vidstack/player/layouts/default";
+import 'vidstack/player/styles/default/layouts/audio.css';
 import "vidstack/player/ui";
 import 'media-captions/styles/captions.css';
 // Optional - include if rendering VTT regions.
