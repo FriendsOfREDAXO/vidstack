@@ -123,8 +123,9 @@ $video->addSubtitle('/sous-titres.vtt', 'captions', 'Français', 'fr', true);
 echo $video->generateFull();
 ```
 
-### 🌟 Full Featured Beispiel
+### 🌟 Full Featured Beispiel die Hollywoodlösung
 
+Auwendig und zu teuer. 
 Hier kommt der Königsklasse-Einsatz - alle Funktionen auf einmal:
 
 ```php
