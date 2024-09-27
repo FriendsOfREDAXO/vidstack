@@ -3,7 +3,7 @@
 
     async function loadTranslations() {
         try {
-            const response = await fetch('/media/assets/vidstack/translations.json');
+            const response = await fetch('/assets/vidstack/translations.json');
             translations = await response.json();
         } catch (error) {
             console.error('Fehler beim Laden der Übersetzungen:', error);
