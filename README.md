@@ -1,4 +1,4 @@
-# Vidstack for REDAXO
+# [Vidstack.io](https://www.vidstack.io) for REDAXO
 
 ![Screenshot](https://github.com/skerbis/vidstack/blob/assets/screenshot.png?raw=true)
 
@@ -277,4 +277,8 @@ PR erstellen 😀
 **Projektleitung**
 
 [Thomas Skerbis](https://github.com/skerbis)
+
+**Thanks to**
+[Vidstack.io](https://www.vidstack.io)
+
 
