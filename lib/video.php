@@ -1,5 +1,4 @@
 <?php
-
 namespace FriendsOfRedaxo\VidStack;
 
 class Video {
@@ -9,10 +8,35 @@ class Video {
     private string $a11yContent = '';
     private string $thumbnails = '';
     private array $subtitles = [];
+    private string $lang;
+    private static array $translations = [];
+    private static string $translationsFile = 'translations.php';
 
-    public function __construct(string $source, string $title = '') {
+    public function __construct(string $source, string $title = '', string $lang = 'de') {
         $this->source = $source;
         $this->title = $title;
+        $this->lang = $lang;
+        $this->loadTranslations();
+    }
+
+    public static function setTranslationsFile(string $file): void {
+        self::$translationsFile = $file;
+        self::$translations = []; // Reset translations to force reload
+    }
+
+    private function loadTranslations(): void {
+        if (empty(self::$translations)) {
+            $file = self::$translationsFile;
+            if (file_exists($file)) {
+                self::$translations = include $file;
+            } else {
+                throw new \RuntimeException("Translations file not found: $file");
+            }
+        }
+    }
+
+    private function getText(string $key): string {
+        return self::$translations[$this->lang][$key] ?? "[[{$key}]]";
     }
 
     public function setAttributes(array $attributes): void {
@@ -22,12 +46,12 @@ class Video {
     public function setA11yContent(string $description, string $alternativeUrl = ''): void {
         $alternativeUrl = $alternativeUrl ?: $this->getAlternativeUrl();
         
-        $this->a11yContent = "<div class=\"a11y-content\">"
-            . "<div class=\"video-description\">"
-            . "<p>Beschreibung: {$description}</p></div>"
+        $this->a11yContent = "<div class=\"video-description\">"
+            . "<p>" . $this->getText('video_description') . ": {$description}</p></div>"
             . "<div class=\"alternative-links\">"
-            . "<p>Alternative Ansicht: <a href=\"{$alternativeUrl}\">Video in alternativer Ansicht öffnen</a></p>"
-            . "</div></div>";
+            . "<p>" . $this->getText('video_alternative_view') . ": <a href=\"{$alternativeUrl}\">" 
+            . $this->getText('video_open_alternative_view') . "</a></p>"
+            . "</div>";
     }
 
     public function setThumbnails(string $thumbnailsUrl): void {
@@ -50,49 +74,67 @@ class Video {
             : "/media/" . basename($this->source);
     }
 
-    private function getVideoId(): string {
-        // YouTube ID Erkennung mit preg_match
+    private function getVideoInfo(): array {
         $youtubePattern = '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=|shorts/)|youtu\.be/)([^"&?/ ]{11})%i';
         if (preg_match($youtubePattern, $this->source, $match)) {
-            return "youtube/{$match[1]}";
+            return ['platform' => 'youtube', 'id' => $match[1]];
         }
-
-        // Vimeo ID Erkennung mit preg_match
         $vimeoPattern = '~(?:<iframe [^>]*src=")?(?:https?:\/\/(?:[\w]+\.)*vimeo\.com(?:[\/\w]*\/(progressive_redirect\/playback|external|videos?))?\/([0-9]+)[^\s]*)"?(?:[^>]*></iframe>)?(?:<p>.*</p>)?~ix';
         if (preg_match($vimeoPattern, $this->source, $match)) {
-            return "vimeo/{$match[2]}";
+            return ['platform' => 'vimeo', 'id' => $match[2]];
         }
-
-        return ''; // Kein Video erkannt
+        return ['platform' => 'default', 'id' => ''];
     }
 
-    public function generateCode(): string {
-        $videoId = $this->getVideoId();
+    public function generateFull(): string {
+        $videoInfo = $this->getVideoInfo();
         $attributesString = $this->generateAttributesString();
         $titleAttr = $this->title ? " title=\"{$this->title}\"" : '';
-
-        $code = "<div class=\"video-container\">"
+        $code = "<div class=\"video-container\" role=\"region\" aria-label=\"" . $this->getText('a11y_video_player') . "\">"
               . "<media-player{$titleAttr}{$attributesString}";
         
-        if ($videoId) {
-            $code .= " data-consent-source=\"{$videoId}\""
-                  . " data-consent-text=\"Klicken Sie hier, um das Video zu laden und abzuspielen.\"";
+        if ($videoInfo['platform'] !== 'default') {
+            $consentTextKey = "consent_text_{$videoInfo['platform']}";
+            $consentText = $this->getText($consentTextKey);
+            if ($consentText === "[[{$consentTextKey}]]") {
+                $consentText = $this->getText('consent_text_default');
+            }
+            $code .= " data-consent-source=\"{$videoInfo['platform']}/{$videoInfo['id']}\""
+                  . " data-consent-text=\"{$consentText}\""
+                  . " aria-label=\"" . $this->getText('a11y_video_from') . " {$videoInfo['platform']}\"";
         } else {
             $code .= " src=\"{$this->source}\"";
         }
-
+        $code .= " role=\"application\"";
         $code .= "><media-provider></media-provider>";
-
         foreach ($this->subtitles as $subtitle) {
             $defaultAttr = $subtitle['default'] ? ' default' : '';
             $code .= "<Track src=\"{$subtitle['src']}\" kind=\"{$subtitle['kind']}\" label=\"{$subtitle['label']}\" srclang=\"{$subtitle['lang']}\"{$defaultAttr} />";
         }
-
         $code .= "<media-video-layout" . ($this->thumbnails ? " thumbnails=\"{$this->thumbnails}\"" : "") . "></media-video-layout>"
-              . "</media-player>"
-              . $this->a11yContent
-              . "</div>";
+              . "</media-player>";
+        
+        if ($this->a11yContent) {
+            $code .= "<div class=\"a11y-content\" role=\"complementary\" aria-label=\"" . $this->getText('a11y_additional_information') . "\">"
+                   . $this->a11yContent
+                   . "</div>";
+        }
+        
+        $code .= "</div>";
+        return $code;
+    }
 
+    public function generate(): string {
+        $attributesString = $this->generateAttributesString();
+        $titleAttr = $this->title ? " title=\"{$this->title}\"" : '';
+        $code = "<media-player{$titleAttr}{$attributesString} src=\"{$this->source}\" role=\"application\" aria-label=\"" . $this->getText('a11y_video_player') . "\">";
+        $code .= "<media-provider></media-provider>";
+        foreach ($this->subtitles as $subtitle) {
+            $defaultAttr = $subtitle['default'] ? ' default' : '';
+            $code .= "<Track src=\"{$subtitle['src']}\" kind=\"{$subtitle['kind']}\" label=\"{$subtitle['label']}\" srclang=\"{$subtitle['lang']}\"{$defaultAttr} />";
+        }
+        $code .= "<media-video-layout" . ($this->thumbnails ? " thumbnails=\"{$this->thumbnails}\"" : "") . "></media-video-layout>";
+        $code .= "</media-player>";
         return $code;
     }
 
