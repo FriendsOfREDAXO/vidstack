@@ -10,6 +10,23 @@ Eine PHP-Klasse, die Videos auf Websites einbindet - mit Style! YouTube, Vimeo o
 
 Klar, natürlich über den REDAXO-Installer oder als GitHub Release. 
 
+Nun ja. Das war nicht alles: 
+
+#### Für das Frontend: 
+
+Im Frontend müssen noch die CSS und JS eingebunden werden. 
+
+vidstack.js
+vidstack_helper.js
+
+vidstack.css
+vidstack_helper.css
+
+Die helper braucht man für die `generateFull()`-Methode ... mit dem ganzen Brimborium und DSGVO und so ... ach ja ... 
+Wer nur `generate()` verwendendet, viel Spaß ohne. Denn die ``generate()` liefert keine Consent-Abfrage oder zusätzliche Infos für die Besucher. 
+
+Alles findet sich natürlich im Assets-Ordner. 
+
 ### Grundlegende Verwendung
 
 ```php
