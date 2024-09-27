@@ -20,7 +20,72 @@ class Video {
         $this->loadTranslations();
     }
 
-    // ... [previous methods remain unchanged]
+    private static function getTranslationsFile(): string
+    {
+        return rex_path::addon('vidstack', 'lang/translations.php');
+    }
+
+    private function loadTranslations(): void {
+        if (empty(self::$translations)) {
+            $file = self::getTranslationsFile();
+            if (file_exists($file)) {
+                self::$translations = include $file;
+            } else {
+                throw new \RuntimeException("Translations file not found: $file");
+            }
+        }
+    }
+
+    private function getText(string $key): string {
+        return self::$translations[$this->lang][$key] ?? "[[{$key}]]";
+    }
+
+    public function setAttributes(array $attributes): void {
+        $this->attributes = $attributes;
+    }
+
+    public function setA11yContent(string $description, string $alternativeUrl = ''): void {
+        $alternativeUrl = $alternativeUrl ?: $this->getAlternativeUrl();
+        
+        $this->a11yContent = "<div class=\"video-description\">"
+            . "<p>" . $this->getText('video_description') . ": {$description}</p></div>"
+            . "<div class=\"alternative-links\">"
+            . "<p>" . $this->getText('video_alternative_view') . ": <a href=\"{$alternativeUrl}\">" 
+            . $this->getText('video_open_alternative_view') . "</a></p>"
+            . "</div>";
+    }
+
+    public function setThumbnails(string $thumbnailsUrl): void {
+        $this->thumbnails = $thumbnailsUrl;
+    }
+
+    public function addSubtitle(string $src, string $kind, string $label, string $lang, bool $default = false): void {
+        $this->subtitles[] = [
+            'src' => $src,
+            'kind' => $kind,
+            'label' => $label,
+            'lang' => $lang,
+            'default' => $default
+        ];
+    }
+
+    private function getAlternativeUrl(): string {
+        return filter_var($this->source, FILTER_VALIDATE_URL) 
+            ? $this->source 
+            : "/media/" . basename($this->source);
+    }
+
+    private function getVideoInfo(): array {
+        $youtubePattern = '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=|shorts/)|youtu\.be/)([^"&?/ ]{11})%i';
+        if (preg_match($youtubePattern, $this->source, $match)) {
+            return ['platform' => 'youtube', 'id' => $match[1]];
+        }
+        $vimeoPattern = '~(?:<iframe [^>]*src=")?(?:https?:\/\/(?:[\w]+\.)*vimeo\.com(?:[\/\w]*\/(progressive_redirect\/playback|external|videos?))?\/([0-9]+)[^\s]*)"?(?:[^>]*></iframe>)?(?:<p>.*</p>)?~ix';
+        if (preg_match($vimeoPattern, $this->source, $match)) {
+            return ['platform' => 'vimeo', 'id' => $match[2]];
+        }
+        return ['platform' => 'default', 'id' => ''];
+    }
 
     public function generateFull(): string {
         $videoInfo = $this->getVideoInfo();
@@ -67,13 +132,32 @@ class Video {
         return $code;
     }
 
+    public function generate(): string {
+        $attributesString = $this->generateAttributesString();
+        $titleAttr = $this->title ? " title=\"{$this->title}\"" : '';
+        $code = "<media-player{$titleAttr}{$attributesString} src=\"{$this->source}\" role=\"application\" aria-label=\"" . $this->getText('a11y_video_player') . "\">";
+        $code .= "<media-provider></media-provider>";
+        foreach ($this->subtitles as $subtitle) {
+            $defaultAttr = $subtitle['default'] ? ' default' : '';
+            $code .= "<Track src=\"{$subtitle['src']}\" kind=\"{$subtitle['kind']}\" label=\"{$subtitle['label']}\" srclang=\"{$subtitle['lang']}\"{$defaultAttr} />";
+        }
+        $code .= "<media-video-layout" . ($this->thumbnails ? " thumbnails=\"{$this->thumbnails}\"" : "") . "></media-video-layout>";
+        $code .= "</media-player>";
+        return $code;
+    }
+
+    private function generateAttributesString(): string {
+        return array_reduce(array_keys($this->attributes), function($carry, $key) {
+            $value = $this->attributes[$key];
+            return $carry . (is_bool($value) ? ($value ? " {$key}" : '') : " {$key}=\"{$value}\"");
+        }, '');
+    }
+
     private function generateConsentPlaceholder(string $consentText, string $platform, string $videoId): string {
-        $buttonText = $this->lang === 'de' ? 'Video laden' : 'Load Video';
+        $buttonText = $this->getText('Load Video');
         return "<div class=\"consent-placeholder\" data-platform=\"{$platform}\" data-video-id=\"{$videoId}\" style=\"aspect-ratio: 16/9;\">"
              . "<p>{$consentText}</p>"
              . "<button type=\"button\" class=\"consent-button\">{$buttonText}</button>"
              . "</div>";
     }
-
-    // ... [other methods remain unchanged]
 }
