@@ -1,5 +1,7 @@
 # VidStack for REDAXO
 
+![Screenshot](https://github.com/skerbis/vidstack/blob/assets/screenshot.png?raw=true)
+
 ## Was ist das hier?
 
 Eine PHP-Klasse, die Videos auf Websites einbindet - mit Style! YouTube, Vimeo oder eigene Videos? Alles kein Problem. Und das Beste? Es ist so einfach zu benutzen, dass selbst ein Kater es könnte (wenn er Daumen hätte).
