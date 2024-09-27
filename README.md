@@ -90,8 +90,8 @@ $video->setA11yContent(
     'https://example.com/alternative-version'
 );
 
-// Setzen eines benutzerdefinierten Vorschaubildes
-$video->setThumbnails('https://example.com/custom-thumbnail.jpg');
+// Setzen von Thumbnail-Vorschaubildern für den Player-Fortschritt
+$video->setThumbnails('/pfad/zu/thumbnails.vtt');
 
 // Hinzufügen von Untertiteln in verschiedenen Sprachen
 $video->addSubtitle('/untertitel/deutsch.vtt', 'captions', 'Deutsch', 'de', true);
