@@ -1,148 +1,199 @@
-<?php
-namespace FriendsOfRedaxo\VidStack;
+document.addEventListener('DOMContentLoaded', function() {
+    // Prüfen, ob mindestens ein .video-container Element existiert
+    if (document.querySelector('.video-container')) {
+        const translations = {
+            de: {
+                'Seek forward {amount} seconds': '{amount} Sekunden vorwärts springen',
+                'Seek backward {amount} seconds': '{amount} Sekunden rückwärts springen',
+                'Seek to live': 'Zur Live-Übertragung springen',
+                'Caption Styles': 'Untertitelstile',
+                'Captions look like this': 'Untertitel sehen so aus',
+                'Closed-Captions Off': 'Untertitel aus',
+                'Closed-Captions On': 'Untertitel an',
+                'Display Background': 'Hintergrund anzeigen',
+                'Enter Fullscreen': 'Vollbild',
+                'Enter PiP': 'Bild-in-Bild aktivieren',
+                'Exit Fullscreen': 'Vollbild beenden',
+                'Exit PiP': 'Bild-in-Bild beenden',
+                'Google Cast': 'Google Cast',
+                'Keyboard Animations': 'Tastatur-Animationen',
+                'Seek Backward': 'Zurückspulen',
+                'Seek Forward': 'Vorspulen',
+                'Skip To Live': 'Zur Live-Übertragung springen',
+                'Text Background': 'Texthintergrund',
+                'Accessibility': 'Barrierefreiheit',
+                'AirPlay': 'AirPlay',
+                'Announcements': 'Ankündigungen',
+                'Audio': 'Audio',
+                'Auto': 'Auto',
+                'Boost': 'Verstärken',
+                'Captions': 'Untertitel',
+                'Chapters': 'Kapitel',
+                'Color': 'Farbe',
+                'Connected': 'Verbunden',
+                'Connecting': 'Verbindung wird hergestellt',
+                'Continue': 'Fortsetzen',
+                'Default': 'Standard',
+                'Disabled': 'Deaktiviert',
+                'Disconnected': 'Getrennt',
+                'Download': 'Herunterladen',
+                'Family': 'Familie',
+                'Font': 'Schriftart',
+                'Fullscreen': 'Vollbild',
+                'LIVE': 'LIVE',
+                'Loop': 'Wiederholen',
+                'Mute': 'Stummschalten',
+                'Normal': 'Normal',
+                'Off': 'Aus',
+                'Opacity': 'Deckkraft',
+                'Pause': 'Pause',
+                'PiP': 'Bild-in-Bild',
+                'Play': 'Abspielen',
+                'Playback': 'Wiedergabe',
+                'Quality': 'Qualität',
+                'Replay': 'Wiederholen',
+                'Reset': 'Zurücksetzen',
+                'Seek': 'Suchen',
+                'Settings': 'Einstellungen',
+                'Shadow': 'Schatten',
+                'Size': 'Größe',
+                'Speed': 'Geschwindigkeit',
+                'Text': 'Text',
+                'Track': 'Spur',
+                'Unmute': 'Ton einschalten',
+                'Volume': 'Lautstärke',
+            },
+            en: {
+                'Seek forward {amount} seconds': 'Seek forward {amount} seconds',
+                'Seek backward {amount} seconds': 'Seek backward {amount} seconds',
+                'Seek to live': 'Seek to live',
+                'Caption Styles': 'Caption Styles',
+                'Captions look like this': 'Captions look like this',
+                'Closed-Captions Off': 'Closed-Captions Off',
+                'Closed-Captions On': 'Closed-Captions On',
+                'Display Background': 'Display Background',
+                'Enter Fullscreen': 'Enter Fullscreen',
+                'Enter PiP': 'Enter PiP',
+                'Exit Fullscreen': 'Exit Fullscreen',
+                'Exit PiP': 'Exit PiP',
+                'Google Cast': 'Google Cast',
+                'Keyboard Animations': 'Keyboard Animations',
+                'Seek Backward': 'Seek Backward',
+                'Seek Forward': 'Seek Forward',
+                'Skip To Live': 'Skip To Live',
+                'Text Background': 'Text Background',
+                'Accessibility': 'Accessibility',
+                'AirPlay': 'AirPlay',
+                'Announcements': 'Announcements',
+                'Audio': 'Audio',
+                'Auto': 'Auto',
+                'Boost': 'Boost',
+                'Captions': 'Captions',
+                'Chapters': 'Chapters',
+                'Color': 'Color',
+                'Connected': 'Connected',
+                'Connecting': 'Connecting',
+                'Continue': 'Continue',
+                'Default': 'Default',
+                'Disabled': 'Disabled',
+                'Disconnected': 'Disconnected',
+                'Download': 'Download',
+                'Family': 'Family',
+                'Font': 'Font',
+                'Fullscreen': 'Fullscreen',
+                'LIVE': 'LIVE',
+                'Loop': 'Loop',
+                'Mute': 'Mute',
+                'Normal': 'Normal',
+                'Off': 'Off',
+                'Opacity': 'Opacity',
+                'Pause': 'Pause',
+                'PiP': 'PiP',
+                'Play': 'Play',
+                'Playback': 'Playback',
+                'Quality': 'Quality',
+                'Replay': 'Replay',
+                'Reset': 'Reset',
+                'Seek': 'Seek',
+                'Settings': 'Settings',
+                'Shadow': 'Shadow',
+                'Size': 'Size',
+                'Speed': 'Speed',
+                'Text': 'Text',
+                'Track': 'Track',
+                'Unmute': 'Unmute',
+                'Volume': 'Volume',
+            }
+        };
 
-use rex_path;
+        function getPlayerLanguage(player) {
+            return player.getAttribute('lang') || 'en';
+        }
 
-class Video {
-    private readonly string $source;
-    private string $title;
-    private array $attributes = [];
-    private string $a11yContent = '';
-    private string $thumbnails = '';
-    private array $subtitles = [];
-    private string $lang;
-    private static array $translations = [];
-
-    public function __construct(string $source, string $title = '', string $lang = 'de') {
-        $this->source = $source;
-        $this->title = $title;
-        $this->lang = $lang;
-        $this->loadTranslations();
-    }
-
-    private static function getTranslationsFile(): string
-    {
-        return rex_path::addon('vidstack', 'lang/translations.php');
-    }
-
-    private function loadTranslations(): void {
-        if (empty(self::$translations)) {
-            $file = self::getTranslationsFile();
-            if (file_exists($file)) {
-                self::$translations = include $file;
-            } else {
-                throw new \RuntimeException("Translations file not found: $file");
+        function applyTranslations(player) {
+            const videoLayout = player.querySelector('media-video-layout');
+            if (videoLayout) {
+                const lang = getPlayerLanguage(player);
+                videoLayout.translations = translations[lang] || translations['en'];
             }
         }
-    }
 
-    private function getText(string $key): string {
-        return self::$translations[$this->lang][$key] ?? "[[{$key}]]";
-    }
+        function loadVideo(originalPlayer, placeholderId) {
+            const placeholder = document.getElementById(placeholderId);
+            const wrapper = placeholder.parentElement;
+            
+            const mediaPlayer = originalPlayer.cloneNode(true);
+            
+            mediaPlayer.setAttribute('src', mediaPlayer.getAttribute('data-consent-source'));
+            
+            mediaPlayer.removeAttribute('data-consent-source');
+            mediaPlayer.removeAttribute('data-consent-text');
 
-    public function setAttributes(array $attributes): void {
-        $this->attributes = $attributes;
-    }
+            wrapper.replaceChild(mediaPlayer, placeholder);
 
-    public function setA11yContent(string $description, string $alternativeUrl = ''): void {
-        $alternativeUrl = $alternativeUrl ?: $this->getAlternativeUrl();
-        
-        $this->a11yContent = "<div class=\"video-description\">"
-            . "<p>" . $this->getText('video_description') . ": {$description}</p></div>"
-            . "<div class=\"alternative-links\">"
-            . "<p>" . $this->getText('video_alternative_view') . ": <a href=\"{$alternativeUrl}\">" 
-            . $this->getText('video_open_alternative_view') . "</a></p>"
-            . "</div>";
-    }
-
-    public function setThumbnails(string $thumbnailsUrl): void {
-        $this->thumbnails = $thumbnailsUrl;
-    }
-
-    public function addSubtitle(string $src, string $kind, string $label, string $lang, bool $default = false): void {
-        $this->subtitles[] = [
-            'src' => $src,
-            'kind' => $kind,
-            'label' => $label,
-            'lang' => $lang,
-            'default' => $default
-        ];
-    }
-
-    private function getAlternativeUrl(): string {
-        return filter_var($this->source, FILTER_VALIDATE_URL) 
-            ? $this->source 
-            : "/media/" . basename($this->source);
-    }
-
-    private function getVideoInfo(): array {
-        $youtubePattern = '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=|shorts/)|youtu\.be/)([^"&?/ ]{11})%i';
-        if (preg_match($youtubePattern, $this->source, $match)) {
-            return ['platform' => 'youtube', 'id' => $match[1]];
+            applyTranslations(mediaPlayer);
         }
-        $vimeoPattern = '~(?:<iframe [^>]*src=")?(?:https?:\/\/(?:[\w]+\.)*vimeo\.com(?:[\/\w]*\/(progressive_redirect\/playback|external|videos?))?\/([0-9]+)[^\s]*)"?(?:[^>]*></iframe>)?(?:<p>.*</p>)?~ix';
-        if (preg_match($vimeoPattern, $this->source, $match)) {
-            return ['platform' => 'vimeo', 'id' => $match[2]];
-        }
-        return ['platform' => 'default', 'id' => ''];
-    }
 
-    public function generateFull(): string {
-        $videoInfo = $this->getVideoInfo();
-        $attributesString = $this->generateAttributesString();
-        $titleAttr = $this->title ? " title=\"{$this->title}\"" : '';
-        $code = "<div class=\"video-container\" role=\"region\" aria-label=\"" . $this->getText('a11y_video_player') . "\">"
-              . "<media-player{$titleAttr}{$attributesString}";
-        
-        if ($videoInfo['platform'] !== 'default') {
-            $consentTextKey = "consent_text_{$videoInfo['platform']}";
-            $consentText = $this->getText($consentTextKey);
-            if ($consentText === "[[{$consentTextKey}]]") {
-                $consentText = $this->getText('consent_text_default');
+        function createConsentPlaceholder(videoContainer, originalPlayer, consentText) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'video-wrapper';
+            
+            const placeholder = document.createElement('div');
+            placeholder.className = 'consent-placeholder';
+            const placeholderId = 'consent-placeholder-' + Math.random().toString(36).substr(2, 9);
+            placeholder.id = placeholderId;
+
+            const text = document.createElement('p');
+            text.textContent = consentText;
+
+            const button = document.createElement('button');
+            const lang = getPlayerLanguage(originalPlayer);
+            button.textContent = lang === 'de' ? 'Video laden' : 'Load Video';
+            button.addEventListener('click', () => loadVideo(originalPlayer, placeholderId));
+
+            placeholder.appendChild(text);
+            placeholder.appendChild(button);
+            wrapper.appendChild(placeholder);
+
+            videoContainer.replaceChild(wrapper, originalPlayer);
+        }
+
+        document.querySelectorAll('media-player').forEach(applyTranslations);
+
+        document.querySelectorAll('media-player[data-consent-source]').forEach(player => {
+            const videoContainer = player.closest('.video-container');
+            const consentSource = player.getAttribute('data-consent-source');
+            const lang = getPlayerLanguage(player);
+            const defaultConsentText = lang === 'de' 
+                ? 'Klicken Sie hier, um das Video zu laden und abzuspielen.' 
+                : 'Click here to load and play the video.';
+            const consentText = player.getAttribute('data-consent-text') || defaultConsentText;
+            
+            if (consentSource.startsWith('youtube/') || consentSource.startsWith('vimeo/')) {
+                createConsentPlaceholder(videoContainer, player, consentText);
             }
-            $code .= " data-consent-source=\"{$videoInfo['platform']}/{$videoInfo['id']}\""
-                  . " data-consent-text=\"{$consentText}\""
-                  . " aria-label=\"" . $this->getText('a11y_video_from') . " {$videoInfo['platform']}\"";
-        } else {
-            $code .= " src=\"{$this->source}\"";
-        }
-        $code .= " role=\"application\"";
-        $code .= "><media-provider></media-provider>";
-        foreach ($this->subtitles as $subtitle) {
-            $defaultAttr = $subtitle['default'] ? ' default' : '';
-            $code .= "<Track src=\"{$subtitle['src']}\" kind=\"{$subtitle['kind']}\" label=\"{$subtitle['label']}\" srclang=\"{$subtitle['lang']}\"{$defaultAttr} />";
-        }
-        $code .= "<media-video-layout" . ($this->thumbnails ? " thumbnails=\"{$this->thumbnails}\"" : "") . "></media-video-layout>"
-              . "</media-player>";
-        
-        if ($this->a11yContent) {
-            $code .= "<div class=\"a11y-content\" role=\"complementary\" aria-label=\"" . $this->getText('a11y_additional_information') . "\">"
-                   . $this->a11yContent
-                   . "</div>";
-        }
-        
-        $code .= "</div>";
-        return $code;
-    }
+        });
 
-    public function generate(): string {
-        $attributesString = $this->generateAttributesString();
-        $titleAttr = $this->title ? " title=\"{$this->title}\"" : '';
-        $code = "<media-player{$titleAttr}{$attributesString} src=\"{$this->source}\" role=\"application\" aria-label=\"" . $this->getText('a11y_video_player') . "\">";
-        $code .= "<media-provider></media-provider>";
-        foreach ($this->subtitles as $subtitle) {
-            $defaultAttr = $subtitle['default'] ? ' default' : '';
-            $code .= "<Track src=\"{$subtitle['src']}\" kind=\"{$subtitle['kind']}\" label=\"{$subtitle['label']}\" srclang=\"{$subtitle['lang']}\"{$defaultAttr} />";
-        }
-        $code .= "<media-video-layout" . ($this->thumbnails ? " thumbnails=\"{$this->thumbnails}\"" : "") . "></media-video-layout>";
-        $code .= "</media-player>";
-        return $code;
+        document.documentElement.className = 'js';
     }
-
-    private function generateAttributesString(): string {
-        return array_reduce(array_keys($this->attributes), function($carry, $key) {
-            $value = $this->attributes[$key];
-            return $carry . (is_bool($value) ? ($value ? " {$key}" : '') : " {$key}=\"{$value}\"");
-        }, '');
-    }
-}
+});
