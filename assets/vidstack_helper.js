@@ -140,19 +140,11 @@
                 }
             }
 
-            function loadVideo(originalPlayer, placeholderId) {
-                const placeholder = document.getElementById(placeholderId);
-                const wrapper = placeholder.parentElement;
-
-                const mediaPlayer = originalPlayer.cloneNode(true);
-                mediaPlayer.setAttribute('src', mediaPlayer.getAttribute('data-consent-source'));
-
-                mediaPlayer.removeAttribute('data-consent-source');
-                mediaPlayer.removeAttribute('data-consent-text');
-
-                wrapper.replaceChild(mediaPlayer, placeholder);
-
-                applyTranslations(mediaPlayer);
+            function loadVideo(originalPlayer) {
+                originalPlayer.setAttribute('src', originalPlayer.getAttribute('data-consent-source'));
+                originalPlayer.removeAttribute('data-consent-source');
+                originalPlayer.removeAttribute('data-consent-text');
+                applyTranslations(originalPlayer);
             }
 
             function createConsentPlaceholder(videoContainer, originalPlayer, consentText) {
@@ -170,7 +162,7 @@
                 const button = document.createElement('button');
                 const lang = getPlayerLanguage(originalPlayer);
                 button.textContent = lang === 'de' ? 'Video laden' : 'Load Video';
-                button.addEventListener('click', () => loadVideo(originalPlayer, placeholderId));
+                button.addEventListener('click', () => loadVideo(originalPlayer));
 
                 placeholder.appendChild(text);
                 placeholder.appendChild(button);
@@ -183,21 +175,25 @@
             const consentYouTube = window.consentYouTube === true;
             const consentVimeo = window.consentVimeo === true;
 
-            if (!consentYouTube && !consentVimeo) {
-                document.querySelectorAll('media-player[data-consent-source]').forEach(player => {
-                    const videoContainer = player.closest('.video-container');
-                    const consentSource = player.getAttribute('data-consent-source');
-                    const lang = getPlayerLanguage(player);
-                    const defaultConsentText = lang === 'de'
-                        ? 'Klicken Sie hier, um das Video zu laden und abzuspielen.'
-                        : 'Click here to load and play the video.';
-                    const consentText = player.getAttribute('data-consent-text') || defaultConsentText;
+            document.querySelectorAll('media-player[data-consent-source]').forEach(player => {
+                const videoContainer = player.closest('.video-container');
+                const consentSource = player.getAttribute('data-consent-source');
+                const lang = getPlayerLanguage(player);
+                const defaultConsentText = lang === 'de'
+                    ? 'Klicken Sie hier, um das Video zu laden und abzuspielen.'
+                    : 'Click here to load and play the video.';
+                const consentText = player.getAttribute('data-consent-text') || defaultConsentText;
 
-                    if (consentSource.startsWith('youtube/') || consentSource.startsWith('vimeo/')) {
-                        createConsentPlaceholder(videoContainer, player, consentText);
-                    }
-                });
-            }
+                // Wenn Consent erteilt wurde, direkt das Video laden
+                if (consentYouTube && consentSource.startsWith('youtube/')) {
+                    loadVideo(player);
+                } else if (consentVimeo && consentSource.startsWith('vimeo/')) {
+                    loadVideo(player);
+                } else {
+                    // Wenn kein Consent vorhanden ist, Platzhalter anzeigen
+                    createConsentPlaceholder(videoContainer, player, consentText);
+                }
+            });
 
             document.querySelectorAll('media-player').forEach(applyTranslations);
             document.documentElement.className = 'js';
@@ -213,6 +209,6 @@
     }
 
     // Benutzerdefiniertes Event für Vanilla JS
-    document.addEventListener('readyForVidStack', initScript);
+    document.addEventListener('customVideoInit', initScript);
 
 })();
