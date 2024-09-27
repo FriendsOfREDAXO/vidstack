@@ -1,11 +1,16 @@
-(function() {
-    function initVideoConsent() {
-        // Prüfen, ob mindestens ein .video-container Element existiert
-        if (!document.querySelector('.video-container')) {
-            console.log('No .video-container elements found. Exiting initVideoConsent.');
-            return;
-        }
+document.addEventListener('DOMContentLoaded', initializeVideoConsent);
 
+// Check if jQuery is available and bind to rex:ready event
+if (typeof jQuery !== 'undefined') {
+    jQuery(document).on('rex:ready', initializeVideoConsent);
+}
+
+// Custom event for video initialization
+document.addEventListener('videoready', initializeVideoConsent);
+
+function initializeVideoConsent() {
+    // Prüfen, ob mindestens ein .video-container Element existiert
+    if (document.querySelector('.video-container')) {
         const translations = {
             de: {
                 'Seek forward {amount} seconds': '{amount} Sekunden vorwärts springen',
@@ -144,26 +149,12 @@
         }
 
         function loadVideo(originalPlayer, placeholderId) {
-            console.log(`Attempting to load video for placeholder: ${placeholderId}`);
             const placeholder = document.getElementById(placeholderId);
-            if (!placeholder) {
-                console.error(`Placeholder with id ${placeholderId} not found`);
-                return;
-            }
             const wrapper = placeholder.parentElement;
-            if (!wrapper) {
-                console.error(`Parent element for placeholder ${placeholderId} not found`);
-                return;
-            }
             
             const mediaPlayer = originalPlayer.cloneNode(true);
             
-            const consentSource = mediaPlayer.getAttribute('data-consent-source');
-            if (!consentSource) {
-                console.error(`data-consent-source attribute not found on player: ${mediaPlayer.id}`);
-                return;
-            }
-            mediaPlayer.setAttribute('src', consentSource);
+            mediaPlayer.setAttribute('src', mediaPlayer.getAttribute('data-consent-source'));
             
             mediaPlayer.removeAttribute('data-consent-source');
             mediaPlayer.removeAttribute('data-consent-text');
@@ -171,15 +162,9 @@
             wrapper.replaceChild(mediaPlayer, placeholder);
 
             applyTranslations(mediaPlayer);
-            console.log(`Video loaded successfully for placeholder: ${placeholderId}`);
         }
 
         function createConsentPlaceholder(videoContainer, originalPlayer, consentText) {
-            if (!videoContainer) {
-                console.error('Video container not found');
-                return;
-            }
-
             const wrapper = document.createElement('div');
             wrapper.className = 'video-wrapper';
             
@@ -194,78 +179,59 @@
             const button = document.createElement('button');
             const lang = getPlayerLanguage(originalPlayer);
             button.textContent = lang === 'de' ? 'Video laden' : 'Load Video';
-            button.addEventListener('click', () => loadVideo(originalPlayer, placeholderId));
+            button.addEventListener('click', () => {
+                const platform = originalPlayer.getAttribute('data-consent-source').split('/')[0];
+                setConsent(platform);
+                loadVideo(originalPlayer, placeholderId);
+            });
 
             placeholder.appendChild(text);
             placeholder.appendChild(button);
             wrapper.appendChild(placeholder);
 
             videoContainer.replaceChild(wrapper, originalPlayer);
-            console.log(`Consent placeholder created for player: ${originalPlayer.id}`);
         }
 
-        function handleVideoConsent() {
-            console.log('Handling video consent');
-            document.querySelectorAll('media-player').forEach(applyTranslations);
-
-            document.querySelectorAll('media-player[data-consent-source]').forEach(player => {
-                console.log(`Processing player: ${player.id}`);
-                const videoContainer = player.closest('.video-container');
-                if (!videoContainer) {
-                    console.error('Video container not found for player:', player);
-                    return;
-                }
-
-                const consentSource = player.getAttribute('data-consent-source');
-                const lang = getPlayerLanguage(player);
-                const defaultConsentText = lang === 'de' 
-                    ? 'Klicken Sie hier, um das Video zu laden und abzuspielen.' 
-                    : 'Click here to load and play the video.';
-                const consentText = player.getAttribute('data-consent-text') || defaultConsentText;
-                
-                if (consentSource.startsWith('youtube/')) {
-                    if (window.vidstack_consent_youtube === true) {
-                        loadVideo(player, player.id);
-                    } else {
-                        createConsentPlaceholder(videoContainer, player, consentText);
-                    }
-                } else if (consentSource.startsWith('vimeo/')) {
-                    if (window.vidstack_consent_vimeo === true) {
-                        loadVideo(player, player.id);
-                    } else {
-                        createConsentPlaceholder(videoContainer, player, consentText);
-                    }
-                }
-            });
-
-            document.documentElement.className = 'js';
-            console.log('Video consent handling completed');
+        function checkConsent(platform) {
+            const consentKey = `vidstack_consent_${platform.toLowerCase()}`;
+            return localStorage.getItem(consentKey) === 'true' || sessionStorage.getItem(consentKey) === 'true';
         }
 
-        // Execute the script immediately
-        handleVideoConsent();
+        function setConsent(platform) {
+            const consentKey = `vidstack_consent_${platform.toLowerCase()}`;
+            localStorage.setItem(consentKey, 'true');
+        }
 
-        // Set up listeners for future consent changes
-        window.addEventListener('vidstack_consent_changed', handleVideoConsent);
-        console.log('Event listener for vidstack_consent_changed set up');
+        document.querySelectorAll('media-player').forEach(applyTranslations);
+
+        document.querySelectorAll('media-player[data-consent-source]').forEach(player => {
+            const videoContainer = player.closest('.video-container');
+            const consentSource = player.getAttribute('data-consent-source');
+            const lang = getPlayerLanguage(player);
+            const defaultConsentText = lang === 'de' 
+                ? 'Klicken Sie hier, um das Video zu laden und abzuspielen.' 
+                : 'Click here to load and play the video.';
+            const consentText = player.getAttribute('data-consent-text') || defaultConsentText;
+            
+            if (consentSource.startsWith('youtube/') || consentSource.startsWith('vimeo/')) {
+                const platform = consentSource.split('/')[0];
+                if (checkConsent(platform)) {
+                    loadVideo(player, videoContainer.id);
+                } else {
+                    createConsentPlaceholder(videoContainer, player, consentText);
+                }
+            }
+        });
+
+        document.documentElement.className = 'js';
     }
+}
 
-    // Execute on DOMContentLoaded
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initVideoConsent);
-        console.log('initVideoConsent scheduled for DOMContentLoaded');
-    } else {
-        initVideoConsent();
-        console.log('initVideoConsent executed immediately');
-    }
+// Function to set consent on-the-fly
+function setVideoConsent(platform) {
+    setConsent(platform);
+    initializeVideoConsent();
+}
 
-    // Execute on jQuery's ready event if available
-    if (typeof jQuery !== 'undefined') {
-        jQuery(document).on('rex:ready', initVideoConsent);
-        console.log('initVideoConsent scheduled for rex:ready event');
-    }
-
-    // Execute on a custom 'videoready' event
-    document.addEventListener('videoready', initVideoConsent);
-    console.log('Event listener for videoready set up');
-})();
+// Expose the setVideoConsent function globally
+window.setVideoConsent = setVideoConsent;
