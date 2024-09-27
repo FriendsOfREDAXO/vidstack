@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const videoLayouts = document.querySelectorAll('media-video-layout');
         videoLayouts.forEach(layout => {
             const player = layout.closest('media-player');
-            const lang = player ? (player.getAttribute('lang') || 'en') : 'en';
+            const lang = player?.getAttribute('lang') || 'en';
             layout.translations = translations[lang] || translations['en'];
         });
 
