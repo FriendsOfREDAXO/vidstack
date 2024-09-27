@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 player.style.display = '';
                 player.setAttribute('src', `${platform}/${videoId}`);
                 const placeholder = player.previousElementSibling;
-                if (placeholder && placeholder.classList.contains('consent-placeholder')) {
+                if (placeholder?.classList.contains('consent-placeholder')) {
                     placeholder.style.display = 'none';
                 }
             }
