@@ -106,8 +106,13 @@ class Video {
         
         $code .= "<media-player{$titleAttr}{$attributesString}";
         
+        $platform = htmlspecialchars($videoInfo['platform'], ENT_QUOTES, 'UTF-8');
+        $videoId = htmlspecialchars($videoInfo['id'], ENT_QUOTES, 'UTF-8');
+        $ariaLabel = htmlspecialchars($this->getText('a11y_video_from') . " {$videoInfo['platform']}", ENT_QUOTES, 'UTF-8');
+
         if ($videoInfo['platform'] !== 'default') {
-            $code .= " data-video-platform=\"{$videoInfo['platform']}\" data-video-id=\"{$videoInfo['id']}\""
+            $code .= " data-video-platform=\"{$platform}\" data-video-id=\"{$videoId}\""
+                  . " aria-label=\"{$ariaLabel}\"";
                   . " aria-label=\"" . $this->getText('a11y_video_from') . " {$videoInfo['platform']}\"";
         } else {
             $code .= " src=\"{$this->source}\"";
