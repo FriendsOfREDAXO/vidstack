@@ -10,7 +10,7 @@ class Video {
     private array $subtitles = [];
     private string $lang;
     private static array $translations = [];
-    private static string $translationsFile = 'translations.php';
+    private static string $translationsFile = rex_path::addon('vidstack', 'lang/translations.php');
 
     public function __construct(string $source, string $title = '', string $lang = 'de') {
         $this->source = $source;
