@@ -133,9 +133,7 @@ $video->setAttributes([
 
 // Hinzufügen von ausführlichen Barrierefreiheits-Inhalten
 $video->setA11yContent(
-    'This legendary music video features Rick Astley performing "Never Gonna Give You Up". ' .
-    'The video begins with Rick, dressed in a black leather jacket, dancing in various locations. ' .
-    'The catchy synth-pop tune and Rick\'s distinctive baritone voice have made this song an internet phenomenon.',
+    'This legendary music video features Rick Astley performing "Never Gonna Give You Up". The video begins with Rick, dressed in a black leather jacket, dancing in various locations. The catchy synth-pop tune and Rick\'s distinctive baritone voice have made this song an internet phenomenon.',
     'https://example.com/detailed-audio-description'
 );
 
