@@ -1,6 +1,8 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Prüfen, ob mindestens ein .video-container Element existiert
-    if (document.querySelector('.video-container')) {
+(function() {
+    function initVideoConsent() {
+        // Prüfen, ob mindestens ein .video-container Element existiert
+        if (!document.querySelector('.video-container')) return;
+
         const translations = {
             de: {
                 'Seek forward {amount} seconds': '{amount} Sekunden vorwärts springen',
@@ -178,22 +180,55 @@ document.addEventListener('DOMContentLoaded', function() {
             videoContainer.replaceChild(wrapper, originalPlayer);
         }
 
-        document.querySelectorAll('media-player').forEach(applyTranslations);
+        function handleVideoConsent() {
+            document.querySelectorAll('media-player').forEach(applyTranslations);
 
-        document.querySelectorAll('media-player[data-consent-source]').forEach(player => {
-            const videoContainer = player.closest('.video-container');
-            const consentSource = player.getAttribute('data-consent-source');
-            const lang = getPlayerLanguage(player);
-            const defaultConsentText = lang === 'de' 
-                ? 'Klicken Sie hier, um das Video zu laden und abzuspielen.' 
-                : 'Click here to load and play the video.';
-            const consentText = player.getAttribute('data-consent-text') || defaultConsentText;
-            
-            if (consentSource.startsWith('youtube/') || consentSource.startsWith('vimeo/')) {
-                createConsentPlaceholder(videoContainer, player, consentText);
-            }
-        });
+            document.querySelectorAll('media-player[data-consent-source]').forEach(player => {
+                const videoContainer = player.closest('.video-container');
+                const consentSource = player.getAttribute('data-consent-source');
+                const lang = getPlayerLanguage(player);
+                const defaultConsentText = lang === 'de' 
+                    ? 'Klicken Sie hier, um das Video zu laden und abzuspielen.' 
+                    : 'Click here to load and play the video.';
+                const consentText = player.getAttribute('data-consent-text') || defaultConsentText;
+                
+                if (consentSource.startsWith('youtube/')) {
+                    if (window.vidstack_consent_youtube === true) {
+                        loadVideo(player, player.id);
+                    } else {
+                        createConsentPlaceholder(videoContainer, player, consentText);
+                    }
+                } else if (consentSource.startsWith('vimeo/')) {
+                    if (window.vidstack_consent_vimeo === true) {
+                        loadVideo(player, player.id);
+                    } else {
+                        createConsentPlaceholder(videoContainer, player, consentText);
+                    }
+                }
+            });
 
-        document.documentElement.className = 'js';
+            document.documentElement.className = 'js';
+        }
+
+        // Execute the script immediately
+        handleVideoConsent();
+
+        // Set up listeners for future consent changes
+        window.addEventListener('vidstack_consent_changed', handleVideoConsent);
     }
-});
+
+    // Execute on DOMContentLoaded
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initVideoConsent);
+    } else {
+        initVideoConsent();
+    }
+
+    // Execute on jQuery's ready event if available
+    if (typeof jQuery !== 'undefined') {
+        jQuery(document).on('rex:ready', initVideoConsent);
+    }
+
+    // Execute on a custom 'videoready' event
+    document.addEventListener('videoready', initVideoConsent);
+})();
