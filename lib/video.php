@@ -10,7 +10,6 @@ class Video {
     private array $subtitles = [];
     private string $lang;
     private static array $translations = [];
-    private static string $translationsFile = rex_path::addon('vidstack', 'lang/translations.php');
 
     public function __construct(string $source, string $title = '', string $lang = 'de') {
         $this->source = $source;
@@ -19,14 +18,14 @@ class Video {
         $this->loadTranslations();
     }
 
-    public static function setTranslationsFile(string $file): void {
-        self::$translationsFile = $file;
-        self::$translations = []; // Reset translations to force reload
+    private static function getTranslationsFile(): string
+    {
+        return rex_path::addon('vidstack', 'lang/translations.php');
     }
 
     private function loadTranslations(): void {
         if (empty(self::$translations)) {
-            $file = self::$translationsFile;
+            $file = self::getTranslationsFile();
             if (file_exists($file)) {
                 self::$translations = include $file;
             } else {
@@ -145,4 +144,3 @@ class Video {
         }, '');
     }
 }
-?>
