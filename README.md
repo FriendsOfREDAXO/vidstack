@@ -10,6 +10,23 @@ Eine PHP-Klasse, die Videos auf Websites einbindet - mit Style! YouTube, Vimeo o
 
 Klar, natürlich über den REDAXO-Installer oder als GitHub Release. 
 
+Nun ja. Das war nicht alles: 
+
+#### Für das Frontend: 
+
+Im Frontend müssen noch die CSS und JS eingebunden werden. 
+
+vidstack.js
+vidstack_helper.js
+
+vidstack.css
+vidstack_helper.css
+
+Die helper braucht man für die `generateFull()`-Methode ... mit dem ganzen Brimborium und DSGVO und so ... ach ja ... 
+Wer nur `generate()` verwendendet, viel Spaß ohne. Denn die ``generate()` liefert keine Consent-Abfrage oder zusätzliche Infos für die Besucher. 
+
+Alles findet sich natürlich im Assets-Ordner. 
+
 ### Grundlegende Verwendung
 
 ```php
@@ -193,8 +210,38 @@ $easyVideo = createDefaultVideo('https://youtube.com/watch?v=abcdefg', 'Einfach 
 echo $easyVideo->generateFull();
 ```
 
-## 🎉 Fazit
+🍪 Consent und Kekse
+
+Leider muss es ja sein. 
+
+Hiermit kann man in einem Consent-Manager oder auch so mal zwischendurch die Erlaubnis für Vimeo oder Youtube setzen. Wer keine Cookies erlaubt bekommt halt Local-Storage 😉.
+
+```js
+<script>
+// YouTube
+(()=>{let v=JSON.parse(localStorage.getItem('video_consent')||'{}');v.youtube=true;localStorage.setItem('video_consent',JSON.stringify(v));document.cookie='youtube_consent=true; path=/; max-age=2592000; SameSite=Lax; Secure';})();
+
+// Für Vimeo:
+(()=>{let v=JSON.parse(localStorage.getItem('video_consent')||'{}');v.vimeo=true;localStorage.setItem('video_consent',JSON.stringify(v));document.cookie='vimeo_consent=true; path=/; max-age=2592000; SameSite=Lax; Secure';})();
+</script>
+```
+
+
+## 🎉 HEUREKA!
 
 Jetzt bist du ein Video-Einbettungs-Ninja! Geh raus und mache das Internet zu einem besseren Ort - ein Video nach dem anderen. Und denk dran: Mit großer Macht kommt große Verantwortung (und coole Videos)!
 
 Viel Spaß beim Coden! 🚀👩‍💻👨‍💻
+
+
+## Autor
+
+**Friends Of REDAXO**
+
+* http://www.redaxo.org
+* https://github.com/FriendsOfREDAXO
+
+**Projektleitung**
+
+[Thomas Skerbis](https://github.com/skerbis)
+

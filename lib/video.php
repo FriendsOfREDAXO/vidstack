@@ -2,6 +2,7 @@
 namespace FriendsOfRedaxo\VidStack;
 
 use rex_path;
+use rex_escape;
 
 class Video {
     private readonly string $source;
@@ -48,10 +49,10 @@ class Video {
         $alternativeUrl = $alternativeUrl ?: $this->getAlternativeUrl();
         
         $this->a11yContent = "<div class=\"video-description\">"
-            . "<p>" . $this->getText('video_description') . ": {$description}</p></div>"
+            . "<p>" . rex_escape($this->getText('video_description')) . ": " . rex_escape($description) . "</p></div>"
             . "<div class=\"alternative-links\">"
-            . "<p>" . $this->getText('video_alternative_view') . ": <a href=\"{$alternativeUrl}\">" 
-            . $this->getText('video_open_alternative_view') . "</a></p>"
+            . "<p>" . rex_escape($this->getText('video_alternative_view')) . ": <a href=\"" . rex_escape($alternativeUrl) . "\">" 
+            . rex_escape($this->getText('video_open_alternative_view')) . "</a></p>"
             . "</div>";
     }
 
@@ -90,10 +91,9 @@ class Video {
     public function generateFull(): string {
         $videoInfo = $this->getVideoInfo();
         $attributesString = $this->generateAttributesString();
-        $titleAttr = $this->title ? " title=\"{$this->title}\"" : '';
+        $titleAttr = $this->title ? " title=\"" . rex_escape($this->title) . "\"" : '';
         
-        $ariaLabel = htmlspecialchars($this->getText('a11y_video_player'), ENT_QUOTES, 'UTF-8');
-        $code = "<div class=\"video-container\" role=\"region\" aria-label=\"{$ariaLabel}\">";
+        $code = "<div class=\"video-container\" role=\"region\" aria-label=\"" . rex_escape($this->getText('a11y_video_player')) . "\">";
         
         if ($videoInfo['platform'] !== 'default') {
             $consentTextKey = "consent_text_{$videoInfo['platform']}";
@@ -107,29 +107,24 @@ class Video {
         
         $code .= "<media-player{$titleAttr}{$attributesString}";
         
-        $platform = htmlspecialchars($videoInfo['platform'], ENT_QUOTES, 'UTF-8');
-        $videoId = htmlspecialchars($videoInfo['id'], ENT_QUOTES, 'UTF-8');
-        $ariaLabel = htmlspecialchars($this->getText('a11y_video_from') . " {$videoInfo['platform']}", ENT_QUOTES, 'UTF-8');
-
         if ($videoInfo['platform'] !== 'default') {
-            $code .= " data-video-platform=\"{$platform}\" data-video-id=\"{$videoId}\""
-                  . " aria-label=\"{$ariaLabel}\"";
-                  . " aria-label=\"" . $this->getText('a11y_video_from') . " {$videoInfo['platform']}\"";
+            $code .= " data-video-platform=\"" . rex_escape($videoInfo['platform']) . "\" data-video-id=\"" . rex_escape($videoInfo['id']) . "\""
+                  . " aria-label=\"" . rex_escape($this->getText('a11y_video_from')) . " " . rex_escape($videoInfo['platform']) . "\"";
         } else {
-            $code .= " src=\"{$this->source}\"";
+            $code .= " src=\"" . rex_escape($this->source) . "\"";
         }
         
         $code .= " role=\"application\"" . ($videoInfo['platform'] !== 'default' ? " style=\"display:none;\"" : "") . ">";
         $code .= "<media-provider></media-provider>";
         foreach ($this->subtitles as $subtitle) {
             $defaultAttr = $subtitle['default'] ? ' default' : '';
-            $code .= "<Track src=\"{$subtitle['src']}\" kind=\"{$subtitle['kind']}\" label=\"{$subtitle['label']}\" srclang=\"{$subtitle['lang']}\"{$defaultAttr} />";
+            $code .= "<Track src=\"" . rex_escape($subtitle['src']) . "\" kind=\"" . rex_escape($subtitle['kind']) . "\" label=\"" . rex_escape($subtitle['label']) . "\" srclang=\"" . rex_escape($subtitle['lang']) . "\"{$defaultAttr} />";
         }
-        $code .= "<media-video-layout" . ($this->thumbnails ? " thumbnails=\"{$this->thumbnails}\"" : "") . "></media-video-layout>";
+        $code .= "<media-video-layout" . ($this->thumbnails ? " thumbnails=\"" . rex_escape($this->thumbnails) . "\"" : "") . "></media-video-layout>";
         $code .= "</media-player>";
         
         if ($this->a11yContent) {
-            $code .= "<div class=\"a11y-content\" role=\"complementary\" aria-label=\"" . $this->getText('a11y_additional_information') . "\">"
+            $code .= "<div class=\"a11y-content\" role=\"complementary\" aria-label=\"" . rex_escape($this->getText('a11y_additional_information')) . "\">"
                    . $this->a11yContent
                    . "</div>";
         }
@@ -140,14 +135,14 @@ class Video {
 
     public function generate(): string {
         $attributesString = $this->generateAttributesString();
-        $titleAttr = $this->title ? " title=\"{$this->title}\"" : '';
-        $code = "<media-player{$titleAttr}{$attributesString} src=\"{$this->source}\" role=\"application\" aria-label=\"" . $this->getText('a11y_video_player') . "\">";
+        $titleAttr = $this->title ? " title=\"" . rex_escape($this->title) . "\"" : '';
+        $code = "<media-player{$titleAttr}{$attributesString} src=\"" . rex_escape($this->source) . "\" role=\"application\" aria-label=\"" . rex_escape($this->getText('a11y_video_player')) . "\">";
         $code .= "<media-provider></media-provider>";
         foreach ($this->subtitles as $subtitle) {
             $defaultAttr = $subtitle['default'] ? ' default' : '';
-            $code .= "<Track src=\"{$subtitle['src']}\" kind=\"{$subtitle['kind']}\" label=\"{$subtitle['label']}\" srclang=\"{$subtitle['lang']}\"{$defaultAttr} />";
+            $code .= "<Track src=\"" . rex_escape($subtitle['src']) . "\" kind=\"" . rex_escape($subtitle['kind']) . "\" label=\"" . rex_escape($subtitle['label']) . "\" srclang=\"" . rex_escape($subtitle['lang']) . "\"{$defaultAttr} />";
         }
-        $code .= "<media-video-layout" . ($this->thumbnails ? " thumbnails=\"{$this->thumbnails}\"" : "") . "></media-video-layout>";
+        $code .= "<media-video-layout" . ($this->thumbnails ? " thumbnails=\"" . rex_escape($this->thumbnails) . "\"" : "") . "></media-video-layout>";
         $code .= "</media-player>";
         return $code;
     }
@@ -155,15 +150,15 @@ class Video {
     private function generateAttributesString(): string {
         return array_reduce(array_keys($this->attributes), function($carry, $key) {
             $value = $this->attributes[$key];
-            return $carry . (is_bool($value) ? ($value ? " {$key}" : '') : " {$key}=\"{$value}\"");
+            return $carry . (is_bool($value) ? ($value ? " " . rex_escape($key) : '') : " " . rex_escape($key) . "=\"" . rex_escape($value) . "\"");
         }, '');
     }
 
     private function generateConsentPlaceholder(string $consentText, string $platform, string $videoId): string {
         $buttonText = $this->getText('Load Video');
-        return "<div class=\"consent-placeholder\" data-platform=\"{$platform}\" data-video-id=\"{$videoId}\" style=\"aspect-ratio: 16/9;\">"
-             . "<p>{$consentText}</p>"
-             . "<button type=\"button\" class=\"consent-button\">{$buttonText}</button>"
+        return "<div class=\"consent-placeholder\" data-platform=\"" . rex_escape($platform) . "\" data-video-id=\"" . rex_escape($videoId) . "\" style=\"aspect-ratio: 16/9;\">"
+             . "<p>" . rex_escape($consentText) . "</p>"
+             . "<button type=\"button\" class=\"consent-button\">" . rex_escape($buttonText) . "</button>"
              . "</div>";
     }
 }
