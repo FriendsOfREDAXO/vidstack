@@ -33,7 +33,7 @@ return [
         'a11y_video_from' => 'Video de',
         'a11y_additional_information' => 'Información adicional',
     ],
-    'sl' => [
+    'si' => [
         'video_description' => 'Opis',
         'video_alternative_view' => 'Alternativni pogled',
         'video_open_alternative_view' => 'Odpri video v alternativnem pogledu',
