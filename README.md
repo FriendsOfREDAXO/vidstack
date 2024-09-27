@@ -250,12 +250,14 @@ PR erstellen 😀
 …fliegt hier so im Repo rum, Einfach mal reinschauen. 
 
 
-## Autor
+## Autor(en)
 
 **Friends Of REDAXO**
 
 * http://www.redaxo.org
 * https://github.com/FriendsOfREDAXO
+* Ein bisschen KI 😎
+
 
 **Projektleitung**
 
