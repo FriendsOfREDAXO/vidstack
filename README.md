@@ -1,4 +1,4 @@
-# 🎥 Super-duper Video Player Klasse
+# VidStack for REDAXO
 
 ## Was ist das hier?
 
