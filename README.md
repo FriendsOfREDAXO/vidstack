@@ -10,8 +10,6 @@ Eine PHP-Klasse, die Videos auf Websites einbindet - mit Style! YouTube, Vimeo o
 
 Alles klar, ich erkläre dir gerne, wie man die Assets im Frontend einbindet. Hier ist der überarbeitete Installationsabschnitt in einem lockeren Ton:
 
-## 🚀 Los geht's!
-
 ### Installation
 
 Klar, natürlich über den REDAXO-Installer oder als GitHub Release. Aber das war's noch nicht ganz:
