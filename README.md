@@ -242,7 +242,8 @@ Ihr wollt uns sicher mal bei der Weiterentwicklung helfen. Das geht so:
 Im Ordner build ist alles drin was man braucht. 
 - Also forken, lokal runterladen. 
 - npm install ausführen
-- npm npm run build ausführen 
+- npm npm run build ausführen
+- vidstack.js und vistack.css im Assets-Ordner austauschen 
 PR erstellen 😀
 
 ### Alles andere
