@@ -91,8 +91,9 @@ class Video {
         $videoInfo = $this->getVideoInfo();
         $attributesString = $this->generateAttributesString();
         $titleAttr = $this->title ? " title=\"{$this->title}\"" : '';
-        $code = "<div class=\"video-container\" role=\"region\" aria-label=\"" . $this->getText('a11y_video_player') . "\">"
-              . "<media-player{$titleAttr}{$attributesString}";
+        
+        $ariaLabel = htmlspecialchars($this->getText('a11y_video_player'), ENT_QUOTES, 'UTF-8');
+        $code = "<div class=\"video-container\" role=\"region\" aria-label=\"{$ariaLabel}\">";
         
         if ($videoInfo['platform'] !== 'default') {
             $consentTextKey = "consent_text_{$videoInfo['platform']}";
@@ -100,20 +101,32 @@ class Video {
             if ($consentText === "[[{$consentTextKey}]]") {
                 $consentText = $this->getText('consent_text_default');
             }
-            $code .= " data-consent-source=\"{$videoInfo['platform']}/{$videoInfo['id']}\""
-                  . " data-consent-text=\"{$consentText}\""
+            
+            $code .= $this->generateConsentPlaceholder($consentText, $videoInfo['platform'], $videoInfo['id']);
+        }
+        
+        $code .= "<media-player{$titleAttr}{$attributesString}";
+        
+        $platform = htmlspecialchars($videoInfo['platform'], ENT_QUOTES, 'UTF-8');
+        $videoId = htmlspecialchars($videoInfo['id'], ENT_QUOTES, 'UTF-8');
+        $ariaLabel = htmlspecialchars($this->getText('a11y_video_from') . " {$videoInfo['platform']}", ENT_QUOTES, 'UTF-8');
+
+        if ($videoInfo['platform'] !== 'default') {
+            $code .= " data-video-platform=\"{$platform}\" data-video-id=\"{$videoId}\""
+                  . " aria-label=\"{$ariaLabel}\"";
                   . " aria-label=\"" . $this->getText('a11y_video_from') . " {$videoInfo['platform']}\"";
         } else {
             $code .= " src=\"{$this->source}\"";
         }
-        $code .= " role=\"application\"";
-        $code .= "><media-provider></media-provider>";
+        
+        $code .= " role=\"application\"" . ($videoInfo['platform'] !== 'default' ? " style=\"display:none;\"" : "") . ">";
+        $code .= "<media-provider></media-provider>";
         foreach ($this->subtitles as $subtitle) {
             $defaultAttr = $subtitle['default'] ? ' default' : '';
             $code .= "<Track src=\"{$subtitle['src']}\" kind=\"{$subtitle['kind']}\" label=\"{$subtitle['label']}\" srclang=\"{$subtitle['lang']}\"{$defaultAttr} />";
         }
-        $code .= "<media-video-layout" . ($this->thumbnails ? " thumbnails=\"{$this->thumbnails}\"" : "") . "></media-video-layout>"
-              . "</media-player>";
+        $code .= "<media-video-layout" . ($this->thumbnails ? " thumbnails=\"{$this->thumbnails}\"" : "") . "></media-video-layout>";
+        $code .= "</media-player>";
         
         if ($this->a11yContent) {
             $code .= "<div class=\"a11y-content\" role=\"complementary\" aria-label=\"" . $this->getText('a11y_additional_information') . "\">"
@@ -144,5 +157,13 @@ class Video {
             $value = $this->attributes[$key];
             return $carry . (is_bool($value) ? ($value ? " {$key}" : '') : " {$key}=\"{$value}\"");
         }, '');
+    }
+
+    private function generateConsentPlaceholder(string $consentText, string $platform, string $videoId): string {
+        $buttonText = $this->getText('Load Video');
+        return "<div class=\"consent-placeholder\" data-platform=\"{$platform}\" data-video-id=\"{$videoId}\" style=\"aspect-ratio: 16/9;\">"
+             . "<p>{$consentText}</p>"
+             . "<button type=\"button\" class=\"consent-button\">{$buttonText}</button>"
+             . "</div>";
     }
 }
