@@ -67,7 +67,7 @@ Der Video-Player spricht mehr Sprachen als ein UNO-Dolmetscher! Aktuell im Reper
 - Deutsch (de)
 - Englisch (en)
 - Spanisch (es)
-- Slowenisch (sl)
+- Slowenisch (si)
 - Französisch (fr)
 
 Sprachänderung leicht gemacht:
