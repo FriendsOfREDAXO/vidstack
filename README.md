@@ -8,26 +8,37 @@ Eine PHP-Klasse, die Videos auf Websites einbindet - mit Style! YouTube, Vimeo o
 
 ## 🚀 Los geht's!
 
+Alles klar, ich erkläre dir gerne, wie man die Assets im Frontend einbindet. Hier ist der überarbeitete Installationsabschnitt in einem lockeren Ton:
+
+## 🚀 Los geht's!
+
 ### Installation
 
-Klar, natürlich über den REDAXO-Installer oder als GitHub Release. 
+Klar, natürlich über den REDAXO-Installer oder als GitHub Release. Aber das war's noch nicht ganz:
 
-Nun ja. Das war nicht alles: 
+#### Für das Frontend:
 
-#### Für das Frontend: 
+Jetzt kommt der interessante Teil - wir müssen noch ein paar Dateien in unser Frontend einbinden, damit der ganze Zauber funktioniert. Hier ist, was du brauchst:
 
-Im Frontend müssen noch die CSS und JS eingebunden werden. 
+```php
+// In deinem Template oder an einer anderen passenden Stelle:
 
-vidstack.js
-vidstack_helper.js
+// CSS einbinden
+echo '<link rel="stylesheet" href="' . rex_url::addonAssets('vidstack', 'vidstack.css') . '">';
+echo '<link rel="stylesheet" href="' . rex_url::addonAssets('vidstack', 'vidstack_helper.css') . '">';
 
-vidstack.css
-vidstack_helper.css
+// JavaScript einbinden
+echo '<script src="' . rex_url::addonAssets('vidstack', 'vidstack.js') . '"></script>';
+echo '<script src="' . rex_url::addonAssets('vidstack', 'vidstack_helper.js') . '"></script>';
+```
 
-Die helper braucht man für die `generateFull()`-Methode ... mit dem ganzen Brimborium und DSGVO und so ... ach ja ... 
-Wer nur `generate()` verwendet, viel Spaß ohne. Denn die `generate()` liefert keine Consent-Abfrage oder zusätzliche Infos für die Besucher. 
+Was passiert hier? Wir benutzen `rex_url::addonAssets()`, um die richtigen URLs für unsere Assets zu generieren. Das ist wie ein Zauberstab, der immer auf die korrekten Dateien in deinem REDAXO-Setup zeigt, egal wo sie sich versteckt haben.
 
-Alles findet sich natürlich im Assets-Ordner. 
+Die `vidstack.css` und `vidstack.js` sind die Hauptdarsteller - sie bringen den Video-Player zum Laufen. Die `*_helper`-Dateien sind wie die fleißigen Backstage-Helfer. Sie kümmern sich um Extras wie die DSGVO-Abfrage und andere nützliche Funktionen.
+
+Übrigens: Wenn du nur die `generate()`-Methode verwendest und auf den ganzen Schnickschnack wie Consent-Abfragen verzichten möchtest, kannst du die Helper-Dateien weglassen. Aber für das volle Programm mit `generateFull()` braucht man alle vier Dateien.
+
+So, jetzt aber! Dein REDAXO ist jetzt bereit, Videos mit Style zu servieren. 🎬🍿
 
 ### Grundlegende Verwendung
 
