@@ -92,7 +92,8 @@ class Video {
         $attributesString = $this->generateAttributesString();
         $titleAttr = $this->title ? " title=\"{$this->title}\"" : '';
         
-        $code = "<div class=\"video-container\" role=\"region\" aria-label=\"" . $this->getText('a11y_video_player') . "\">";
+        $ariaLabel = htmlspecialchars($this->getText('a11y_video_player'), ENT_QUOTES, 'UTF-8');
+        $code = "<div class=\"video-container\" role=\"region\" aria-label=\"{$ariaLabel}\">";
         
         if ($videoInfo['platform'] !== 'default') {
             $consentTextKey = "consent_text_{$videoInfo['platform']}";
