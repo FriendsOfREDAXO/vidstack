@@ -163,7 +163,7 @@ class Video {
 
     private function generateConsentPlaceholder(string $consentText, string $platform, string $videoId): string {
         $buttonText = $this->getText('Load Video');
-        return "<div class=\"consent-placeholder\" data-platform=\"" . rex_escape($platform) . "\" data-video-id=\"" . rex_escape($videoId) . "\" style=\"aspect-ratio: 16/9;\">"
+        return "<div class=\"consent-placeholder\" aria-hidden=\"true\" data-platform=\"" . rex_escape($platform) . "\" data-video-id=\"" . rex_escape($videoId) . "\" style=\"aspect-ratio: 16/9;\">"
              . "<p>" . rex_escape($consentText) . "</p>"
              . "<button type=\"button\" class=\"consent-button\">" . rex_escape($buttonText) . "</button>"
              . "</div>";
