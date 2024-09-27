@@ -71,10 +71,15 @@ class Video {
         ];
     }
 
+    private function getSourceUrl(): string {
+        if (filter_var($this->source, FILTER_VALIDATE_URL)) {
+            return $this->source;
+        }
+        return rex_url::media($this->source);
+    }
+
     private function getAlternativeUrl(): string {
-        return filter_var($this->source, FILTER_VALIDATE_URL) 
-            ? $this->source 
-            : rex_url::media($this->source);
+        return $this->getSourceUrl();
     }
 
     private function getVideoInfo(): array {
@@ -112,7 +117,7 @@ class Video {
             $code .= " data-video-platform=\"" . rex_escape($videoInfo['platform']) . "\" data-video-id=\"" . rex_escape($videoInfo['id']) . "\""
                   . " aria-label=\"" . rex_escape($this->getText('a11y_video_from')) . " " . rex_escape($videoInfo['platform']) . "\"";
         } else {
-            $code .= " src=\"" . rex_escape($this->source) . "\"";
+            $code .= " src=\"" . rex_escape($this->getSourceUrl()) . "\"";
         }
         
         $code .= " role=\"application\"" . ($videoInfo['platform'] !== 'default' ? " style=\"display:none;\"" : "") . ">";
@@ -137,7 +142,8 @@ class Video {
     public function generate(): string {
         $attributesString = $this->generateAttributesString();
         $titleAttr = $this->title ? " title=\"" . rex_escape($this->title) . "\"" : '';
-        $code = "<media-player{$titleAttr}{$attributesString} src=\"" . rex_escape($this->source) . "\" role=\"application\" aria-label=\"" . rex_escape($this->getText('a11y_video_player')) . "\">";
+        $sourceUrl = $this->getSourceUrl();
+        $code = "<media-player{$titleAttr}{$attributesString} src=\"" . rex_escape($sourceUrl) . "\" role=\"application\" aria-label=\"" . rex_escape($this->getText('a11y_video_player')) . "\">";
         $code .= "<media-provider></media-provider>";
         foreach ($this->subtitles as $subtitle) {
             $defaultAttr = $subtitle['default'] ? ' default' : '';
