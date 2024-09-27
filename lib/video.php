@@ -1,8 +1,9 @@
 <?php
 namespace FriendsOfRedaxo\VidStack;
 
-use rex_path;
 use rex_escape;
+use rex_path;
+use rex_url;
 
 class Video {
     private readonly string $source;
