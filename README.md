@@ -8,9 +8,7 @@ Eine PHP-Klasse, die Videos auf Websites einbindet - mit Style! YouTube, Vimeo o
 
 ### Installation
 
-1. `Video.php` in das Projekt kopieren.
-2. `translations.php` im gleichen Verzeichnis ablegen.
-3. Party hard! 🎉
+Klar, natürlich über den REDAXO-Installer oder als GitHub Release. 
 
 ### Grundlegende Verwendung
 
