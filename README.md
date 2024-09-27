@@ -193,6 +193,23 @@ $easyVideo = createDefaultVideo('https://youtube.com/watch?v=abcdefg', 'Einfach 
 echo $easyVideo->generateFull();
 ```
 
+🍪 Consent und Kekse
+
+Leider muss es ja sein. 
+
+Hiermit kann man in einem Consent-Manager oder auch so mal zwischendurch die Erlaubnis für Vimeo oder Youtube setzen. Wer keine Cookies erlaubt bekommt halt Local-Storage 😉.
+
+```js
+<script>
+// YouTube
+(()=>{let v=JSON.parse(localStorage.getItem('video_consent')||'{}');v.youtube=true;localStorage.setItem('video_consent',JSON.stringify(v));document.cookie='youtube_consent=true; path=/; max-age=2592000; SameSite=Lax; Secure';})();
+
+// Für Vimeo:
+(()=>{let v=JSON.parse(localStorage.getItem('video_consent')||'{}');v.vimeo=true;localStorage.setItem('video_consent',JSON.stringify(v));document.cookie='vimeo_consent=true; path=/; max-age=2592000; SameSite=Lax; Secure';})();
+</script>
+```
+
+
 ## 🎉 Fazit
 
 Jetzt bist du ein Video-Einbettungs-Ninja! Geh raus und mache das Internet zu einem besseren Ort - ein Video nach dem anderen. Und denk dran: Mit großer Macht kommt große Verantwortung (und coole Videos)!
