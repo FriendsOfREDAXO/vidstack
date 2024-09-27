@@ -1,102 +1,161 @@
-# vidstack for REDAXO
+# 🎥 Super-duper Video Player Klasse
 
-## Übersicht
+## Was ist das hier?
 
-Diese PHP-Klasse ermöglicht die einfache Integration von VidStack in die Webseite. Sie unterstützt YouTube, Vimeo und lokale Videos mit erweiterten Funktionen wie Barrierefreiheit, Mehrsprachigkeit und Consent-Management.
+Eine PHP-Klasse, die Videos auf Websites einbindet - mit Style! YouTube, Vimeo oder eigene Videos? Alles kein Problem. Und das Beste? Es ist so einfach zu benutzen, dass selbst ein Kater es könnte (wenn er Daumen hätte).
 
-## Installation
+## 🚀 Los geht's!
 
-1. Kopieren Sie die `Video.php` Datei in Ihr Projekt.
-2. Stellen Sie sicher, dass die `translations.php` Datei im gleichen Verzeichnis liegt.
+### Installation
 
-## Grundlegende Verwendung
+1. `Video.php` in das Projekt kopieren.
+2. `translations.php` im gleichen Verzeichnis ablegen.
+3. Party hard! 🎉
+
+### Grundlegende Verwendung
 
 ```php
 <?php
 use FriendsOfRedaxo\VidStack\Video;
 
-// YouTube-Video einbinden
-$video = new Video('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Beispiel-Video');
+// YouTube-Video
+$video = new Video('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Never Gonna Give You Up');
 echo $video->generateFull();
 
-// Vimeo-Video einbinden
+// Vimeo-Video
 $vimeoVideo = new Video('https://vimeo.com/148751763', 'Vimeo-Beispiel');
 echo $vimeoVideo->generateFull();
 
-// Lokales Video einbinden
-$localVideo = new Video('/pfad/zum/video.mp4', 'Lokales Video');
+// Lokales Video
+$localVideo = new Video('/pfad/zum/video.mp4', 'Eigenes Video');
 echo $localVideo->generate();
 ```
 
-## Methoden
+## 🛠 Die Methoden
 
 ### Konstruktor
-
 ```php
 __construct($source, $title = '', $lang = 'de')
 ```
-- `$source`: URL oder Pfad zum Video
-- `$title`: Titel des Videos (optional)
-- `$lang`: Sprachcode (de, en, es, sl, fr) - Standard ist Deutsch
+- `$source`: URL oder Pfad zum Video (Pflicht)
+- `$title`: Titel des Videos (Optional)
+- `$lang`: Sprachcode (Optional, Standard: 'de')
 
 ### Weitere Methoden
 
-- `setAttributes(array $attributes)`: Fügt zusätzliche Attribute zum Video-Player hinzu.
-- `setA11yContent($description, $alternativeUrl = '')`: Fügt Beschreibung und alternativen Link für Barrierefreiheit hinzu.
-- `setThumbnails($thumbnailsUrl)`: Setzt ein benutzerdefiniertes Vorschaubild.
-- `addSubtitle($src, $kind, $label, $lang, $default = false)`: Fügt Untertitel hinzu.
-- `generateFull()`: Generiert vollständigen HTML-Code mit Consent-Mechanismus und Barrierefreiheits-Features.
-- `generate()`: Generiert einfachen Video-Player ohne zusätzliche Funktionen.
+- `setAttributes(array $attributes)`: Zusätzliche Player-Attribute
+- `setA11yContent($description, $alternativeUrl = '')`: Barrierefreiheits-Infos
+- `setThumbnails($thumbnailsUrl)`: Thumbnail-Vorschaubilder (VTT-Format)
+- `addSubtitle($src, $kind, $label, $lang, $default = false)`: Untertitel hinzufügen
+- `generateFull()`: Vollständiger HTML-Code mit allen Schikanen
+- `generate()`: Einfacher Video-Player ohne Schnickschnack
 
-## 🌍 Mehrsprachigkeit
+## 📋 Optionen und Pflichtangaben
 
-Unser Video-Player spricht mehr Sprachen als ein UNO-Dolmetscher! Aktuell unterstützen wir:
+### Pflichtangaben
+- `$source` beim Erstellen des Video-Objekts
+
+### Optionale Angaben
+- `$title` beim Erstellen des Video-Objekts
+- `$lang` beim Erstellen des Video-Objekts
+- Alle Attribute in `setAttributes()`
+- Beschreibung und alternativer URL in `setA11yContent()`
+- Thumbnail-URL in `setThumbnails()`
+- Untertitel-Informationen in `addSubtitle()`
+
+## 🌍 Sprachenwirrwarr
+
+Der Video-Player spricht mehr Sprachen als ein UNO-Dolmetscher! Aktuell im Repertoire:
 - Deutsch (de)
 - Englisch (en)
 - Spanisch (es)
 - Slowenisch (sl)
 - Französisch (fr)
 
-Um die Sprache zu ändern, geben Sie einfach den entsprechenden Code beim Erstellen des Video-Objekts an:
+Sprachänderung leicht gemacht:
 
 ```php
 $videoES = new Video('https://www.youtube.com/watch?v=example', 'Mi Video', 'es');
 ```
 
-## Vollständiges Beispiel
+## 🎭 Beispiele für die Dramaturgen
 
-Hier ist ein Beispiel, das die meisten Funktionen der Video-Klasse demonstriert:
+### Ein YouTube-Video mit vollem Programm
+
+```php
+$video = new Video('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Never Gonna Give You Up', 'en');
+$video->setAttributes(['autoplay' => true, 'muted' => true]);
+$video->setA11yContent('This is a music video by Rick Astley');
+$video->setThumbnails('/pfad/zu/thumbnails.vtt');
+$video->addSubtitle('/untertitel/deutsch.vtt', 'captions', 'Deutsch', 'de', true);
+$video->addSubtitle('/untertitel/english.vtt', 'captions', 'English', 'en');
+echo $video->generateFull();
+```
+
+### Ein schlichtes lokales Video
+
+```php
+$video = new Video('/pfad/zu/katzen_spielen_schach.mp4', 'Schachgenies');
+echo $video->generate();
+```
+
+### Vimeo mit Custom Thumbnails und Untertiteln
+
+```php
+$video = new Video('https://vimeo.com/148751763', 'Vimeo-Meisterwerk', 'fr');
+$video->setThumbnails('/vimeo_thumbs.vtt');
+$video->addSubtitle('/sous-titres.vtt', 'captions', 'Français', 'fr', true);
+echo $video->generateFull();
+```
+
+### 🌟 Full Featured Beispiel
+
+Hier kommt der Königsklasse-Einsatz - alle Funktionen auf einmal:
 
 ```php
 <?php
 use FriendsOfRedaxo\VidStack\Video;
 
 // Initialisierung des Video-Objekts
-$video = new Video('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Ausführliches Beispiel-Video', 'de');
+$video = new Video('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Ultimate Rickroll Experience', 'en');
 
-// Setzen von Player-Attributen
+// Setzen aller möglichen Player-Attribute
 $video->setAttributes([
     'autoplay' => false,
     'muted' => false,
-    'loop' => false,
+    'loop' => true,
     'playsinline' => true,
     'crossorigin' => 'anonymous',
-    'poster' => '/pfad/zum/poster.jpg'
+    'poster' => '/pfad/zum/poster.jpg',
+    'preload' => 'metadata',
+    'controlsList' => 'nodownload',
+    'class' => 'my-custom-video-class',
+    'data-custom' => 'some-value'
 ]);
 
-// Hinzufügen von Barrierefreiheits-Inhalten
+// Hinzufügen von ausführlichen Barrierefreiheits-Inhalten
 $video->setA11yContent(
-    'Dieses Video zeigt eine Beispiel-Präsentation über moderne Webentwicklung.',
-    'https://example.com/alternative-version'
+    'This legendary music video features Rick Astley performing "Never Gonna Give You Up". ' .
+    'The video begins with Rick, dressed in a black leather jacket, dancing in various locations. ' .
+    'The catchy synth-pop tune and Rick\'s distinctive baritone voice have made this song an internet phenomenon.',
+    'https://example.com/detailed-audio-description'
 );
 
 // Setzen von Thumbnail-Vorschaubildern für den Player-Fortschritt
-$video->setThumbnails('/pfad/zu/thumbnails.vtt');
+$video->setThumbnails('/pfad/zu/detailed-thumbnails.vtt');
 
-// Hinzufügen von Untertiteln in verschiedenen Sprachen
-$video->addSubtitle('/untertitel/deutsch.vtt', 'captions', 'Deutsch', 'de', true);
-$video->addSubtitle('/untertitel/english.vtt', 'captions', 'English', 'en');
+// Hinzufügen von Untertiteln in mehreren Sprachen
+$video->addSubtitle('/untertitel/english.vtt', 'captions', 'English', 'en', true);
+$video->addSubtitle('/untertitel/deutsch.vtt', 'captions', 'Deutsch', 'de');
 $video->addSubtitle('/untertitel/francais.vtt', 'captions', 'Français', 'fr');
+$video->addSubtitle('/untertitel/espanol.vtt', 'captions', 'Español', 'es');
+$video->addSubtitle('/untertitel/slovenscina.vtt', 'captions', 'Slovenščina', 'sl');
+
+// Hinzufügen von Audiodeskription
+$video->addSubtitle('/audio/description.vtt', 'descriptions', 'Audio Description', 'en');
+
+// Hinzufügen von Kapitelmarkierungen
+$video->addSubtitle('/chapters/rickroll.vtt', 'chapters', 'Chapters', 'en');
 
 // Generieren des vollständigen Video-Player-Codes
 $fullPlayerCode = $video->generateFull();
@@ -106,15 +165,40 @@ echo $fullPlayerCode;
 ```
 
 Dieses Beispiel zeigt:
-1. Initialisierung eines YouTube-Videos mit Titel und Spracheinstellung
-2. Setzen verschiedener Player-Attribute
-3. Hinzufügen von Barrierefreiheits-Inhalten mit Beschreibung und alternativem Link
-4. Festlegen eines benutzerdefinierten Vorschaubildes
-5. Hinzufügen von Untertiteln in mehreren Sprachen
-6. Generierung des vollständigen Player-Codes mit allen Funktionen
+1. Initialisierung eines YouTube-Videos mit Titel und englischer Spracheinstellung
+2. Setzen aller möglichen Player-Attribute, einschließlich benutzerdefinierter Klassen und Datenattribute
+3. Hinzufügen von ausführlichen Barrierefreiheits-Inhalten mit detaillierter Beschreibung und alternativem Link
+4. Festlegen von Thumbnail-Vorschaubildern für den Player-Fortschritt im VTT-Format
+5. Hinzufügen von Untertiteln in allen unterstützten Sprachen
+6. Einbindung von Audiodeskription für Sehbehinderte
+7. Hinzufügen von Kapitelmarkierungen für einfache Navigation
+8. Generierung des vollständigen Player-Codes mit allen Funktionen
 
-## Fazit
+Mit diesem Setup ist der Video-Player bereit, die Welt zu erobern - oder zumindest jedem Zuschauer ein Lächeln ins Gesicht zu zaubern!
 
-Jetzt sind Sie ein Video-Einbettungs-Ninja! Gehen Sie hinaus und machen Sie das Internet zu einem besseren Ort - ein Video nach dem anderen. Und denken Sie daran: Mit großer Macht kommt große Verantwortung (und coole Videos)!
+## 🧙‍♂️ Die magische Default-Funktion
+
+Wer faul clever ist, baut sich eine Hilfsfunktion für Standardeinstellungen:
+
+```php
+function createDefaultVideo($source, $title = '', $lang = 'de') {
+    $video = new Video($source, $title, $lang);
+    $video->setAttributes([
+        'autoplay' => false,
+        'muted' => true,
+        'playsinline' => true
+    ]);
+    $video->setA11yContent('Ein fantastisches Video über...');
+    return $video;
+}
+
+// Verwendung
+$easyVideo = createDefaultVideo('https://youtube.com/watch?v=abcdefg', 'Einfach Genial');
+echo $easyVideo->generateFull();
+```
+
+## 🎉 Fazit
+
+Jetzt bist du ein Video-Einbettungs-Ninja! Geh raus und mache das Internet zu einem besseren Ort - ein Video nach dem anderen. Und denk dran: Mit großer Macht kommt große Verantwortung (und coole Videos)!
 
 Viel Spaß beim Coden! 🚀👩‍💻👨‍💻
