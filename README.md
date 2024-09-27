@@ -210,8 +210,21 @@ Hiermit kann man in einem Consent-Manager oder auch so mal zwischendurch die Erl
 ```
 
 
-## 🎉 Fazit
+## 🎉 HEUREKA!
 
 Jetzt bist du ein Video-Einbettungs-Ninja! Geh raus und mache das Internet zu einem besseren Ort - ein Video nach dem anderen. Und denk dran: Mit großer Macht kommt große Verantwortung (und coole Videos)!
 
 Viel Spaß beim Coden! 🚀👩‍💻👨‍💻
+
+
+## Autor
+
+**Friends Of REDAXO**
+
+* http://www.redaxo.org
+* https://github.com/FriendsOfREDAXO
+
+**Projektleitung**
+
+[Thomas Skerbis](https://github.com/skerbis)
+
