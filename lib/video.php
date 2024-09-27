@@ -73,7 +73,7 @@ class Video {
     private function getAlternativeUrl(): string {
         return filter_var($this->source, FILTER_VALIDATE_URL) 
             ? $this->source 
-            : "rex_url::media('$this->source);
+            : rex_url::media('$this->source);
     }
 
     private function getVideoInfo(): array {
