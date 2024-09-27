@@ -1,4 +1,4 @@
-# VidStack for REDAXO
+# Vidstack for REDAXO
 
 ![Screenshot](https://github.com/skerbis/vidstack/blob/assets/screenshot.png?raw=true)
 
