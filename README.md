@@ -23,7 +23,7 @@ vidstack.css
 vidstack_helper.css
 
 Die helper braucht man für die `generateFull()`-Methode ... mit dem ganzen Brimborium und DSGVO und so ... ach ja ... 
-Wer nur `generate()` verwendet, viel Spaß ohne. Denn die ``generate()` liefert keine Consent-Abfrage oder zusätzliche Infos für die Besucher. 
+Wer nur `generate()` verwendet, viel Spaß ohne. Denn die `generate()` liefert keine Consent-Abfrage oder zusätzliche Infos für die Besucher. 
 
 Alles findet sich natürlich im Assets-Ordner. 
 
