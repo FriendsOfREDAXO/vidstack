@@ -145,7 +145,7 @@ $video->addSubtitle('/untertitel/english.vtt', 'captions', 'English', 'en', true
 $video->addSubtitle('/untertitel/deutsch.vtt', 'captions', 'Deutsch', 'de');
 $video->addSubtitle('/untertitel/francais.vtt', 'captions', 'Français', 'fr');
 $video->addSubtitle('/untertitel/espanol.vtt', 'captions', 'Español', 'es');
-$video->addSubtitle('/untertitel/slovenscina.vtt', 'captions', 'Slovenščina', 'sl');
+$video->addSubtitle('/untertitel/slovenscina.vtt', 'captions', 'Slovenščina', 'si');
 
 // Hinzufügen von Audiodeskription
 $video->addSubtitle('/audio/description.vtt', 'descriptions', 'Audio Description', 'en');
