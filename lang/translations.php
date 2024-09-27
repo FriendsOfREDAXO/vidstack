@@ -4,7 +4,7 @@ return [
         'video_description' => 'Beschreibung',
         'video_alternative_view' => 'Alternative Ansicht',
         'video_open_alternative_view' => 'Video in alternativer Ansicht öffnen',
-        'consent_text_youtube' => 'Klicken Sie hier, um das YouTube-Video zu laden und abzuspielen. Dabei werden Daten an YouTube übertragen.',
+        'consent_text_youtube' => 'Klicken Sie hier, um das YouTube-Video zu laden und abzuspielen. Dabei werden Daten an YouTube und Google übertragen.',
         'consent_text_vimeo' => 'Klicken Sie hier, um das Vimeo-Video zu laden und abzuspielen. Dabei werden Daten an Vimeo übertragen.',
         'consent_text_default' => 'Klicken Sie hier, um das Video zu laden und abzuspielen.',
         'a11y_video_player' => 'Video-Player',
