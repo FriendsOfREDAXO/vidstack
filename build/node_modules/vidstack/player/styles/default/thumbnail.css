@@ -1,0 +1,40 @@
+/*
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * Thumbnail
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ */
+
+:where(.vds-thumbnail) {
+  --min-width: var(--media-thumbnail-min-width, 140px);
+  --max-width: var(--media-thumbnail-max-width, 180px);
+  --aspect-ratio: var(--media-thumbnail-aspect-ratio, var(--thumbnail-aspect-ratio));
+  display: block;
+  width: var(--thumbnail-width);
+  height: var(--thumbnail-height);
+  background-color: var(--media-thumbnail-bg, black);
+  contain: strict;
+  overflow: hidden;
+  box-sizing: border-box;
+  min-width: var(--min-width);
+  min-height: var(--media-thumbnail-min-height, calc(var(--min-width) / var(--aspect-ratio)));
+  max-width: var(--max-width);
+  max-height: var(--media-thumbnail-max-height, calc(var(--max-width) / var(--aspect-ratio)));
+}
+
+.vds-thumbnail {
+  border: var(--media-thumbnail-border, 1px solid white);
+}
+
+:where(.vds-thumbnail img) {
+  min-width: unset !important;
+  max-width: unset !important;
+  will-change: width, height, transform;
+}
+
+:where(.vds-thumbnail[data-loading] img) {
+  opacity: 0;
+}
+
+:where(.vds-thumbnail[aria-hidden='true']) {
+  display: none !important;
+}
