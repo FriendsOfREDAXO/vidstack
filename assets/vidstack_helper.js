@@ -1,9 +1,21 @@
 (function() {
     let translations = {};
 
+    function getScriptPath() {
+        const scripts = document.getElementsByTagName('script');
+        const currentScript = scripts[scripts.length - 1];
+        const scriptUrl = new URL(currentScript.src, window.location.href);
+        return scriptUrl.pathname.substring(0, scriptUrl.pathname.lastIndexOf('/') + 1);
+    }
+
     async function loadTranslations() {
         try {
-            const response = await fetch('translations.json');
+            const scriptPath = getScriptPath();
+            const translationsPath = `${scriptPath}translations.json`;
+            const response = await fetch(translationsPath);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             translations = await response.json();
         } catch (error) {
             console.error('Fehler beim Laden der Übersetzungen:', error);
