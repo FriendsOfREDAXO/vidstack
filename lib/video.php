@@ -211,6 +211,9 @@ class Video
         $params = $ep->getParams();
         $file = $params['filename'];
 
+        // Bestehenden Inhalt der Sidebar holen
+        $existingContent = $ep->getSubject();
+
         if (in_array(pathinfo($file, PATHINFO_EXTENSION), ['mp4', 'm4v', 'mov'])) {
             $video = new self($file);
             $video->setAttributes([
@@ -218,8 +221,12 @@ class Video
                 'playsinline' => true,
                 'controls' => true
             ]);
-            return $video->generate();
+            $newContent = $video->generate();
+
+            // Neuen Inhalt zur Sidebar hinzufügen, ohne bestehenden Inhalt zu überschreiben
+            return $existingContent . $newContent;
         }
-        return null;
+
+        return $existingContent;
     }
 }
