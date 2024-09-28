@@ -220,6 +220,5 @@ class Video
             ]);
             return $video->generate();
         }
-        return ''; // Return an empty string if the condition is not met
     }
 }
