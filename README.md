@@ -1,6 +1,6 @@
 # [Vidstack.io](https://www.vidstack.io) for REDAXO
 
-![Screenshot](https://github.com/skerbis/vidstack/blob/assets/screenshot.png?raw=true)
+![Screenshot](https://github.com/FriendsOfREDAXO/vidstack/blob/assets/screenshot.png?raw=true)
 
 ## Was ist das hier?
 
