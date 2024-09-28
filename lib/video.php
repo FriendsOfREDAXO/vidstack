@@ -218,7 +218,7 @@ class Video
                 'playsinline' => true,
                 'controls' => true
             ]);
-            return $video->generatel();
+            return $video->generate();
         }
         return ''; // Return an empty string if the condition is not met
     }
