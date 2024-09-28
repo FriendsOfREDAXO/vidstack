@@ -2,6 +2,7 @@
 
 namespace FriendsOfRedaxo\VidStack;
 
+use pathinfo;
 use rex_escape;
 use rex_path;
 use rex_url;
@@ -203,5 +204,22 @@ class Video
             ]);
             return $video->generateFull();
         }, $content);
+    }
+
+    public static function show_sidebar(\rex_extension_point $ep): string
+    {
+        $params = $ep->getParams();
+        $file = $params['filename'];
+
+        if (in_array(pathinfo($file, PATHINFO_EXTENSION), ['mp4', 'm4v', 'mov'])) {
+            $video = new self($file);
+            $video->setAttributes([
+                'crossorigin' => '',
+                'playsinline' => true,
+                'controls' => true
+            ]);
+            return $video->generate();
+        }
+        return ''; // Return an empty string if the condition is not met
     }
 }
