@@ -204,7 +204,7 @@ Mit diesem Setup ist der Video-Player bereit, die Welt zu erobern - oder zuminde
 Wer faul clever ist, baut sich eine Hilfsfunktion für Standardeinstellungen:
 
 ```php
-function createDefaultVideo($source, $title = '', $a11yContent = 'Ein fantastisches Video über...') {
+function createDefaultVideo($source, $title = '', $a11yContent = null) {
     $current_lang = rex_clang::getCurrent();
     $lang_code = $current_lang->getCode();
     $video = new Video($source, $title, $lang_code);
@@ -213,7 +213,9 @@ function createDefaultVideo($source, $title = '', $a11yContent = 'Ein fantastisc
         'muted' => true,
         'playsinline' => true
     ]);
-    $video->setA11yContent($a11yContent);
+    if ($a11yContent !== null) {
+        $video->setA11yContent($a11yContent);
+    }
     return $video;
 }
 
