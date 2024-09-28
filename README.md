@@ -254,6 +254,7 @@ Im Ordner build ist alles drin was man braucht.
 - npm install ausführen
 - npm npm run build ausführen
 - Im Assets-Ordner die Dateien des Dist-Ordners austauschen (Ihr habt richtig gesehen, es gibt auch die reine JS-Variante 😉) 
+
 PR erstellen 😀
 
 ### Alles andere
