@@ -199,7 +199,7 @@ Dieses Beispiel zeigt:
 
 Mit diesem Setup ist der Video-Player bereit, die Welt zu erobern - oder zumindest jedem Zuschauer ein Lächeln ins Gesicht zu zaubern!
 
-## 🧙‍♂️ Die magische Default-Funktion
+## 🧙‍♂️ Tipp: Die magische Default-Funktion
 
 Wer faul clever ist, baut sich eine Hilfsfunktion für Standardeinstellungen:
 
@@ -224,7 +224,7 @@ $easyVideo = createDefaultVideo('https://youtube.com/watch?v=abcdefg', 'Einfach 
 echo $easyVideo->generateFull();
 ```
 
-🍪 Consent und Kekse
+## 🍪 Consent und Kekse
 
 Leider muss es ja sein. 
 
@@ -238,6 +238,39 @@ Hiermit kann man in einem Consent-Manager oder auch so mal zwischendurch die Erl
 // Für Vimeo:
 (()=>{let v=JSON.parse(localStorage.getItem('video_consent')||'{}');v.vimeo=true;localStorage.setItem('video_consent',JSON.stringify(v));document.cookie='vimeo_consent=true; path=/; max-age=2592000; SameSite=Lax; Secure';})();
 </script>
+```
+
+## 📄 CKE5 Oembed - lässig aufgelöst 
+(*das Plyr-AddOn lässt grüßen*)
+
+CKE5 kann ja bekanntlich Videos einbinden, aber liefert nichts für die Ausgabe im Frontend mit. 👋 Hier ist die Lösung:
+
+Einfach im String suchen und umwanden: 
+
+```php
+echo Video::parseOembedTags($content);
+```
+und schon sind die Videos da 😀
+
+…oder in der boot.php vom Project-AddOn (gerne auch im eigenen AddOn) den Outputfilter nutzen.
+
+
+### Outputfilter im Frontend 
+
+```php
+if (rex::isFrontend()) {
+Video::videoOembedHelper();
+}
+```
+
+### Outputfilter im Backend: 
+Es soll ja nicht nur vorne schön sein. ❤️
+Hier muss man dafür sorgen, dass es ggf. in den Blocks nicht ausgeführt wird. 
+
+```php
+if (rex::isBackend() && rex_be_controller::getCurrentPagePart(1) == 'content' && !in_array(rex_request::get('function', 'string'), ['add', 'edit'])) {
+Video::videoOembedHelper();
+}
 ```
 
 
@@ -263,7 +296,7 @@ PR erstellen 😀
 
 ### Alles andere
 
-…fliegt hier so im Repo rum, Einfach mal reinschauen. 
+…fliegt hier so im Repo rum, einfach mal reinschauen. 👀
 
 
 ## Autor(en)
