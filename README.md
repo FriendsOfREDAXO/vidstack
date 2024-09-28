@@ -204,19 +204,21 @@ Mit diesem Setup ist der Video-Player bereit, die Welt zu erobern - oder zuminde
 Wer faul clever ist, baut sich eine Hilfsfunktion für Standardeinstellungen:
 
 ```php
-function createDefaultVideo($source, $title = '', $lang = 'de') {
-    $video = new Video($source, $title, $lang);
+function createDefaultVideo($source, $title = '', $a11yContent = 'Ein fantastisches Video über...') {
+    $current_lang = rex_clang::getCurrent();
+    $lang_code = $current_lang->getCode();
+    $video = new Video($source, $title, $lang_code);
     $video->setAttributes([
         'autoplay' => false,
         'muted' => true,
         'playsinline' => true
     ]);
-    $video->setA11yContent('Ein fantastisches Video über...');
+    $video->setA11yContent($a11yContent);
     return $video;
 }
 
 // Verwendung
-$easyVideo = createDefaultVideo('https://youtube.com/watch?v=abcdefg', 'Einfach Genial');
+$easyVideo = createDefaultVideo('https://youtube.com/watch?v=abcdefg', 'Einfach Genial', 'Ein Video über etwas Interessantes');
 echo $easyVideo->generateFull();
 ```
 
