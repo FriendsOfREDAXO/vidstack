@@ -206,7 +206,7 @@ class Video
         }, $content);
     }
 
-    public static function show_sidebar(\rex_extension_point $ep): string
+    public static function show_sidebar(\rex_extension_point $ep): ?string
     {
         $params = $ep->getParams();
         $file = $params['filename'];
