@@ -111,10 +111,10 @@
                 const button = placeholder.querySelector('.consent-button');
                 const text = placeholder.querySelector('p');
                 if (button) {
-                    button.textContent = getText('Load Video', lang);
+                   //  button.textContent = getText('Load Video', lang);
                 }
                 if (text) {
-                    text.textContent = getText('Click here to load and play the video.', lang);
+                  //  text.textContent = getText('Click here to load and play the video.', lang);
                 }
             });
         }
