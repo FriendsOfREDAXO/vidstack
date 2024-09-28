@@ -16,8 +16,9 @@ class Video
     private array $subtitles = [];
     private string $lang;
     private static array $translations = [];
+    private array $sources = [];
 
-    public function __construct(string $source, string $title = '', string $lang = 'de')
+    public function __construct(string $source = '', string $title = '', string $lang = 'de')
     {
         $this->source = $source;
         $this->title = $title;
@@ -80,6 +81,11 @@ class Video
         ];
     }
 
+    public function setSources(array $sources): void
+    {
+        $this->sources = $sources;
+    }
+
     private function getSourceUrl(): string
     {
         if (filter_var($this->source, FILTER_VALIDATE_URL)) {
@@ -106,6 +112,32 @@ class Video
         return ['platform' => 'default', 'id' => ''];
     }
 
+    public function generate(): string
+    {
+        $attributesString = $this->generateAttributesString();
+        $titleAttr = $this->title ? " title=\"" . rex_escape($this->title) . "\"" : '';
+        
+        $code = "<media-player{$titleAttr}{$attributesString} role=\"application\" aria-label=\"" . rex_escape($this->getText('a11y_video_player')) . "\">";
+        
+        if (!empty($this->sources)) {
+            $code .= "<media-provider>";
+            foreach ($this->sources as $source) {
+                $code .= $this->generateSourceTag($source);
+            }
+            $code .= "</media-provider>";
+        } elseif ($this->source) {
+            $code .= "<source src=\"" . rex_escape($this->getSourceUrl()) . "\">";
+        }
+        
+        foreach ($this->subtitles as $subtitle) {
+            $defaultAttr = $subtitle['default'] ? ' default' : '';
+            $code .= "<Track src=\"" . rex_escape($subtitle['src']) . "\" kind=\"" . rex_escape($subtitle['kind']) . "\" label=\"" . rex_escape($subtitle['label']) . "\" srclang=\"" . rex_escape($subtitle['lang']) . "\"{$defaultAttr}>";
+        }
+        $code .= "<media-video-layout" . ($this->thumbnails ? " thumbnails=\"" . rex_escape($this->thumbnails) . "\"" : "") . "></media-video-layout>";
+        $code .= "</media-player>";
+        return $code;
+    }
+
     public function generateFull(): string
     {
         $videoInfo = $this->getVideoInfo();
@@ -129,15 +161,23 @@ class Video
         if ($videoInfo['platform'] !== 'default') {
             $code .= " data-video-platform=\"" . rex_escape($videoInfo['platform']) . "\" data-video-id=\"" . rex_escape($videoInfo['id']) . "\""
                 . " aria-label=\"" . rex_escape($this->getText('a11y_video_from')) . " " . rex_escape($videoInfo['platform']) . "\"";
-        } else {
+        } elseif (empty($this->sources)) {
             $code .= " src=\"" . rex_escape($this->getSourceUrl()) . "\"";
         }
 
         $code .= " role=\"application\"" . ($videoInfo['platform'] !== 'default' ? " style=\"display:none;\"" : "") . ">";
-        $code .= "<media-provider></media-provider>";
+        
+        if (!empty($this->sources)) {
+            $code .= "<media-provider>";
+            foreach ($this->sources as $source) {
+                $code .= $this->generateSourceTag($source);
+            }
+            $code .= "</media-provider>";
+        }
+        
         foreach ($this->subtitles as $subtitle) {
             $defaultAttr = $subtitle['default'] ? ' default' : '';
-            $code .= "<Track src=\"" . rex_escape($subtitle['src']) . "\" kind=\"" . rex_escape($subtitle['kind']) . "\" label=\"" . rex_escape($subtitle['label']) . "\" srclang=\"" . rex_escape($subtitle['lang']) . "\"{$defaultAttr} />";
+            $code .= "<Track src=\"" . rex_escape($subtitle['src']) . "\" kind=\"" . rex_escape($subtitle['kind']) . "\" label=\"" . rex_escape($subtitle['label']) . "\" srclang=\"" . rex_escape($subtitle['lang']) . "\"{$defaultAttr}>";
         }
         $code .= "<media-video-layout" . ($this->thumbnails ? " thumbnails=\"" . rex_escape($this->thumbnails) . "\"" : "") . "></media-video-layout>";
         $code .= "</media-player>";
@@ -152,20 +192,28 @@ class Video
         return $code;
     }
 
-    public function generate(): string
+    private function generateSourceTag(array $source): string
     {
-        $attributesString = $this->generateAttributesString();
-        $titleAttr = $this->title ? " title=\"" . rex_escape($this->title) . "\"" : '';
-        $sourceUrl = $this->getSourceUrl();
-        $code = "<media-player{$titleAttr}{$attributesString} src=\"" . rex_escape($sourceUrl) . "\" role=\"application\" aria-label=\"" . rex_escape($this->getText('a11y_video_player')) . "\">";
-        $code .= "<media-provider></media-provider>";
-        foreach ($this->subtitles as $subtitle) {
-            $defaultAttr = $subtitle['default'] ? ' default' : '';
-            $code .= "<Track src=\"" . rex_escape($subtitle['src']) . "\" kind=\"" . rex_escape($subtitle['kind']) . "\" label=\"" . rex_escape($subtitle['label']) . "\" srclang=\"" . rex_escape($subtitle['lang']) . "\"{$defaultAttr} />";
+        $attributes = [
+            'src' => $source['src'],
+            'type' => $source['type'] ?? null,
+        ];
+
+        if (isset($source['width'])) {
+            $attributes['data-width'] = $source['width'];
         }
-        $code .= "<media-video-layout" . ($this->thumbnails ? " thumbnails=\"" . rex_escape($this->thumbnails) . "\"" : "") . "></media-video-layout>";
-        $code .= "</media-player>";
-        return $code;
+        if (isset($source['height'])) {
+            $attributes['data-height'] = $source['height'];
+        }
+
+        $attributesString = '';
+        foreach ($attributes as $key => $value) {
+            if ($value !== null) {
+                $attributesString .= " $key=\"" . rex_escape($value) . "\"";
+            }
+        }
+
+        return "<source" . $attributesString . ">";
     }
 
     private function generateAttributesString(): string
@@ -184,6 +232,7 @@ class Video
             . "<button type=\"button\" class=\"consent-button\">" . rex_escape($buttonText) . "</button>"
             . "</div>";
     }
+
     public static function videoOembedHelper(): void
     {
         rex_extension::register('OUTPUT_FILTER', static function (rex_extension_point $ep) {
