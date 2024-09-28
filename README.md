@@ -6,6 +6,13 @@
 
 Eine PHP-Klasse, die Videos auf Websites einbindet - mit Style! YouTube, Vimeo oder eigene Videos? Alles kein Problem. Und das Beste? Es ist so einfach zu benutzen, dass selbst ein Kater es könnte (wenn er Daumen hätte).
 
+## ✔︎ Im Bacend schon integriert
+
+Hier muss man nichts machen - außer Videos schauen. 
+
+![Screenshot](https://github.com/FriendsOfREDAXO/vidstack/blob/assets/mediapool.png?raw=true)
+
+
 ## 🚀 Los geht's!
 
 ### Installation
