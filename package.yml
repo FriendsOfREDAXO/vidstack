@@ -6,3 +6,6 @@ requires:
     redaxo: '^5.17.1'
     php:
         version: '>=8.2, <9'
+conflicts:
+    packages:
+        plyr: '>0.0.1'
