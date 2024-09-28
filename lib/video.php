@@ -220,5 +220,6 @@ class Video
             ]);
             return $video->generate();
         }
+        return null;
     }
 }
