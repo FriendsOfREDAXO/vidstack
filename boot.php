@@ -15,5 +15,5 @@ if (rex::isBackend() && is_object(rex::getUser())) {
     rex_view::addCssFile($vs->getAssetsUrl('vidstack_helper.css'));
     rex_view::addJsFile($vs->getAssetsUrl('vidstack.js'));
     rex_view::addJsFile($vs->getAssetsUrl('vidstack_helper.js'));
-    rex_extension::register('MEDIA_DETAIL_SIDEBAR', 'video::show_sidebar');
+    rex_extension::register('MEDIA_DETAIL_SIDEBAR', [Video::class, 'show_sidebar']);
 }
