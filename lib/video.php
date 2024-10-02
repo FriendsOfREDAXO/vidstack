@@ -94,6 +94,28 @@ class Video
         return $this->getSourceUrl();
     }
 
+    public static function isVideo($url): bool
+    {
+        $media = rex_media::get($url);
+        $checkPath = pathinfo($url);
+        if ($media) {
+            if ('mp4' == strtolower($checkPath['extension'])) {
+                return true;
+            }
+            if ('mov' == strtolower($checkPath['extension'])) {
+                return true;
+            }
+            if ('m4v' == strtolower($checkPath['extension'])) {
+                return true;
+            }
+            
+            if ('ogg' == strtolower($checkPath['extension'])) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     private function getVideoInfo(): array
     {
         $youtubePattern = '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=|shorts/)|youtu\.be/)([^"&?/ ]{11})%i';
