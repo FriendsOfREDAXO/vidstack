@@ -23,6 +23,7 @@ class Video
         $this->source = $source;
         $this->title = $title;
         $this->lang = $lang;
+        $this->attributes['lang'] = $lang; 
         $this->loadTranslations();
     }
 
@@ -50,7 +51,7 @@ class Video
 
     public function setAttributes(array $attributes): void
     {
-        $this->attributes = $attributes;
+        $this->attributes = array_merge($this->attributes, $attributes);
     }
 
     public function setA11yContent(string $description, string $alternativeUrl = ''): void
