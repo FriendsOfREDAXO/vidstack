@@ -1,9 +1,13 @@
 .video-container {
     margin-bottom: 0px;
 }
+
+[data-media-player] { 
+    contain: layout; 
+}
+
 .video-container media-player {
     width: 100%;
-    aspect-ratio: 16 / 9;
 }
 .video-description, .video-transcript, .alternative-links {
     margin-top: 10px;
