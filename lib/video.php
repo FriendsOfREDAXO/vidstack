@@ -237,7 +237,7 @@ class Video
         // Bestehenden Inhalt der Sidebar holen
         $existingContent = $ep->getSubject();
 
-        if (in_array(pathinfo($file, PATHINFO_EXTENSION), ['mp4', 'm4v', 'mov', 'ogg', 'webm'])) {
+        if (in_array(pathinfo($file, PATHINFO_EXTENSION), ['mp3','mp4', 'm4v', 'mov', 'ogg', 'webm'])) {
             $video = new self($file);
             $video->setAttributes([
                 'crossorigin' => '',
