@@ -23,7 +23,7 @@ class Video
         $this->source = $source;
         $this->title = $title;
         $this->lang = $lang;
-        $this->attributes['lang'] = $lang; 
+        $this->attributes['lang'] = $lang;
         $this->loadTranslations();
     }
 
@@ -98,7 +98,7 @@ class Video
     public static function isMedia($url): bool
     {
         $mediaExtensions = ['mp4', 'mov', 'm4v', 'ogg', 'webm', 'mp3', 'wav', 'aac', 'm4a'];
-        
+
         if (filter_var($url, FILTER_VALIDATE_URL)) {
             $pathInfo = pathinfo(parse_url($url, PHP_URL_PATH));
         } else {
@@ -108,14 +108,14 @@ class Video
             }
             $pathInfo = pathinfo($media->getFileName());
         }
-        
+
         return in_array(strtolower($pathInfo['extension'] ?? ''), $mediaExtensions);
     }
 
     public static function isAudio($url): bool
     {
         $audioExtensions = ['mp3', 'ogg', 'wav', 'aac', 'm4a'];
-        
+
         if (filter_var($url, FILTER_VALIDATE_URL)) {
             $pathInfo = pathinfo(parse_url($url, PHP_URL_PATH));
         } else {
@@ -125,7 +125,7 @@ class Video
             }
             $pathInfo = pathinfo($media->getFileName());
         }
-        
+
         return in_array(strtolower($pathInfo['extension'] ?? ''), $audioExtensions);
     }
 
@@ -145,9 +145,6 @@ class Video
     public function generateFull(): string
     {
         $videoInfo = $this->getVideoInfo();
-        $attributesString = $this->generateAttributesString();
-        $titleAttr = $this->title ? " title=\"" . rex_escape($this->title) . "\"" : '';
-
         $isAudio = self::isAudio($this->source);
         $mediaType = $isAudio ? 'audio' : 'video';
 
@@ -163,28 +160,8 @@ class Video
             $code .= $this->generateConsentPlaceholder($consentText, $videoInfo['platform'], $videoInfo['id']);
         }
 
-        $code .= "<media-player{$titleAttr}{$attributesString}";
-
-        if (!$isAudio && $videoInfo['platform'] !== 'default') {
-            $code .= " data-video-platform=\"" . rex_escape($videoInfo['platform']) . "\" data-video-id=\"" . rex_escape($videoInfo['id']) . "\""
-                . " aria-label=\"" . rex_escape($this->getText('a11y_video_from')) . " " . rex_escape($videoInfo['platform']) . "\"";
-        } else {
-            $code .= " src=\"" . rex_escape($this->getSourceUrl()) . "\"";
-        }
-
-        $code .= " role=\"application\"" . (!$isAudio && $videoInfo['platform'] !== 'default' ? " style=\"display:none;\"" : "") . ">";
-        $code .= "<media-provider></media-provider>";
-        
-        if (!$isAudio) {
-            foreach ($this->subtitles as $subtitle) {
-                $defaultAttr = $subtitle['default'] ? ' default' : '';
-                $code .= "<Track src=\"" . rex_escape($subtitle['src']) . "\" kind=\"" . rex_escape($subtitle['kind']) . "\" label=\"" . rex_escape($subtitle['label']) . "\" srclang=\"" . rex_escape($subtitle['lang']) . "\"{$defaultAttr} />";
-            }
-        }
-        
-        $code .= $isAudio ? "<media-audio-layout></media-audio-layout>" : 
-            "<media-video-layout" . ($this->thumbnails ? " thumbnails=\"" . rex_escape($this->thumbnails) . "\"" : "") . "></media-video-layout>";
-        $code .= "</media-player>";
+        // Use generate() to create the core media player markup
+        $code .= $this->generate();
 
         if (!$isAudio && $this->a11yContent) {
             $code .= "<div class=\"a11y-content\" role=\"complementary\" aria-label=\"" . rex_escape($this->getText('a11y_additional_information')) . "\">"
@@ -203,22 +180,33 @@ class Video
         $sourceUrl = $this->getSourceUrl();
         $isAudio = self::isAudio($this->source);
         $mediaType = $isAudio ? 'audio' : 'video';
+        $videoInfo = $this->getVideoInfo();
 
-        $code = "<media-player{$titleAttr}{$attributesString} src=\"" . rex_escape($sourceUrl) . "\" role=\"application\" aria-label=\"" . rex_escape($this->getText("a11y_{$mediaType}_player")) . "\">";
+        $code = "<media-player{$titleAttr}{$attributesString}";
+
+        if (!$isAudio && $videoInfo['platform'] !== 'default') {
+            $code .= " data-video-platform=\"" . rex_escape($videoInfo['platform']) . "\" data-video-id=\"" . rex_escape($videoInfo['id']) . "\""
+                . " aria-label=\"" . rex_escape($this->getText('a11y_video_from')) . " " . rex_escape($videoInfo['platform']) . "\"";
+        } else {
+            $code .= " src=\"" . rex_escape($sourceUrl) . "\"";
+        }
+
+        $code .= " role=\"application\"" . (!$isAudio && $videoInfo['platform'] !== 'default' ? " style=\"display:none;\"" : "") . ">";
         $code .= "<media-provider></media-provider>";
-        
+
         if (!$isAudio) {
             foreach ($this->subtitles as $subtitle) {
                 $defaultAttr = $subtitle['default'] ? ' default' : '';
                 $code .= "<Track src=\"" . rex_escape($subtitle['src']) . "\" kind=\"" . rex_escape($subtitle['kind']) . "\" label=\"" . rex_escape($subtitle['label']) . "\" srclang=\"" . rex_escape($subtitle['lang']) . "\"{$defaultAttr} />";
             }
         }
-        
-        $code .= $isAudio ? "<media-audio-layout></media-audio-layout>" : 
+
+        $code .= $isAudio ? "<media-audio-layout></media-audio-layout>" :
             "<media-video-layout" . ($this->thumbnails ? " thumbnails=\"" . rex_escape($this->thumbnails) . "\"" : "") . "></media-video-layout>";
         $code .= "</media-player>";
         return $code;
     }
+
 
     private function generateAttributesString(): string
     {
@@ -258,7 +246,7 @@ class Video
         }, $content);
     }
 
- public static function show_sidebar(\rex_extension_point $ep): ?string
+    public static function show_sidebar(\rex_extension_point $ep): ?string
     {
         $params = $ep->getParams();
         $file = $params['filename'];
