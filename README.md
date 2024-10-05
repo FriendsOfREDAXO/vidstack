@@ -55,24 +55,31 @@ $localVideo = new Video('/pfad/zum/video.mp4', 'Eigenes Video');
 echo $localVideo->generate();
 ```
 
-## 🛠 Die Methoden
+Gerne, hier ist die ergänzte Version der Methodenübersicht mit Rückgabetypen:
+
+## 🛠 Die Class
 
 ### Konstruktor
 ```php
-__construct($source, $title = '', $lang = 'de')
+__construct($source, $title = '', $lang = 'de'): void
 ```
 - `$source`: URL oder Pfad zum Video (Pflicht)
 - `$title`: Titel des Videos (Optional)
 - `$lang`: Sprachcode (Optional, Standard: 'de')
 
-### Weitere Methoden
+### Methoden
+- `setAttributes(array $attributes): void`: Zusätzliche Player-Attribute
+- `setA11yContent($description, $alternativeUrl = ''): void`: Barrierefreiheits-Infos
+- `setThumbnails($thumbnailsUrl): void`: Thumbnail-Vorschaubilder (VTT-Format)
+- `addSubtitle($src, $kind, $label, $lang, $default = false): void`: Untertitel hinzufügen
+- `generateFull(): string`: Vollständiger HTML-Code mit allen Schikanen
+- `generate(): string`: Einfacher Video-Player ohne Schnickschnack
+- `isMedia($url): bool`: Prüft, ob es sich um eine Mediendatei handelt
+- `isAudio($url): bool`: Prüft, ob es sich um eine Audiodatei handelt
+- `videoOembedHelper(): void`: Registriert einen Output-Filter für oEmbed-Tags
+- `parseOembedTags(string $content): string`: Parst oEmbed-Tags im Inhalt
+- `show_sidebar(\rex_extension_point $ep): ?string`: Generiert Medienvorschau für die Sidebar im Medienpool
 
-- `setAttributes(array $attributes)`: Zusätzliche Player-Attribute
-- `setA11yContent($description, $alternativeUrl = '')`: Barrierefreiheits-Infos
-- `setThumbnails($thumbnailsUrl)`: Thumbnail-Vorschaubilder (VTT-Format)
-- `addSubtitle($src, $kind, $label, $lang, $default = false)`: Untertitel hinzufügen
-- `generateFull()`: Vollständiger HTML-Code mit allen Schikanen
-- `generate()`: Einfacher Video-Player ohne Schnickschnack
 
 ## 📋 Optionen und Pflichtangaben
 
@@ -222,6 +229,15 @@ function createDefaultVideo($source, $title = '', $a11yContent = null) {
 // Verwendung
 $easyVideo = createDefaultVideo('https://youtube.com/watch?v=abcdefg', 'Einfach Genial', 'Ein Video über etwas Interessantes');
 echo $easyVideo->generateFull();
+```
+
+## 🎸 Unterstützung für Audio-Dateien
+
+Das Addon unterstützt auch die Einbindung von Audio-Dateien. Genauso wie für Videos:
+
+```php
+$audio = new Video('audio.mp3', 'Mein Lieblingssong');
+echo $audio->generate();
 ```
 
 ## ✔︎ Im Backend schon integriert
