@@ -51,7 +51,11 @@ $vimeoVideo = new Video('https://vimeo.com/148751763', 'Vimeo-Beispiel');
 echo $vimeoVideo->generateFull();
 
 // Lokales Video
-$localVideo = new Video('/pfad/zum/video.mp4', 'Eigenes Video');
+$localVideo = new Video('video.mp4', 'Eigenes Video');
+echo $localVideo->generate();
+
+// Externes Video
+$localVideo = new Video('https://somedomain.tld/video.mp4', 'Eigenes Video');
 echo $localVideo->generate();
 ```
 
