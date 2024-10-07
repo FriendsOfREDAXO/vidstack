@@ -57,8 +57,8 @@ $localVideo = new Video('video.mp4', 'Eigenes Video');
 echo $localVideo->generate();
 
 // Externes Video
-$localVideo = new Video('https://somedomain.tld/video.mp4', 'Eigenes Video');
-echo $localVideo->generate();
+$externalVideo = new Video('https://somedomain.tld/video.mp4', 'Eigenes Video');
+echo $externalVideo->generate();
 ```
 
 ## 🛠 Die Class
