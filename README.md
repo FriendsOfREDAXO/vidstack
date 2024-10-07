@@ -1,3 +1,5 @@
+Hier ist die erweiterte README mit den fehlenden Methoden und aktualisierten Beispielen:
+
 # [Vidstack.io](https://www.vidstack.io) for REDAXO
 
 ![Screenshot](https://github.com/FriendsOfREDAXO/vidstack/blob/assets/screenshot.png?raw=true)
@@ -59,8 +61,6 @@ $localVideo = new Video('https://somedomain.tld/video.mp4', 'Eigenes Video');
 echo $localVideo->generate();
 ```
 
-Gerne, hier ist die ergänzte Version der Methodenübersicht mit Rückgabetypen:
-
 ## 🛠 Die Class
 
 ### Konstruktor
@@ -75,6 +75,7 @@ __construct($source, $title = '', $lang = 'de'): void
 - `setAttributes(array $attributes): void`: Zusätzliche Player-Attribute
 - `setA11yContent($description, $alternativeUrl = ''): void`: Barrierefreiheits-Infos
 - `setThumbnails($thumbnailsUrl): void`: Thumbnail-Vorschaubilder (VTT-Format)
+- `setPoster($posterSrc, $posterAlt): void`: Poster-Bild für das Video setzen
 - `addSubtitle($src, $kind, $label, $lang, $default = false): void`: Untertitel hinzufügen
 - `generateFull(): string`: Vollständiger HTML-Code mit allen Schikanen
 - `generate(): string`: Einfacher Video-Player ohne Schnickschnack
@@ -83,7 +84,11 @@ __construct($source, $title = '', $lang = 'de'): void
 - `videoOembedHelper(): void`: Registriert einen Output-Filter für oEmbed-Tags
 - `parseOembedTags(string $content): string`: Parst oEmbed-Tags im Inhalt
 - `show_sidebar(\rex_extension_point $ep): ?string`: Generiert Medienvorschau für die Sidebar im Medienpool
-
+- `getSourceUrl(): string`: Gibt die URL der Videoquelle zurück
+- `getAlternativeUrl(): string`: Gibt eine alternative URL für das Video zurück
+- `getVideoInfo(): array`: Gibt Informationen über das Video zurück (Plattform und ID)
+- `generateAttributesString(): string`: Generiert einen String mit allen gesetzten Attributen
+- `generateConsentPlaceholder(string $consentText, string $platform, string $videoId): string`: Generiert einen Platzhalter für die Consent-Abfrage
 
 ## 📋 Optionen und Pflichtangaben
 
@@ -96,6 +101,7 @@ __construct($source, $title = '', $lang = 'de'): void
 - Alle Attribute in `setAttributes()`
 - Beschreibung und alternativer URL in `setA11yContent()`
 - Thumbnail-URL in `setThumbnails()`
+- Poster-Bild in `setPoster()`
 - Untertitel-Informationen in `addSubtitle()`
 
 ## 🌍 Sprachenwirrwarr
@@ -122,6 +128,7 @@ $video = new Video('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Never Gonna G
 $video->setAttributes(['autoplay' => true, 'muted' => true]);
 $video->setA11yContent('This is a music video by Rick Astley');
 $video->setThumbnails('/pfad/zu/thumbnails.vtt');
+$video->setPoster('/pfad/zu/poster.jpg', 'Rick Astley dancing');
 $video->addSubtitle('/untertitel/deutsch.vtt', 'captions', 'Deutsch', 'de', true);
 $video->addSubtitle('/untertitel/english.vtt', 'captions', 'English', 'en');
 echo $video->generateFull();
@@ -139,6 +146,7 @@ echo $video->generate();
 ```php
 $video = new Video('https://vimeo.com/148751763', 'Vimeo-Meisterwerk', 'fr');
 $video->setThumbnails('/vimeo_thumbs.vtt');
+$video->setPoster('/vimeo_poster.jpg', 'Video thumbnail');
 $video->addSubtitle('/sous-titres.vtt', 'captions', 'Français', 'fr', true);
 echo $video->generateFull();
 ```
@@ -177,6 +185,9 @@ $video->setA11yContent(
 // Setzen von Thumbnail-Vorschaubildern für den Player-Fortschritt
 $video->setThumbnails('/pfad/zu/detailed-thumbnails.vtt');
 
+// Setzen des Poster-Bildes
+$video->setPoster('/pfad/zu/rickroll_poster.jpg', 'Rick Astley in his iconic pose');
+
 // Hinzufügen von Untertiteln in mehreren Sprachen
 $video->addSubtitle('/untertitel/english.vtt', 'captions', 'English', 'en', true);
 $video->addSubtitle('/untertitel/deutsch.vtt', 'captions', 'Deutsch', 'de');
@@ -195,6 +206,19 @@ $fullPlayerCode = $video->generateFull();
 
 // Ausgabe des generierten Codes
 echo $fullPlayerCode;
+
+// Zusätzliche Methoden demonstrieren
+$sourceUrl = $video->getSourceUrl();
+$alternativeUrl = $video->getAlternativeUrl();
+$videoInfo = $video->getVideoInfo();
+$attributesString = $video->generateAttributesString();
+$consentPlaceholder = $video->generateConsentPlaceholder('Please accept cookies to view this video', 'youtube', 'dQw4w9WgXcQ');
+
+echo "Source URL: $sourceUrl<br>";
+echo "Alternative URL: $alternativeUrl<br>";
+echo "Video Info: " . print_r($videoInfo, true) . "<br>";
+echo "Attributes String: $attributesString<br>";
+echo "Consent Placeholder: $consentPlaceholder<br>";
 ```
 
 Dieses Beispiel zeigt:
@@ -202,10 +226,12 @@ Dieses Beispiel zeigt:
 2. Setzen aller möglichen Player-Attribute, einschließlich benutzerdefinierter Klassen und Datenattribute
 3. Hinzufügen von ausführlichen Barrierefreiheits-Inhalten mit detaillierter Beschreibung und alternativem Link
 4. Festlegen von Thumbnail-Vorschaubildern für den Player-Fortschritt im VTT-Format
-5. Hinzufügen von Untertiteln in allen unterstützten Sprachen
-6. Einbindung von Audiodeskription für Sehbehinderte
-7. Hinzufügen von Kapitelmarkierungen für einfache Navigation
-8. Generierung des vollständigen Player-Codes mit allen Funktionen
+5. Setzen eines Poster-Bildes für das Video
+6. Hinzufügen von Untertiteln in allen unterstützten Sprachen
+7. Einbindung von Audiodeskription für Sehbehinderte
+8. Hinzufügen von Kapitelmarkierungen für einfache Navigation
+9. Generierung des vollständigen Player-Codes mit allen Funktionen
+10. Demonstration der zusätzlichen Methoden wie `getSourceUrl()`, `getAlternativeUrl()`, `getVideoInfo()`, `generateAttributesString()` und `generateConsentPlaceholder()`
 
 Mit diesem Setup ist der Video-Player bereit, die Welt zu erobern - oder zumindest jedem Zuschauer ein Lächeln ins Gesicht zu zaubern!
 
@@ -226,6 +252,7 @@ function createDefaultVideo($source, $title = '', $a11yContent = null) {
     if ($a11yContent !== null) {
         $video->setA11yContent($a11yContent);
     }
+    $video->setPoster('/pfad/zu/default_poster.jpg', 'Default video poster');
     return $video;
 }
 
