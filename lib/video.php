@@ -11,6 +11,7 @@ class Video
 {
     private readonly string $source;
     private string $title;
+    private string $poster = [];
     private array $attributes = [];
     private string $a11yContent = '';
     private string $thumbnails = '';
@@ -69,6 +70,14 @@ class Video
     public function setThumbnails(string $thumbnailsUrl): void
     {
         $this->thumbnails = $thumbnailsUrl;
+    }
+
+    public function setPoster(string $posterSrc, string $posterAlt): void
+    {
+        $this->poster = [
+            'src' => $posterSrc,
+            'alt' => $posterAlt
+        ];
     }
 
     public function addSubtitle(string $src, string $kind, string $label, string $lang, bool $default = false): void
@@ -153,7 +162,7 @@ class Video
         if (!$isAudio && $videoInfo['platform'] !== 'default') {
             $consentTextKey = "consent_text_{$videoInfo['platform']}";
             $consentText = $this->getText($consentTextKey);
-            if ($consentText === "[[{$consentTextKey}]]") {
+            if (consentText === "[[{$consentTextKey}]]") {
                 $consentText = $this->getText('consent_text_default');
             }
 
@@ -191,6 +200,11 @@ class Video
             $code .= " src=\"" . rex_escape($sourceUrl) . "\"";
         }
 
+        // Poster hinzufügen
+        if (!$isAudio && isset($this->poster)) {
+            $code .= "<media-poster src=\"" . rex_escape($this->poster['src']) . "\" alt=\"" . rex_escape($this->poster['alt']) . "\"></media-poster>";
+        }
+
         $code .= " role=\"application\"" . (!$isAudio && $videoInfo['platform'] !== 'default' ? " style=\"display:none;\"" : "") . ">";
         $code .= "<media-provider></media-provider>";
 
@@ -206,7 +220,6 @@ class Video
         $code .= "</media-player>";
         return $code;
     }
-
 
     private function generateAttributesString(): string
     {
