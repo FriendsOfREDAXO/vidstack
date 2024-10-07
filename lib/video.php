@@ -72,7 +72,7 @@ class Video
         $this->thumbnails = $thumbnailsUrl;
     }
 
-    public function setPoster(string $posterSrc, string $posterAlt): void
+    public function setPoster(string $posterSrc, string $posterAlt = ''): void
     {
         $this->poster = [
             'src' => $posterSrc,
