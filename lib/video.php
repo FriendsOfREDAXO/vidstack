@@ -162,7 +162,7 @@ class Video
         if (!$isAudio && $videoInfo['platform'] !== 'default') {
             $consentTextKey = "consent_text_{$videoInfo['platform']}";
             $consentText = $this->getText($consentTextKey);
-            if (consentText === "[[{$consentTextKey}]]") {
+            if ($consentText === "[[{$consentTextKey}]]") {
                 $consentText = $this->getText('consent_text_default');
             }
 
