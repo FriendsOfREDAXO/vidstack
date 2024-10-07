@@ -162,7 +162,6 @@ $video->setAttributes([
     'loop' => true,
     'playsinline' => true,
     'crossorigin' => 'anonymous',
-    'poster' => '/pfad/zum/poster.jpg',
     'preload' => 'metadata',
     'controlsList' => 'nodownload',
     'class' => 'my-custom-video-class',
