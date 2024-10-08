@@ -181,48 +181,50 @@ class Video
         return $code;
     }
 
-public function generate(): string
-{
-    $attributesString = $this->generateAttributesString();
-    $titleAttr = $this->title ? " title=\"" . rex_escape($this->title) . "\"" : '';
-    $videoInfo = $this->getVideoInfo();
-    $isAudio = self::isAudio($this->source);
-
-    $code = "<media-player{$titleAttr}{$attributesString} crossorigin role=\"application\"";
-
-    if ($videoInfo['platform'] === 'youtube' || $videoInfo['platform'] === 'vimeo') {
-        $code .= " data-plyr-provider=\"" . rex_escape($videoInfo['platform']) . "\"";
-        $code .= " data-plyr-embed-id=\"" . rex_escape($videoInfo['id']) . "\"";
-    } else {
+    public function generate(): string
+    {
+        $attributesString = $this->generateAttributesString();
+        $titleAttr = $this->title ? " title=\"" . rex_escape($this->title) . "\"" : '';
         $sourceUrl = $this->getSourceUrl();
-        $code .= " src=\"" . rex_escape($sourceUrl) . "\"";
-    }
+        $isAudio = self::isAudio($this->source);
+        $mediaType = $isAudio ? 'audio' : 'video';
+        $videoInfo = $this->getVideoInfo();
 
-    $code .= ">";
+        $code = "<media-player{$titleAttr}{$attributesString}";
 
-    if (!$isAudio && !empty($this->poster)) {
-        $code .= "<media-poster src=\"" . rex_escape($this->poster['src']) . "\" alt=\"" . rex_escape($this->poster['alt']) . "\"></media-poster>";
-    }
-
-    $code .= "<media-provider>";
-    if ($videoInfo['platform'] === 'default') {
-        $sourceUrl = $this->getSourceUrl();
-        $code .= "<source src=\"" . rex_escape($sourceUrl) . "\" type=\"" . ($isAudio ? "audio/mp3" : "video/mp4") . "\" />";
-    }
-    $code .= "</media-provider>";
-
-    if (!$isAudio) {
-        foreach ($this->subtitles as $subtitle) {
-            $defaultAttr = $subtitle['default'] ? ' default' : '';
-            $code .= "<track src=\"" . rex_escape($subtitle['src']) . "\" kind=\"" . rex_escape($subtitle['kind']) . "\" label=\"" . rex_escape($subtitle['label']) . "\" srclang=\"" . rex_escape($subtitle['lang']) . "\"{$defaultAttr} />";
+        if (!$isAudio && $videoInfo['platform'] !== 'default') {
+            $code .= " data-video-platform=\"" . rex_escape($videoInfo['platform']) . "\" data-video-id=\"" . rex_escape($videoInfo['id']) . "\""
+                . " aria-label=\"" . rex_escape($this->getText('a11y_video_from')) . " " . rex_escape($videoInfo['platform']) . "\"";
+        } else {
+            $code .= " src=\"" . rex_escape($sourceUrl) . "\"";
         }
-    }
 
-    $code .= $isAudio ? "<media-audio-layout></media-audio-layout>" :
-        "<media-video-layout" . ($this->thumbnails ? " thumbnails=\"" . rex_escape($this->thumbnails) . "\"" : "") . "></media-video-layout>";
-    $code .= "</media-player>";
-    return $code;
-}
+        $code .= " crossorigin>";
+
+        $code .= "<media-provider>";
+
+        if (!$isAudio && !empty($this->poster)) {
+            $code .= "<media-poster class=\"vds-poster\" src=\"" . rex_escape($this->poster['src']) . "\" alt=\"" . rex_escape($this->poster['alt']) . "\"></media-poster>";
+        }
+
+        if ($videoInfo['platform'] === 'default') {
+            $code .= "<source src=\"" . rex_escape($sourceUrl) . "\" type=\"" . ($isAudio ? "audio/mp3" : "video/mp4") . "\" />";
+        }
+
+        $code .= "</media-provider>";
+
+        if (!$isAudio) {
+            foreach ($this->subtitles as $subtitle) {
+                $defaultAttr = $subtitle['default'] ? ' default' : '';
+                $code .= "<track src=\"" . rex_escape($subtitle['src']) . "\" kind=\"" . rex_escape($subtitle['kind']) . "\" label=\"" . rex_escape($subtitle['label']) . "\" srclang=\"" . rex_escape($subtitle['lang']) . "\"{$defaultAttr} />";
+            }
+        }
+
+        $code .= $isAudio ? "<media-audio-layout></media-audio-layout>" :
+            "<media-video-layout" . ($this->thumbnails ? " thumbnails=\"" . rex_escape($this->thumbnails) . "\"" : "") . "></media-video-layout>";
+        $code .= "</media-player>";
+        return $code;
+    }
 
     private function generateAttributesString(): string
     {
