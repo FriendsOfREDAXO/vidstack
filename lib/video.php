@@ -181,25 +181,34 @@ class Video
         return $code;
     }
 
-   public function generate(): string
+public function generate(): string
 {
     $attributesString = $this->generateAttributesString();
     $titleAttr = $this->title ? " title=\"" . rex_escape($this->title) . "\"" : '';
-    $sourceUrl = $this->getSourceUrl();
-    $isAudio = self::isAudio($this->source);
-    $mediaType = $isAudio ? 'audio' : 'video';
     $videoInfo = $this->getVideoInfo();
+    $isAudio = self::isAudio($this->source);
 
-    $code = "<media-player{$titleAttr}{$attributesString} crossorigin>";
+    $code = "<media-player{$titleAttr}{$attributesString} crossorigin role=\"application\"";
 
-    $code .= "<media-provider>";
-
-    if (!$isAudio && !empty($this->poster)) {
-        $code .= "<media-poster class=\"vds-poster\" src=\"" . rex_escape($this->poster['src']) . "\" alt=\"" . rex_escape($this->poster['alt']) . "\"></media-poster>";
+    if ($videoInfo['platform'] === 'youtube' || $videoInfo['platform'] === 'vimeo') {
+        $code .= " data-plyr-provider=\"" . rex_escape($videoInfo['platform']) . "\"";
+        $code .= " data-plyr-embed-id=\"" . rex_escape($videoInfo['id']) . "\"";
+    } else {
+        $sourceUrl = $this->getSourceUrl();
+        $code .= " src=\"" . rex_escape($sourceUrl) . "\"";
     }
 
-    $code .= "<source src=\"" . rex_escape($sourceUrl) . "\" type=\"" . ($isAudio ? "audio/mp3" : "video/mp4") . "\" />";
+    $code .= ">";
 
+    if (!$isAudio && !empty($this->poster)) {
+        $code .= "<media-poster src=\"" . rex_escape($this->poster['src']) . "\" alt=\"" . rex_escape($this->poster['alt']) . "\"></media-poster>";
+    }
+
+    $code .= "<media-provider>";
+    if ($videoInfo['platform'] === 'default') {
+        $sourceUrl = $this->getSourceUrl();
+        $code .= "<source src=\"" . rex_escape($sourceUrl) . "\" type=\"" . ($isAudio ? "audio/mp3" : "video/mp4") . "\" />";
+    }
     $code .= "</media-provider>";
 
     if (!$isAudio) {
