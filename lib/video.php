@@ -11,7 +11,7 @@ class Video
 {
     private readonly string $source;
     private string $title;
-    private string $poster = [];
+    private array $poster = [];
     private array $attributes = [];
     private string $a11yContent = '';
     private string $thumbnails = '';
@@ -169,7 +169,6 @@ class Video
             $code .= $this->generateConsentPlaceholder($consentText, $videoInfo['platform'], $videoInfo['id']);
         }
 
-        // Use generate() to create the core media player markup
         $code .= $this->generate();
 
         if (!$isAudio && $this->a11yContent) {
@@ -200,8 +199,7 @@ class Video
             $code .= " src=\"" . rex_escape($sourceUrl) . "\"";
         }
 
-        // Poster hinzufügen
-        if (!$isAudio && isset($this->poster)) {
+        if (!$isAudio && !empty($this->poster)) {
             $code .= "<media-poster src=\"" . rex_escape($this->poster['src']) . "\" alt=\"" . rex_escape($this->poster['alt']) . "\"></media-poster>";
         }
 
@@ -264,7 +262,6 @@ class Video
         $params = $ep->getParams();
         $file = $params['filename'];
 
-        // Bestehenden Inhalt der Sidebar holen
         $existingContent = $ep->getSubject();
 
         if (self::isMedia($file)) {
@@ -272,13 +269,11 @@ class Video
             $mediaUrl = rex_url::media($file);
 
             if ($isAudio) {
-                // Einfacher Audio-Player für den Medienpool
                 $newContent = "<media-player src=\"" . rex_escape($mediaUrl) . "\">"
                     . "<media-provider></media-provider>"
                     . "<media-audio-layout></media-audio-layout>"
                     . "</media-player>";
             } else {
-                // Bestehende Implementierung für Video-Dateien
                 $media = new self($file);
                 $media->setAttributes([
                     'crossorigin' => '',
@@ -288,7 +283,6 @@ class Video
                 $newContent = $media->generate();
             }
 
-            // Neuen Inhalt zur Sidebar hinzufügen, ohne bestehenden Inhalt zu überschreiben
             return $existingContent . $newContent;
         }
 
