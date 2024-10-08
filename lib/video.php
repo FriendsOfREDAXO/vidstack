@@ -199,17 +199,18 @@ class Video
             $code .= " src=\"" . rex_escape($sourceUrl) . "\"";
         }
 
+        $code .= " role=\"application\"" . (!$isAudio && $videoInfo['platform'] !== 'default' ? " style=\"display:none;\"" : "") . ">";
+
         if (!$isAudio && !empty($this->poster)) {
             $code .= "<media-poster src=\"" . rex_escape($this->poster['src']) . "\" alt=\"" . rex_escape($this->poster['alt']) . "\"></media-poster>";
         }
 
-        $code .= " role=\"application\"" . (!$isAudio && $videoInfo['platform'] !== 'default' ? " style=\"display:none;\"" : "") . ">";
         $code .= "<media-provider></media-provider>";
 
         if (!$isAudio) {
             foreach ($this->subtitles as $subtitle) {
                 $defaultAttr = $subtitle['default'] ? ' default' : '';
-                $code .= "<Track src=\"" . rex_escape($subtitle['src']) . "\" kind=\"" . rex_escape($subtitle['kind']) . "\" label=\"" . rex_escape($subtitle['label']) . "\" srclang=\"" . rex_escape($subtitle['lang']) . "\"{$defaultAttr} />";
+                $code .= "<track src=\"" . rex_escape($subtitle['src']) . "\" kind=\"" . rex_escape($subtitle['kind']) . "\" label=\"" . rex_escape($subtitle['label']) . "\" srclang=\"" . rex_escape($subtitle['lang']) . "\"{$defaultAttr} />";
             }
         }
 
