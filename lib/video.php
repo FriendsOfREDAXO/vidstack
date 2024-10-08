@@ -199,7 +199,7 @@ class Video
             $code .= " src=\"" . rex_escape($sourceUrl) . "\"";
         }
 
-        $code .= " role=\"application\"" . (!$isAudio && $videoInfo['platform'] !== 'default' ? " style=\"display:none;\"" : "") . ">";
+        $code .= " role=\"application\">";
 
         if (!$isAudio && !empty($this->poster)) {
             $code .= "<media-poster src=\"" . rex_escape($this->poster['src']) . "\" alt=\"" . rex_escape($this->poster['alt']) . "\"></media-poster>";
