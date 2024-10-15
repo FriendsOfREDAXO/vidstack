@@ -60,7 +60,7 @@ class Video
         $alternativeUrl = $alternativeUrl ?: $this->getAlternativeUrl();
 
         $this->a11yContent = "<div class=\"video-description\">"
-            . "<p>" . rex_escape($this->getText('video_description')) . ": " . rex_escape($description) . "</p></div>"
+            . "<p>" . rex_escape($this->getText('video_description')) . ": " . $description . "</p></div>"
             . "<div class=\"alternative-links\">"
             . "<p>" . rex_escape($this->getText('video_alternative_view')) . ": <a href=\"" . rex_escape($alternativeUrl) . "\">"
             . rex_escape($this->getText('video_open_alternative_view')) . "</a></p>"
