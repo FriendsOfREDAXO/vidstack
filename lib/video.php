@@ -60,7 +60,7 @@ class Video
         $alternativeUrl = $alternativeUrl ?: $this->getAlternativeUrl();
 
         $this->a11yContent = "<div class=\"video-description\">"
-            . "<p>" . rex_escape($this->getText('video_description')) . ": " . rex_escape($description) . "</p></div>"
+            . "<p>" . rex_escape($this->getText('video_description')) . ": " . $description . "</p></div>"
             . "<div class=\"alternative-links\">"
             . "<p>" . rex_escape($this->getText('video_alternative_view')) . ": <a href=\"" . rex_escape($alternativeUrl) . "\">"
             . rex_escape($this->getText('video_open_alternative_view')) . "</a></p>"
@@ -211,14 +211,15 @@ class Video
             $code .= "<source src=\"" . rex_escape($sourceUrl) . "\" type=\"" . ($isAudio ? "audio/mp3" : "video/mp4") . "\" />";
         }
 
-        $code .= "</media-provider>";
-
+        // Move subtitles inside <media-provider>
         if (!$isAudio) {
             foreach ($this->subtitles as $subtitle) {
                 $defaultAttr = $subtitle['default'] ? ' default' : '';
                 $code .= "<track src=\"" . rex_escape($subtitle['src']) . "\" kind=\"" . rex_escape($subtitle['kind']) . "\" label=\"" . rex_escape($subtitle['label']) . "\" srclang=\"" . rex_escape($subtitle['lang']) . "\"{$defaultAttr} />";
             }
         }
+
+        $code .= "</media-provider>";
 
         $code .= $isAudio ? "<media-audio-layout></media-audio-layout>" :
             "<media-video-layout" . ($this->thumbnails ? " thumbnails=\"" . rex_escape($this->thumbnails) . "\"" : "") . "></media-video-layout>";
