@@ -353,6 +353,45 @@ PR erstellen 😀
 
 ##  Wie es arbeitet
 
+### Video-Klasse Prozess mit Prüfungen
+
+```mermaid
+flowchart TD
+    A[Start] --> B[Erstelle Video-Objekt mit Dateipfad]
+    B --> C{Ist es eine gültige Datei?}
+    C -->|Nein| D[Fehler: Ungültige Datei]
+    C -->|Ja| E{Ist es ein unterstütztes Format?}
+    E -->|Nein| F[Fehler: Nicht unterstütztes Format]
+    E -->|Ja| G[Setze grundlegende Attribute]
+    G --> H{Ist es ein Video?}
+    H -->|Ja| I[Setze Video-spezifische Attribute]
+    H -->|Nein| J[Setze Audio-spezifische Attribute]
+    I --> K{Poster-Bild angegeben?}
+    K -->|Ja| L{Ist Poster-Datei gültig?}
+    L -->|Nein| M[Warnung: Ungültiges Poster]
+    L -->|Ja| N[Setze Poster-Bild]
+    K -->|Nein| O[Verwende Standard-Poster]
+    J --> P[Prüfe auf Untertitel]
+    N --> P
+    O --> P
+    M --> P
+    P --> Q{Untertitel vorhanden?}
+    Q -->|Ja| R{Sind Untertitel-Dateien gültig?}
+    R -->|Nein| S[Warnung: Ungültige Untertitel]
+    R -->|Ja| T[Füge Untertitel hinzu]
+    Q -->|Nein| U[Keine Untertitel]
+    S --> V[Generiere Player-HTML]
+    T --> V
+    U --> V
+    V --> W{HTML erfolgreich generiert?}
+    W -->|Nein| X[Fehler: HTML-Generierung fehlgeschlagen]
+    W -->|Ja| Y[Zeige Video/Audio-Player]
+    Y --> Z[Ende]
+    D --> Z
+    F --> Z
+    X --> Z
+```
+
 
 ### 1. Lokales Video
 
