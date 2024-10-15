@@ -150,6 +150,23 @@ class Video
         }
         return ['platform' => 'default', 'id' => ''];
     }
+    
+    public static function isPlayable($source): bool
+    {
+        // Check for local media files
+        if (self::isMedia($source)) {
+            return true;
+        }
+
+        // Check for YouTube or Vimeo videos
+        $videoInfo = self::getVideoInfo($source);
+        if ($videoInfo['platform'] === 'youtube' || $videoInfo['platform'] === 'vimeo') {
+            return true;
+        }
+
+        // If none of the above conditions are met, it's not a playable media
+        return false;
+    }
 
     public function generateFull(): string
     {
