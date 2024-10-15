@@ -351,9 +351,10 @@ PR erstellen 😀
 
 …fliegt hier so im Repo rum, einfach mal reinschauen. 👀
 
-# Video-Klasse Anwendungsfälle
+##  Wie es arbeitet
 
-## 1. Lokales Video
+
+### 1. Lokales Video
 
 ```mermaid
 flowchart TD
@@ -366,7 +367,7 @@ flowchart TD
     G --> H[Ende]
 ```
 
-## 2. YouTube Video
+### 2. YouTube Video
 
 ```mermaid
 flowchart TD
@@ -383,7 +384,7 @@ flowchart TD
     G --> J[Ende]
 ```
 
-## 3. Vimeo Video
+### 3. Vimeo Video
 
 ```mermaid
 flowchart TD
@@ -400,7 +401,7 @@ flowchart TD
     G --> J[Ende]
 ```
 
-## 4. MP3 Audio
+### 4. MP3 Audio
 
 ```mermaid
 flowchart TD
