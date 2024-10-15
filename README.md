@@ -393,64 +393,6 @@ flowchart TD
 ```
 
 
-### 1. Lokales Video
-
-```mermaid
-flowchart TD
-    A[Start] --> B[Erstelle Video-Objekt mit lokalem Dateipfad]
-    B --> C[Setze Attribute]
-    C --> D[Setze Poster-Bild]
-    D --> E[Füge optionale Untertitel hinzu]
-    E --> F[Generiere Player-HTML]
-    F --> G[Zeige Video-Player]
-    G --> H[Ende]
-```
-
-### 2. YouTube Video
-
-```mermaid
-flowchart TD
-    A[Start] --> B[Erstelle Video-Objekt mit YouTube-URL]
-    B --> C[Extrahiere YouTube-Video-ID]
-    C --> D[Setze Attribute]
-    D --> E[Generiere Player & Consent-Placeholder]
-    E --> F{Consent erteilt?}
-    F -->|Ja| G[Zeige YouTube-Player]
-    F -->|Nein| H[Zeige Consent-Placeholder]
-    H --> I{Nutzer stimmt zu?}
-    I -->|Ja| G
-    I -->|Nein| H
-    G --> J[Ende]
-```
-
-### 3. Vimeo Video
-
-```mermaid
-flowchart TD
-    A[Start] --> B[Erstelle Video-Objekt mit Vimeo-URL]
-    B --> C[Extrahiere Vimeo-Video-ID]
-    C --> D[Setze Attribute]
-    D --> E[Generiere Player & Consent-Placeholder]
-    E --> F{Consent erteilt?}
-    F -->|Ja| G[Zeige Vimeo-Player]
-    F -->|Nein| H[Zeige Consent-Placeholder]
-    H --> I{Nutzer stimmt zu?}
-    I -->|Ja| G
-    I -->|Nein| H
-    G --> J[Ende]
-```
-
-### 4. MP3 Audio
-
-```mermaid
-flowchart TD
-    A[Start] --> B[Erstelle Video-Objekt mit MP3-Dateipfad]
-    B --> C[Setze Audio-spezifische Attribute]
-    C --> D[Generiere Audio-Player-HTML]
-    D --> E[Zeige Audio-Player]
-    E --> F[Ende]
-```
-
 ## Autor(en)
 
 **Friends Of REDAXO**
