@@ -138,14 +138,14 @@ class Video
         return in_array(strtolower($pathInfo['extension'] ?? ''), $audioExtensions);
     }
 
-    private function getVideoInfo(): array
+    private static function getVideoInfo(string $source): array
     {
         $youtubePattern = '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=|shorts/)|youtu\.be/)([^"&?/ ]{11})%i';
-        if (preg_match($youtubePattern, $this->source, $match)) {
+        if (preg_match($youtubePattern, $source, $match)) {
             return ['platform' => 'youtube', 'id' => $match[1]];
         }
         $vimeoPattern = '~(?:<iframe [^>]*src=")?(?:https?:\/\/(?:[\w]+\.)*vimeo\.com(?:[\/\w]*\/(progressive_redirect\/playback|external|videos?))?\/([0-9]+)[^\s]*)"?(?:[^>]*></iframe>)?(?:<p>.*</p>)?~ix';
-        if (preg_match($vimeoPattern, $this->source, $match)) {
+        if (preg_match($vimeoPattern, $source, $match)) {
             return ['platform' => 'vimeo', 'id' => $match[2]];
         }
         return ['platform' => 'default', 'id' => ''];
@@ -170,7 +170,7 @@ class Video
 
     public function generateFull(): string
     {
-        $videoInfo = $this->getVideoInfo();
+        $videoInfo = self::getVideoInfo($this->source);
         $isAudio = self::isAudio($this->source);
         $mediaType = $isAudio ? 'audio' : 'video';
 
@@ -205,7 +205,7 @@ class Video
         $sourceUrl = $this->getSourceUrl();
         $isAudio = self::isAudio($this->source);
         $mediaType = $isAudio ? 'audio' : 'video';
-        $videoInfo = $this->getVideoInfo();
+        $videoInfo = self::getVideoInfo($this->source);
 
         $code = "<media-player{$titleAttr}{$attributesString}";
 

@@ -1,5 +1,3 @@
-Hier ist die erweiterte README mit den fehlenden Methoden und aktualisierten Beispielen:
-
 # [Vidstack.io](https://www.vidstack.io) for REDAXO
 
 ![Screenshot](https://github.com/FriendsOfREDAXO/vidstack/blob/assets/screenshot.png?raw=true)
@@ -408,5 +406,3 @@ flowchart TD
 
 **Thanks to**
 [Vidstack.io](https://www.vidstack.io)
-
-
