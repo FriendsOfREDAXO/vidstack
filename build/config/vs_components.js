@@ -2,8 +2,7 @@ import "vidstack/player";
 import "vidstack/player/layouts/default";
 import "vidstack/player/ui";
 
-// Optional - include if rendering VTT regions.
-
+import { defineCustomElement, MediaPosterElement } from "vidstack/elements";
 
 import "vidstack/player/styles/default/theme.css";
 import "vidstack/player/styles/default/layouts/video.css";
