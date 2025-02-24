@@ -285,8 +285,7 @@ Hiermit kann man in einem Consent-Manager oder auch so mal zwischendurch die Erl
 <script>
 // YouTube
 (()=>{let v=JSON.parse(localStorage.getItem('video_consent')||'{}');v.youtube=true;localStorage.setItem('video_consent',JSON.stringify(v));document.cookie='youtube_consent=true; path=/; max-age=2592000; SameSite=Lax; Secure';})();
-
-// Für Vimeo:
+// Vimeo
 (()=>{let v=JSON.parse(localStorage.getItem('video_consent')||'{}');v.vimeo=true;localStorage.setItem('video_consent',JSON.stringify(v));document.cookie='vimeo_consent=true; path=/; max-age=2592000; SameSite=Lax; Secure';})();
 </script>
 ```
