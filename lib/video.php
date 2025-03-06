@@ -7,7 +7,7 @@ use rex_path;
 use rex_url;
 use rex_media;
 use rex_extension;
-use rex_extension_point; // Add this import
+use rex_extension_point; 
 
 class Video
 {
