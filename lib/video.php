@@ -7,7 +7,7 @@ use rex_path;
 use rex_url;
 use rex_media;
 use rex_extension;
-
+use rex_extension_point; // Add this import
 
 class Video
 {
@@ -284,7 +284,8 @@ class Video
         }, $content);
     }
 
-    public static function show_sidebar(\rex_extension_point $ep): ?string
+    // Fixed method with correct type hint
+    public static function show_sidebar(rex_extension_point $ep): ?string
     {
         $params = $ep->getParams();
         $file = $params['filename'];
