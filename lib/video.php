@@ -6,6 +6,8 @@ use rex_escape;
 use rex_path;
 use rex_url;
 use rex_media;
+use rex_extension;
+
 
 class Video
 {
