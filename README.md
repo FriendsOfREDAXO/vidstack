@@ -290,6 +290,34 @@ Hiermit kann man in einem Consent-Manager oder auch so mal zwischendurch die Erl
 </script>
 ```
 
+oder für beide
+```js
+<script>
+// Consent für alle unterstützten Video-Plattformen automatisch setzen
+(function() {
+    // Vorhandene Einstellungen auslesen
+    let videoConsent = JSON.parse(localStorage.getItem('video_consent') || '{}');
+    
+    // Consent für alle Plattformen setzen
+    videoConsent.youtube = true;
+    videoConsent.vimeo = true;
+    
+    // Speichern in localStorage
+    localStorage.setItem('video_consent', JSON.stringify(videoConsent));
+    
+    // Cookies ebenfalls setzen
+    document.cookie = 'youtube_consent=true; path=/; max-age=2592000; SameSite=Lax; Secure';
+    document.cookie = 'vimeo_consent=true; path=/; max-age=2592000; SameSite=Lax; Secure';
+    
+    // Optional: Event auslösen, um vorhandene Player zu aktualisieren
+    document.dispatchEvent(new Event('vsrun'));
+})();
+    </script>
+```
+
+
+
+
 ## 📄 CKE5 Oembed - lässig aufgelöst 
 (*das Plyr-AddOn lässt grüßen*)
 
