@@ -93,6 +93,14 @@ class Video
         ];
     }
 
+    /**
+     * Retrieves the source URL of the video.
+     *
+     * If the source is a valid URL, it is returned as-is. Otherwise, it is treated as a media file
+     * and its URL is generated using the `rex_url::media` method.
+     *
+     * @return string The source URL of the video.
+     */
     public function getSourceUrl(): string
     {
         if (filter_var($this->source, FILTER_VALIDATE_URL)) {
