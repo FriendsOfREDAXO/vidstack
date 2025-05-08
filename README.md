@@ -204,34 +204,240 @@ $fullPlayerCode = $video->generateFull();
 
 // Ausgabe des generierten Codes
 echo $fullPlayerCode;
-
-// Zusätzliche Methoden demonstrieren
-$sourceUrl = $video->getSourceUrl();
-$alternativeUrl = $video->getAlternativeUrl();
-$videoInfo = $video->getVideoInfo();
-$attributesString = $video->generateAttributesString();
-$consentPlaceholder = $video->generateConsentPlaceholder('Please accept cookies to view this video', 'youtube', 'dQw4w9WgXcQ');
-
-echo "Source URL: $sourceUrl<br>";
-echo "Alternative URL: $alternativeUrl<br>";
-echo "Video Info: " . print_r($videoInfo, true) . "<br>";
-echo "Attributes String: $attributesString<br>";
-echo "Consent Placeholder: $consentPlaceholder<br>";
 ```
 
-Dieses Beispiel zeigt:
-1. Initialisierung eines YouTube-Videos mit Titel und englischer Spracheinstellung
-2. Setzen aller möglichen Player-Attribute, einschließlich benutzerdefinierter Klassen und Datenattribute
-3. Hinzufügen von ausführlichen Barrierefreiheits-Inhalten mit detaillierter Beschreibung und alternativem Link
-4. Festlegen von Thumbnail-Vorschaubildern für den Player-Fortschritt im VTT-Format
-5. Setzen eines Poster-Bildes für das Video
-6. Hinzufügen von Untertiteln in allen unterstützten Sprachen
-7. Einbindung von Audiodeskription für Sehbehinderte
-8. Hinzufügen von Kapitelmarkierungen für einfache Navigation
-9. Generierung des vollständigen Player-Codes mit allen Funktionen
-10. Demonstration der zusätzlichen Methoden wie `getSourceUrl()`, `getAlternativeUrl()`, `getVideoInfo()`, `generateAttributesString()` und `generateConsentPlaceholder()`
+Dieses Beispiel zeigt die Hauptfunktionalität des Players mit allen verfügbaren Optionen. In den meisten Fällen wird das bereits alles sein, was Sie brauchen.
 
-Mit diesem Setup ist der Video-Player bereit, die Welt zu erobern - oder zumindest jedem Zuschauer ein Lächeln ins Gesicht zu zaubern!
+## 🛠️ Erweiterte Methoden für spezielle Anwendungsfälle
+
+Die folgenden erweiterten Methoden sind für spezielle Anwendungsfälle gedacht, wenn Sie mehr Kontrolle über den Player benötigen oder eigene Implementierungen erstellen möchten.
+
+### Beispiel 1: Eigenen DSGVO-konformen Player mit zwei-Klick-Lösung erstellen
+
+```php
+<?php
+use FriendsOfRedaxo\VidStack\Video;
+
+// Video-Objekt erstellen
+$video = new Video('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Datenschutzkonformes YouTube-Video');
+
+// Plattform und Video-ID ermitteln
+$videoInfo = $video->getVideoInfo();
+
+// Nur wenn es ein YouTube oder Vimeo Video ist, DSGVO-Abfrage anzeigen
+if ($videoInfo['platform'] !== 'default') {
+    // Angepassten Consent-Text erstellen
+    $consentText = "Um dieses {$videoInfo['platform']}-Video anzusehen, klicken Sie bitte auf 'Video laden'. " .
+                  "Dadurch werden Daten an {$videoInfo['platform']} übermittelt. " .
+                  "Weitere Informationen finden Sie in unserer Datenschutzerklärung.";
+    
+    // Container mit eigener Klasse für Styling erstellen
+    echo '<div class="custom-video-consent">';
+    
+    // Vorschaubild mit Platzhalter anzeigen (nutzt die Video-Klassen-Methode)
+    echo $video->generateConsentPlaceholder($consentText, $videoInfo['platform'], $videoInfo['id']);
+    
+    // Informationstext anzeigen
+    echo '<div class="consent-info">';
+    echo '<p>Video-Quelle: ' . htmlspecialchars($video->getSourceUrl()) . '</p>';
+    echo '</div>';
+    
+    echo '</div>';
+} else {
+    // Bei lokalen Videos direkt anzeigen
+    echo $video->generate();
+}
+```
+
+### Beispiel 2: Erweiterter Player mit Analytics-Integration
+
+```php
+<?php
+use FriendsOfRedaxo\VidStack\Video;
+
+function createTrackedVideo($source, $title = '') {
+    // Video erstellen
+    $video = new Video($source, $title);
+    
+    // Video-Informationen für Analytics-Tracking
+    $videoInfo = $video->getVideoInfo();
+    $platform = $videoInfo['platform'];
+    $videoId = $videoInfo['id'];
+    
+    // Standard HTML für den Player generieren
+    $playerHtml = $video->generate();
+    
+    // Attribute für das Analytics-Tracking hinzufügen
+    $trackingAttributes = ' data-tracking="true" data-platform="' . htmlspecialchars($platform) . 
+                          '" data-video-id="' . htmlspecialchars($videoId) . '"';
+    
+    // HTML-Code mit Tracking-Attributen ergänzen
+    $trackedHtml = str_replace('<media-player', '<media-player' . $trackingAttributes, $playerHtml);
+    
+    // JavaScript für das Tracking hinzufügen
+    $trackedHtml .= <<<EOT
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const player = document.querySelector('media-player[data-tracking="true"]');
+    if (player) {
+        player.addEventListener('play', function() {
+            // Hier Tracking-Code einfügen
+            console.log('Video gestartet:', player.getAttribute('data-platform'), player.getAttribute('data-video-id'));
+        });
+        
+        player.addEventListener('ended', function() {
+            // Video wurde vollständig angesehen
+            console.log('Video beendet:', player.getAttribute('data-platform'), player.getAttribute('data-video-id'));
+        });
+    }
+});
+</script>
+EOT;
+    
+    return $trackedHtml;
+}
+
+// Verwendung
+echo createTrackedVideo('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Tracking-Demo');
+```
+
+### Beispiel 3: Eigenes Player-Layout mit vorgenerierten Elementen erstellen
+
+```php
+<?php
+use FriendsOfRedaxo\VidStack\Video;
+
+function createCustomLayoutVideo($source, $title, $showInfo = true) {
+    $video = new Video($source, $title);
+    
+    // Video-Info ermitteln
+    $videoInfo = $video->getVideoInfo();
+    $isYouTube = $videoInfo['platform'] === 'youtube';
+    
+    // Custom Container erstellen
+    $output = '<div class="custom-video-player">';
+    
+    // Titel und Info anzeigen, wenn gewünscht
+    if ($showInfo) {
+        $output .= '<div class="video-header">';
+        $output .= '<h3>' . htmlspecialchars($title) . '</h3>';
+        
+        if ($isYouTube) {
+            $output .= '<div class="platform-info">Quelle: YouTube</div>';
+        }
+        
+        $output .= '</div>';
+    }
+    
+    // Player-Container
+    $output .= '<div class="video-container">';
+    
+    // Für YouTube wird der Consent-Platzhalter verwendet
+    if ($isYouTube) {
+        $consentText = "YouTube-Videos werden erst nach Zustimmung geladen, um Ihre Privatsphäre zu schützen.";
+        $output .= $video->generateConsentPlaceholder($consentText, 'youtube', $videoInfo['id']);
+    } else {
+        // Für lokale Videos normalen Player anzeigen
+        $output .= $video->generate();
+    }
+    
+    $output .= '</div>';
+    
+    // Custom Controls oder zusätzliche Informationen
+    if ($showInfo) {
+        $output .= '<div class="video-footer">';
+        $output .= '<div class="video-source">Video-URL: ' . htmlspecialchars($video->getSourceUrl()) . '</div>';
+        $output .= '</div>';
+    }
+    
+    $output .= '</div>';
+    
+    return $output;
+}
+
+// Verwendung
+echo createCustomLayoutVideo('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Custom Layout Demo');
+```
+
+### Beispiel 4: Adaptive Einbindung basierend auf Gerätetyp
+
+```php
+<?php
+use FriendsOfRedaxo\VidStack\Video;
+
+function createResponsiveVideo($source, $title = '', $isMobile = false) {
+    $video = new Video($source, $title);
+    
+    // Auf mobilen Geräten andere Attribute setzen
+    if ($isMobile) {
+        $video->setAttributes([
+            'playsinline' => true,
+            'preload' => 'none',  // Bandbreite sparen
+            'controlsList' => 'nodownload', 
+            'disablePictureInPicture' => true,
+            'class' => 'mobile-optimized'
+        ]);
+        
+        // Einfache Version für mobile Geräte
+        return $video->generate();
+    } else {
+        // Auf Desktop volle Funktionalität
+        $video->setAttributes([
+            'class' => 'desktop-enhanced',
+            'preload' => 'metadata'
+        ]);
+        
+        // Poster und Untertitel für Desktop hinzufügen
+        $video->setPoster('/pfad/zu/hq-poster.jpg', 'Video-Vorschau');
+        $video->addSubtitle('/untertitel/deutsch.vtt', 'captions', 'Deutsch', 'de', true);
+        
+        return $video->generateFull();
+    }
+}
+
+// Einfache Geräteerkennung (in der Praxis würden Sie hier eine richtige Erkennung verwenden)
+$isMobile = strpos($_SERVER['HTTP_USER_AGENT'], 'Mobile') !== false;
+
+// Verwendung
+echo createResponsiveVideo('https://example.com/video.mp4', 'Responsives Video', $isMobile);
+```
+
+### Beispiel 5: Integration mit REX_MEDIA-Variablen
+
+```php
+<?php
+use FriendsOfRedaxo\VidStack\Video;
+
+// Angenommen, wir haben eine REX_MEDIA-Variable mit einem Video
+$mediaName = REX_MEDIA[1];
+
+if ($mediaName) {
+    $video = new Video($mediaName, 'Video aus dem Medienpool');
+    
+    // Prüfen, ob es sich um eine Audiodatei handelt
+    if (Video::isAudio($mediaName)) {
+        echo '<div class="audio-player-wrapper">';
+        echo '<h4>Audio-Player</h4>';
+        echo $video->generate();
+        echo '</div>';
+    } else {
+        // Video mit Standardeinstellungen anzeigen
+        $video->setAttributes([
+            'controls' => true,
+            'playsinline' => true
+        ]);
+        
+        // Wenn ein Poster-Bild ausgewählt wurde
+        if (REX_MEDIA[2]) {
+            $video->setPoster(rex_url::media(REX_MEDIA[2]), 'Vorschaubild');
+        }
+        
+        echo $video->generateFull();
+    }
+}
+```
+
+Durch diese praktischen Beispiele wird deutlich, wie die erweiterten Methoden der Video-Klasse sinnvoll in verschiedenen Szenarien eingesetzt werden können, anstatt sie nur isoliert zu demonstrieren.
 
 ## 🧙‍♂️ Tipp: Die magische Default-Funktion
 
