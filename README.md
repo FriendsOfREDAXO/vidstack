@@ -59,6 +59,107 @@ $externalVideo = new Video('https://somedomain.tld/video.mp4', 'Eigenes Video');
 echo $externalVideo->generate();
 ```
 
+### Grundlegende Beispiele für den Alltag
+
+#### Video mit Poster-Bild und Titel
+
+```php
+<?php
+use FriendsOfRedaxo\VidStack\Video;
+
+// Video aus dem Medienpool mit Poster-Bild
+$video = new Video('mein_video.mp4', 'Mein tolles Video mit Vorschaubild');
+$video->setPoster('vorschaubild.jpg', 'Beschreibung des Vorschaubilds');
+echo $video->generate();
+```
+
+#### Video mit Untertiteln (VTT-Format)
+
+```php
+<?php
+use FriendsOfRedaxo\VidStack\Video;
+
+// Video mit mehrsprachigen Untertiteln
+$video = new Video('erklaervideo.mp4', 'Erklärvideo mit Untertiteln');
+$video->addSubtitle('untertitel_de.vtt', 'captions', 'Deutsch', 'de', true); // Standard-Untertitel
+$video->addSubtitle('untertitel_en.vtt', 'captions', 'Englisch', 'en');
+echo $video->generate();
+```
+
+#### Barrierefreies Video mit Beschreibungen
+
+```php
+<?php
+use FriendsOfRedaxo\VidStack\Video;
+
+// Barrierefreies Video mit zusätzlichen Informationen
+$video = new Video('tutorial.mp4', 'Tutorial: REDAXO Installation');
+
+// Ausführliche Beschreibung für Screenreader hinzufügen
+$video->setA11yContent(
+    'Das Video zeigt Schritt für Schritt, wie REDAXO installiert wird. Beginnend mit dem Download bis zur ersten Anmeldung im Backend.',
+    'https://beispiel.de/redaxo-installation-text.html' // Alternative Text-Version
+);
+
+// Kapitelmarken hinzufügen
+$video->addSubtitle('chapters.vtt', 'chapters', 'Kapitel', 'de');
+
+echo $video->generateFull();
+```
+
+#### YouTube mit DSGVO-konformer Zwei-Klick-Lösung
+
+```php
+<?php
+use FriendsOfRedaxo\VidStack\Video;
+
+// YouTube-Video mit Datenschutzhinweis
+$video = new Video('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'DSGVO-konformes YouTube-Video');
+
+// WICHTIG: Für die Consent-Funktionalität müssen die helper-Dateien im Frontend eingebunden sein!
+// Siehe Installation -> Für das Frontend
+
+// generateFull() erzeugt automatisch den DSGVO-konformen Platzhalter für YouTube und Vimeo
+echo $video->generateFull();
+```
+
+#### Video mit Vorschaubildern für die Zeitleiste (VTT-Format)
+
+```php
+<?php
+use FriendsOfRedaxo\VidStack\Video;
+
+// Video mit Thumbnail-Vorschau beim Hover über die Zeitleiste
+$video = new Video('produktvideo.mp4', 'Produktvideo mit Thumbnail-Vorschau');
+
+// VTT-Datei mit Zeitstempeln und Bildpfaden
+$video->setThumbnails('thumbnails.vtt'); 
+
+// Beispiel für eine thumbnails.vtt Datei:
+// WEBVTT
+//
+// 00:00:00.000 --> 00:00:05.000
+// thumbnails/img1.jpg
+// 
+// 00:00:05.000 --> 00:00:10.000
+// thumbnails/img2.jpg
+
+echo $video->generate();
+```
+
+#### Audio-Player
+
+```php
+<?php
+use FriendsOfRedaxo\VidStack\Video;
+
+// Audio-Datei einbinden
+$audio = new Video('podcast.mp3', 'Podcast Episode #42');
+
+// Audioplayer bekommt automatisch das richtige Layout
+echo $audio->generate();
+```
+
 ## 🛠 Die Class
 
 ### Konstruktor
