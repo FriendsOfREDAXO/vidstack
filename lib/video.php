@@ -93,7 +93,7 @@ class Video
         ];
     }
 
-    private function getSourceUrl(): string
+    public function getSourceUrl(): string
     {
         if (filter_var($this->source, FILTER_VALIDATE_URL)) {
             return $this->source;
@@ -101,7 +101,7 @@ class Video
         return rex_url::media($this->source);
     }
 
-    private function getAlternativeUrl(): string
+    public function getAlternativeUrl(): string
     {
         return $this->getSourceUrl();
     }
@@ -140,7 +140,7 @@ class Video
         return in_array(strtolower($pathInfo['extension'] ?? ''), $audioExtensions);
     }
 
-    private static function getVideoInfo(string $source): array
+    public static function getVideoInfo(string $source): array
     {
         $youtubePattern = '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=|shorts/)|youtu\.be/)([^"&?/ ]{11})%i';
         if (preg_match($youtubePattern, $source, $match)) {
@@ -246,7 +246,7 @@ class Video
         return $code;
     }
 
-    private function generateAttributesString(): string
+    public function generateAttributesString(): string
     {
         return array_reduce(array_keys($this->attributes), function ($carry, $key) {
             $value = $this->attributes[$key];
@@ -254,7 +254,7 @@ class Video
         }, '');
     }
 
-    private function generateConsentPlaceholder(string $consentText, string $platform, string $videoId): string
+    public function generateConsentPlaceholder(string $consentText, string $platform, string $videoId): string
     {
         $buttonText = $this->getText('Load Video');
         return "<div class=\"consent-placeholder\" aria-hidden=\"true\" data-platform=\"" . rex_escape($platform) . "\" data-video-id=\"" . rex_escape($videoId) . "\" style=\"aspect-ratio: 16/9;\">"
