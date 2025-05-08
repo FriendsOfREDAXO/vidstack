@@ -82,6 +82,15 @@ class Video
         ];
     }
 
+    /**
+     * Adds a subtitle track to the media player configuration.
+     *
+     * @param string $src URL or path to the subtitle file.
+     * @param string $kind Type of subtitle track (e.g., 'subtitles', 'captions').
+     * @param string $label Human-readable label for the track.
+     * @param string $lang Language code for the subtitle track.
+     * @param bool $default Whether this track should be the default.
+     */
     public function addSubtitle(string $src, string $kind, string $label, string $lang, bool $default = false): void
     {
         $this->subtitles[] = [
@@ -93,13 +102,10 @@ class Video
         ];
     }
 
-    /**
-     * Retrieves the source URL of the video.
+    /****
+     * Returns the direct URL to the video source, using the original URL if valid or generating a media URL for local files.
      *
-     * If the source is a valid URL, it is returned as-is. Otherwise, it is treated as a media file
-     * and its URL is generated using the `rex_url::media` method.
-     *
-     * @return string The source URL of the video.
+     * @return string The resolved URL for the video or audio source.
      */
     public function getSourceUrl(): string
     {
@@ -109,6 +115,13 @@ class Video
         return rex_url::media($this->source);
     }
 
+    /**
+     * Returns the alternative URL for the media source.
+     *
+     * By default, this is the same as the primary source URL.
+     *
+     * @return string The alternative media URL.
+     */
     public function getAlternativeUrl(): string
     {
         return $this->getSourceUrl();
@@ -131,6 +144,12 @@ class Video
         return in_array(strtolower($pathInfo['extension'] ?? ''), $mediaExtensions);
     }
 
+    /**
+     * Determines whether the given URL or media filename refers to an audio file based on its extension.
+     *
+     * @param string $url The URL or media filename to check.
+     * @return bool True if the file has a recognized audio extension; otherwise, false.
+     */
     public static function isAudio($url): bool
     {
         $audioExtensions = ['mp3', 'ogg', 'wav', 'aac', 'm4a'];
@@ -148,6 +167,12 @@ class Video
         return in_array(strtolower($pathInfo['extension'] ?? ''), $audioExtensions);
     }
 
+    /**
+     * Detects if the given source string refers to a YouTube or Vimeo video and extracts the platform and video ID.
+     *
+     * @param string $source The video source URL or embed code.
+     * @return array An associative array with keys 'platform' (either 'youtube', 'vimeo', or 'default') and 'id' (the video ID if detected, otherwise an empty string).
+     */
     public static function getVideoInfo(string $source): array
     {
         $youtubePattern = '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=|shorts/)|youtu\.be/)([^"&?/ ]{11})%i';
@@ -208,6 +233,13 @@ class Video
         return $code;
     }
 
+    /**
+     * Generates the HTML markup for the media player element with appropriate attributes, sources, poster, subtitles, and layout.
+     *
+     * Returns a complete <media-player> element configured for audio or video, supporting local files and external platforms (YouTube, Vimeo), and including accessibility features.
+     *
+     * @return string The generated HTML markup for embedding the media player.
+     */
     public function generate(): string
     {
         $attributesString = $this->generateAttributesString();
@@ -254,6 +286,13 @@ class Video
         return $code;
     }
 
+    /**
+     * Converts the media player's attributes array into a string of HTML attributes.
+     *
+     * Boolean attributes are included by name only if true; other attributes are rendered as key-value pairs with proper escaping.
+     *
+     * @return string The formatted HTML attributes string.
+     */
     public function generateAttributesString(): string
     {
         return array_reduce(array_keys($this->attributes), function ($carry, $key) {
@@ -262,6 +301,16 @@ class Video
         }, '');
     }
 
+    /**
+     * Generates an HTML consent placeholder for embedded videos requiring user approval.
+     *
+     * The placeholder includes a consent message and a button to load the video, with platform and video ID data attributes.
+     *
+     * @param string $consentText The message displayed to request user consent.
+     * @param string $platform The video platform (e.g., 'youtube', 'vimeo').
+     * @param string $videoId The unique identifier for the video on the platform.
+     * @return string The generated HTML markup for the consent placeholder.
+     */
     public function generateConsentPlaceholder(string $consentText, string $platform, string $videoId): string
     {
         $buttonText = $this->getText('Load Video');
