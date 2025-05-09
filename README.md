@@ -185,7 +185,7 @@ __construct($source, $title = '', $lang = 'de'): void
 - `show_sidebar(\rex_extension_point $ep): ?string`: Generiert Medienvorschau für die Sidebar im Medienpool
 - `getSourceUrl(): string`: Gibt die URL der Videoquelle zurück
 - `getAlternativeUrl(): string`: Gibt eine alternative URL für das Video zurück
-- `getVideoInfo(): array`: Gibt Informationen über das Video zurück (Plattform und ID)
+- `getVideoInfo($source): array`: Gibt Informationen über das Video zurück (Plattform und ID) [Statische Methode]
 - `generateAttributesString(): string`: Generiert einen String mit allen gesetzten Attributen
 - `generateConsentPlaceholder(string $consentText, string $platform, string $videoId): string`: Generiert einen Platzhalter für die Consent-Abfrage
 
@@ -323,7 +323,7 @@ use FriendsOfRedaxo\VidStack\Video;
 $video = new Video('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Datenschutzkonformes YouTube-Video');
 
 // Plattform und Video-ID ermitteln
-$videoInfo = $video->getVideoInfo();
+$videoInfo = Video::getVideoInfo($video->getSourceUrl());
 
 // Nur wenn es ein YouTube oder Vimeo Video ist, DSGVO-Abfrage anzeigen
 if ($videoInfo['platform'] !== 'default') {
@@ -361,7 +361,7 @@ function createTrackedVideo($source, $title = '') {
     $video = new Video($source, $title);
     
     // Video-Informationen für Analytics-Tracking
-    $videoInfo = $video->getVideoInfo();
+    $videoInfo = Video::getVideoInfo($video->getSourceUrl());
     $platform = $videoInfo['platform'];
     $videoId = $videoInfo['id'];
     
