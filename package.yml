@@ -1,5 +1,5 @@
 package: vidstack
-version: '1.4.4'
+version: '1.4.5'
 author: 'Friends Of REDAXO'
 supportpage: https://github.com/FriendsOfREDAXO/vidstack
 requires:
