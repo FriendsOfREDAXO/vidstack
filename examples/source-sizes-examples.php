@@ -32,8 +32,53 @@ function createResponsiveVideo($desktopVideo, $mobileVideo, $title = '') {
     return $video->generateFull();
 }
 
+/**
+ * Mit benutzerdefinierten Auflösungen
+ */
+function createCustomResolutionVideo($desktopVideo, $mobileVideo, $title = '') {
+    $video = new Video($desktopVideo, $title);
+    
+    // Custom Auflösungen: 2K Desktop, Mobile HD
+    $video->setResponsiveSources(
+        $desktopVideo, 
+        $mobileVideo,
+        [2560, 1440], // Desktop: 2K
+        [960, 540]    // Mobile: Mobile HD  
+    );
+    
+    $video->setAttributes([
+        'crossorigin' => '',
+        'playsinline' => true,
+        'controls' => true,
+        'preload' => 'metadata'
+    ]);
+    
+    return $video->generateFull();
+}
+
+/**
+ * Mit Auflösungspresets
+ */
+function createPresetVideo($desktopVideo, $mobileVideo, $title = '') {
+    $video = new Video($desktopVideo, $title);
+    
+    // Verwende vordefinierte Presets
+    $video->setResponsiveSourcesWithPresets($desktopVideo, $mobileVideo, '2k', 'mobile_hd');
+    
+    $video->setAttributes([
+        'crossorigin' => '',
+        'playsinline' => true,
+        'controls' => true,
+        'preload' => 'metadata'
+    ]);
+    
+    return $video->generateFull();
+}
+
 // Verwendung im Template:
 echo createResponsiveVideo('video-1080p.mp4', 'video-480p.mp4', 'Mein responsives Video');
+echo createCustomResolutionVideo('video-2k.mp4', 'video-mobile.mp4', 'Custom Resolution Video');
+echo createPresetVideo('video-high.mp4', 'video-low.mp4', 'Preset Video');
 
 // ===========================================
 // BEISPIEL 2: Mehrere Qualitätsstufen
@@ -283,6 +328,88 @@ $fullConfig = [
 ];
 
 echo createFullFeaturedVideo($qualitySources, $fullConfig);
+
+// ===========================================
+// BEISPIEL 1.5: Automatische Source-Erstellung
+// ===========================================
+
+/**
+ * Automatische Erstellung aus Dateinamen-Pattern
+ */
+function createAutoSourceVideo($baseFilename, $title = '') {
+    $video = new Video($baseFilename . '.mp4', $title);
+    
+    // Versuche automatisch verschiedene Qualitäten zu finden
+    if ($video->createAutoSources($baseFilename)) {
+        // Erfolgreich - verschiedene Qualitäten gefunden
+        $video->setAttributes([
+            'crossorigin' => '',
+            'playsinline' => true,
+            'controls' => true,
+            'preload' => 'metadata'
+        ]);
+        return $video->generateFull();
+    } else {
+        // Fallback auf Basis-Video
+        return $video->generateFull();
+    }
+}
+
+// Verwendung:
+// Sucht automatisch nach: produktvideo-1080p.mp4, produktvideo-720p.mp4, produktvideo-480p.mp4
+echo createAutoSourceVideo('produktvideo', 'Produktvideo mit Auto-Qualitäten');
+
+// Mit benutzerdefinierten Qualitätsstufen:
+function createCustomAutoVideo($baseFilename, $title = '') {
+    $video = new Video($baseFilename . '.mp4', $title);
+    
+    $customQualities = [
+        '4k' => [3840, 2160],
+        '1080p' => [1920, 1080], 
+        '720p' => [1280, 720],
+        'mobile' => [854, 480]
+    ];
+    
+    if ($video->createAutoSources($baseFilename, $customQualities)) {
+        return $video->generateFull();
+    }
+    
+    return $video->generateFull();
+}
+
+// ===========================================
+// BEISPIEL 1.6: Performance-Optimierung
+// ===========================================
+
+/**
+ * Performance-optimierte Version mit Caching
+ */
+function createOptimizedVideo($sources, $title = '') {
+    $primarySource = $sources[0]['src'] ?? '';
+    $video = new Video($primarySource, $title);
+    
+    // Sources setzen ohne automatisches Sorting (autoSort = false)
+    // Falls die Sources bereits korrekt sortiert sind
+    $video->setSources($sources, false);
+    
+    $video->setAttributes([
+        'crossorigin' => '',
+        'playsinline' => true,
+        'controls' => true,
+        'preload' => 'metadata'
+    ]);
+    
+    return $video->generateFull();
+}
+
+// Bereits sortierte Sources (höchste Qualität zuerst)
+$sortedSources = [
+    ['src' => 'video-4k.mp4', 'width' => 3840, 'height' => 2160, 'type' => 'video/mp4'],
+    ['src' => 'video-1080p.mp4', 'width' => 1920, 'height' => 1080, 'type' => 'video/mp4'],
+    ['src' => 'video-720p.mp4', 'width' => 1280, 'height' => 720, 'type' => 'video/mp4']
+];
+
+echo createOptimizedVideo($sortedSources, 'Performance-Optimiertes Video');
 
 // ===========================================
 // HINWEISE zur Vidstack-Dokumentation:

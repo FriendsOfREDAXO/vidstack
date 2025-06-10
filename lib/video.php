@@ -24,6 +24,7 @@ class Video
     // Neue Eigenschaften für Multiple Sources
     private array $sources = [];
     private bool $useMultipleSources = false;
+    private array $sortedSources = []; // Cache für sortierte Sources
 
     public function __construct(string $source, string $title = '', string $lang = 'de')
     {
@@ -105,11 +106,41 @@ class Video
      *   ['src' => 'video-1080p.mp4', 'width' => 1920, 'height' => 1080, 'type' => 'video/mp4'],
      *   ['src' => 'video-720p.mp4', 'width' => 1280, 'height' => 720, 'type' => 'video/mp4']
      * ]
+     * @param bool $autoSort Automatisch nach Qualität sortieren (default: true)
      */
-    public function setSources(array $sources): void
+    public function setSources(array $sources, bool $autoSort = true): void
     {
         $this->sources = $sources;
         $this->useMultipleSources = !empty($sources);
+        $this->sortedSources = []; // Cache leeren
+        
+        if ($autoSort && $this->useMultipleSources) {
+            $this->sortSourcesByQuality();
+        }
+    }
+
+    /**
+     * Sortiert Sources nach Qualität (höchste zuerst) und cached das Ergebnis
+     */
+    private function sortSourcesByQuality(): void
+    {
+        if (empty($this->sortedSources)) {
+            $this->sortedSources = $this->sources;
+            usort($this->sortedSources, function($a, $b) {
+                $aWidth = $a['width'] ?? 0;
+                $bWidth = $b['width'] ?? 0;
+                
+                // Primär nach Breite sortieren
+                if ($aWidth !== $bWidth) {
+                    return $bWidth <=> $aWidth;
+                }
+                
+                // Sekundär nach Höhe sortieren falls Breite gleich
+                $aHeight = $a['height'] ?? 0;
+                $bHeight = $b['height'] ?? 0;
+                return $bHeight <=> $aHeight;
+            });
+        }
     }
 
     /**
@@ -117,17 +148,23 @@ class Video
      * 
      * @param string $desktopSource Hochauflösende Version für Desktop
      * @param string $mobileSource Mobile-optimierte Version
+     * @param array $desktopResolution [width, height] für Desktop (default: [1920, 1080])
+     * @param array $mobileResolution [width, height] für Mobile (default: [854, 480])
      */
-    public function setResponsiveSources(string $desktopSource, string $mobileSource): void
-    {
+    public function setResponsiveSources(
+        string $desktopSource, 
+        string $mobileSource, 
+        array $desktopResolution = [1920, 1080], 
+        array $mobileResolution = [854, 480]
+    ): void {
         $sources = [];
         
         // Desktop-Version (höhere Auflösung)
         if ($desktopSource) {
             $sources[] = [
                 'src' => $desktopSource,
-                'width' => 1920,
-                'height' => 1080,
+                'width' => $desktopResolution[0] ?? 1920,
+                'height' => $desktopResolution[1] ?? 1080,
                 'type' => $this->getMediaType($desktopSource)
             ];
         }
@@ -136,8 +173,8 @@ class Video
         if ($mobileSource) {
             $sources[] = [
                 'src' => $mobileSource,
-                'width' => 854,
-                'height' => 480,
+                'width' => $mobileResolution[0] ?? 854,
+                'height' => $mobileResolution[1] ?? 480,
                 'type' => $this->getMediaType($mobileSource)
             ];
         }
@@ -179,15 +216,13 @@ class Video
         
         $sourceElements = '';
         
-        // Sources nach Qualität sortieren (höchste zuerst)
-        $sortedSources = $this->sources;
-        usort($sortedSources, function($a, $b) {
-            return ($b['width'] ?? 0) <=> ($a['width'] ?? 0);
-        });
+        // Verwende gecachte sortierte Sources oder sortiere einmalig
+        $this->sortSourcesByQuality();
+        $sourcesToUse = $this->sortedSources;
         
-        foreach ($sortedSources as $source) {
+        foreach ($sourcesToUse as $source) {
             $src = $this->getSourceUrlFromSource($source['src']);
-            $type = $source['type'] ?? 'video/mp4';
+            $type = $source['type'] ?? $this->getMediaType($source['src']);
             $width = $source['width'] ?? null;
             $height = $source['height'] ?? null;
             
@@ -444,5 +479,95 @@ class Video
         }
 
         return $existingContent;
+    }
+
+    /**
+     * Vordefinierte Auflösungspresets für gängige Anwendungsfälle
+     */
+    public static function getResolutionPresets(): array
+    {
+        return [
+            '4k' => [3840, 2160],
+            '2k' => [2560, 1440],
+            '1080p' => [1920, 1080],
+            '720p' => [1280, 720],
+            '480p' => [854, 480],
+            '360p' => [640, 360],
+            '240p' => [426, 240],
+            'mobile_hd' => [960, 540],
+            'mobile_sd' => [640, 360],
+            'tablet' => [1024, 576],
+        ];
+    }
+
+    /**
+     * Erweiterte responsive Sources mit Presets
+     * 
+     * @param string $desktopSource Desktop Video
+     * @param string $mobileSource Mobile Video
+     * @param string $desktopPreset Preset-Name für Desktop (z.B. '1080p')
+     * @param string $mobilePreset Preset-Name für Mobile (z.B. '480p')
+     */
+    public function setResponsiveSourcesWithPresets(
+        string $desktopSource, 
+        string $mobileSource, 
+        string $desktopPreset = '1080p', 
+        string $mobilePreset = '480p'
+    ): void {
+        $presets = self::getResolutionPresets();
+        
+        $desktopResolution = $presets[$desktopPreset] ?? $presets['1080p'];
+        $mobileResolution = $presets[$mobilePreset] ?? $presets['480p'];
+        
+        $this->setResponsiveSources($desktopSource, $mobileSource, $desktopResolution, $mobileResolution);
+    }
+
+    /**
+     * Erstellt Sources automatisch aus einem Basis-Dateinamen
+     * 
+     * @param string $baseFilename Basis-Dateiname ohne Suffix (z.B. 'video')
+     * @param array $qualityLevels Array von Qualitätsstufen mit Suffixen
+     * @param string $extension Dateierweiterung (default: 'mp4')
+     * 
+     * Beispiel: createAutoSources('video', ['1080p' => [1920, 1080], '720p' => [1280, 720]])
+     * Sucht nach: video-1080p.mp4, video-720p.mp4
+     */
+    public function createAutoSources(
+        string $baseFilename, 
+        array $qualityLevels = null, 
+        string $extension = 'mp4'
+    ): bool {
+        if ($qualityLevels === null) {
+            $qualityLevels = [
+                '1080p' => [1920, 1080],
+                '720p' => [1280, 720],
+                '480p' => [854, 480]
+            ];
+        }
+        
+        $sources = [];
+        $foundAny = false;
+        
+        foreach ($qualityLevels as $suffix => $resolution) {
+            $filename = $baseFilename . '-' . $suffix . '.' . $extension;
+            
+            // Prüfen ob Datei existiert (für REDAXO Media)
+            if (rex_media::get($filename)) {
+                $sources[] = [
+                    'src' => $filename,
+                    'width' => $resolution[0],
+                    'height' => $resolution[1],
+                    'type' => $this->getMediaType($filename)
+                ];
+                $foundAny = true;
+            }
+        }
+        
+        if ($foundAny) {
+            $this->setSources($sources);
+            return true;
+        }
+        
+        return false;
     }
 }

@@ -44,14 +44,37 @@ Mit dem Vidstack-Addon können Sie verschiedene Video-Auflösungen für Desktop 
 <?php
 use FriendsOfRedaxo\VidStack\Video;
 
-// Einfache Desktop/Mobile Setup
+// Einfache Desktop/Mobile Setup mit Standard-Auflösungen
 $video = new Video('video-desktop.mp4', 'Responsives Video');
 $video->setResponsiveSources('video-1080p.mp4', 'video-480p.mp4');
 echo $video->generateFull();
 
-// Mehrere Qualitätsstufen
+// Mit benutzerdefinierten Auflösungen
+$video = new Video('video-desktop.mp4', 'Custom Responsive Video');
+$video->setResponsiveSources(
+    'video-high.mp4', 
+    'video-low.mp4',
+    [2560, 1440], // Desktop: 2K
+    [960, 540]    // Mobile: Mobile HD
+);
+echo $video->generateFull();
+
+// Mit Auflösungspresets
+$video = new Video('video.mp4', 'Preset Video');
+$video->setResponsiveSourcesWithPresets('video-2k.mp4', 'video-mobile.mp4', '2k', 'mobile_hd');
+echo $video->generateFull();
+
+// Automatische Erstellung aus Dateinamen-Pattern
+$video = new Video('produktvideo.mp4', 'Produktvideo');
+if ($video->createAutoSources('produktvideo')) {
+    // Sucht automatisch nach: produktvideo-1080p.mp4, produktvideo-720p.mp4, produktvideo-480p.mp4
+    echo $video->generateFull();
+}
+
+// Mehrere Qualitätsstufen mit manueller Kontrolle
 $video = new Video('video.mp4', 'Multi-Quality Video');
 $video->setSources([
+    ['src' => 'video-4k.mp4', 'width' => 3840, 'height' => 2160, 'type' => 'video/mp4'],
     ['src' => 'video-1080p.mp4', 'width' => 1920, 'height' => 1080, 'type' => 'video/mp4'],
     ['src' => 'video-720p.mp4', 'width' => 1280, 'height' => 720, 'type' => 'video/mp4'],
     ['src' => 'video-480p.mp4', 'width' => 854, 'height' => 480, 'type' => 'video/mp4']
@@ -59,7 +82,12 @@ $video->setSources([
 echo $video->generateFull();
 ```
 
-**Wie es funktioniert:** Der Browser wählt automatisch die beste verfügbare Quelle basierend auf Gerätegröße und Netzwerkbedingungen. Die Quellen werden nach Qualität sortiert ausgegeben (höchste zuerst).
+**Verfügbare Auflösungspresets:**
+- `4k` (3840×2160), `2k` (2560×1440), `1080p` (1920×1080)
+- `720p` (1280×720), `480p` (854×480), `360p` (640×360)
+- `mobile_hd` (960×540), `mobile_sd` (640×360), `tablet` (1024×576)
+
+**Wie es funktioniert:** Der Browser wählt automatisch die beste verfügbare Quelle basierend auf Gerätegröße und Netzwerkbedingungen. Die Quellen werden nach Qualität sortiert ausgegeben (höchste zuerst). Das Sorting wird gecacht für bessere Performance.
 
 ### Grundlegende Verwendung
 
