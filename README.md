@@ -36,6 +36,31 @@ Die `vidstack.css` und `vidstack.js` sind die Hauptdarsteller - sie bringen den 
 
 So, jetzt aber! Dein REDAXO ist jetzt bereit, Videos mit Style zu servieren. 🎬🍿
 
+### Source Sizes für Desktop/Mobile Videos
+
+Mit dem Vidstack-Addon können Sie verschiedene Video-Auflösungen für Desktop und Mobile bereitstellen:
+
+```php
+<?php
+use FriendsOfRedaxo\VidStack\Video;
+
+// Einfache Desktop/Mobile Setup
+$video = new Video('video-desktop.mp4', 'Responsives Video');
+$video->setResponsiveSources('video-1080p.mp4', 'video-480p.mp4');
+echo $video->generateFull();
+
+// Mehrere Qualitätsstufen
+$video = new Video('video.mp4', 'Multi-Quality Video');
+$video->setSources([
+    ['src' => 'video-1080p.mp4', 'width' => 1920, 'height' => 1080, 'type' => 'video/mp4'],
+    ['src' => 'video-720p.mp4', 'width' => 1280, 'height' => 720, 'type' => 'video/mp4'],
+    ['src' => 'video-480p.mp4', 'width' => 854, 'height' => 480, 'type' => 'video/mp4']
+]);
+echo $video->generateFull();
+```
+
+**Wie es funktioniert:** Der Browser wählt automatisch die beste verfügbare Quelle basierend auf Gerätegröße und Netzwerkbedingungen. Die Quellen werden nach Qualität sortiert ausgegeben (höchste zuerst).
+
 ### Grundlegende Verwendung
 
 ```php

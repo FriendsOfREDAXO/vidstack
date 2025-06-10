@@ -20,6 +20,10 @@ class Video
     private array $subtitles = [];
     private string $lang;
     private static array $translations = [];
+    
+    // Neue Eigenschaften für Multiple Sources
+    private array $sources = [];
+    private bool $useMultipleSources = false;
 
     public function __construct(string $source, string $title = '', string $lang = 'de')
     {
@@ -91,6 +95,123 @@ class Video
             'lang' => $lang,
             'default' => $default
         ];
+    }
+
+    /**
+     * Fügt mehrere Video-Quellen für verschiedene Auflösungen hinzu
+     * 
+     * @param array $sources Array mit Source-Objekten
+     * Format: [
+     *   ['src' => 'video-1080p.mp4', 'width' => 1920, 'height' => 1080, 'type' => 'video/mp4'],
+     *   ['src' => 'video-720p.mp4', 'width' => 1280, 'height' => 720, 'type' => 'video/mp4']
+     * ]
+     */
+    public function setSources(array $sources): void
+    {
+        $this->sources = $sources;
+        $this->useMultipleSources = !empty($sources);
+    }
+
+    /**
+     * Convenience-Methode für Desktop/Mobile Setup
+     * 
+     * @param string $desktopSource Hochauflösende Version für Desktop
+     * @param string $mobileSource Mobile-optimierte Version
+     */
+    public function setResponsiveSources(string $desktopSource, string $mobileSource): void
+    {
+        $sources = [];
+        
+        // Desktop-Version (höhere Auflösung)
+        if ($desktopSource) {
+            $sources[] = [
+                'src' => $desktopSource,
+                'width' => 1920,
+                'height' => 1080,
+                'type' => $this->getMediaType($desktopSource)
+            ];
+        }
+        
+        // Mobile-Version (niedrigere Auflösung)
+        if ($mobileSource) {
+            $sources[] = [
+                'src' => $mobileSource,
+                'width' => 854,
+                'height' => 480,
+                'type' => $this->getMediaType($mobileSource)
+            ];
+        }
+        
+        $this->setSources($sources);
+    }
+
+    /**
+     * Ermittelt den Media-Type basierend auf der Dateiendung
+     */
+    private function getMediaType(string $source): string
+    {
+        if (self::isAudio($source)) {
+            return 'audio/mp3';
+        }
+        
+        $extension = strtolower(pathinfo($source, PATHINFO_EXTENSION));
+        
+        return match($extension) {
+            'mp4', 'm4v' => 'video/mp4',
+            'webm' => 'video/webm',
+            'ogg', 'ogv' => 'video/ogg',
+            'mov' => 'video/quicktime',
+            default => 'video/mp4'
+        };
+    }
+
+    /**
+     * Generiert die Source-Elemente für Multiple Sources
+     */
+    private function generateSourceElements(): string
+    {
+        if (!$this->useMultipleSources || empty($this->sources)) {
+            // Fallback auf Single Source
+            $sourceUrl = $this->getSourceUrl();
+            $isAudio = self::isAudio($this->source);
+            return "<source src=\"" . rex_escape($sourceUrl) . "\" type=\"" . ($isAudio ? "audio/mp3" : "video/mp4") . "\" />";
+        }
+        
+        $sourceElements = '';
+        
+        // Sources nach Qualität sortieren (höchste zuerst)
+        $sortedSources = $this->sources;
+        usort($sortedSources, function($a, $b) {
+            return ($b['width'] ?? 0) <=> ($a['width'] ?? 0);
+        });
+        
+        foreach ($sortedSources as $source) {
+            $src = $this->getSourceUrlFromSource($source['src']);
+            $type = $source['type'] ?? 'video/mp4';
+            $width = $source['width'] ?? null;
+            $height = $source['height'] ?? null;
+            
+            $sourceElements .= "<source src=\"" . rex_escape($src) . "\" type=\"" . rex_escape($type) . "\"";
+            
+            if ($width && $height) {
+                $sourceElements .= " width=\"" . (int)$width . "\" height=\"" . (int)$height . "\"";
+            }
+            
+            $sourceElements .= " />";
+        }
+        
+        return $sourceElements;
+    }
+
+    /**
+     * Hilfsmethode um Source-URL zu generieren
+     */
+    private function getSourceUrlFromSource(string $source): string
+    {
+        if (filter_var($source, FILTER_VALIDATE_URL)) {
+            return $source;
+        }
+        return rex_url::media($source);
     }
 
     /**
@@ -235,7 +356,7 @@ class Video
         }
 
         if ($videoInfo['platform'] === 'default') {
-            $code .= "<source src=\"" . rex_escape($sourceUrl) . "\" type=\"" . ($isAudio ? "audio/mp3" : "video/mp4") . "\" />";
+            $code .= $this->generateSourceElements();
         }
 
         // Move subtitles inside <media-provider>
