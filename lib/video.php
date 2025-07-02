@@ -378,6 +378,7 @@ class Video
         if (!$isAudio && $videoInfo['platform'] !== 'default') {
             $code .= " data-video-platform=\"" . rex_escape($videoInfo['platform']) . "\" data-video-id=\"" . rex_escape($videoInfo['id']) . "\""
                 . " aria-label=\"" . rex_escape($this->getText('a11y_video_from')) . " " . rex_escape($videoInfo['platform']) . "\"";
+            // Never set src attribute for YouTube/Vimeo - this should be done by JavaScript after consent
         } else {
             $code .= " src=\"" . rex_escape($sourceUrl) . "\"";
         }
@@ -439,11 +440,24 @@ class Video
     {
         return preg_replace_callback('/<oembed url="(.+?)"><\/oembed>/is', static function ($match) {
             $video = new self($match[1]);
-            $video->setAttributes([
-                'crossorigin' => '',
-                'playsinline' => true,
-                'controls' => true
-            ]);
+            $videoInfo = self::getVideoInfo($match[1]);
+            
+            // For YouTube/Vimeo videos, don't use native controls - let Vidstack handle the UI
+            if ($videoInfo['platform'] === 'youtube' || $videoInfo['platform'] === 'vimeo') {
+                $video->setAttributes([
+                    'crossorigin' => '',
+                    'playsinline' => true,
+                    'controls' => false  // Important: disable native controls for embed videos
+                ]);
+            } else {
+                // For regular video files, use native controls
+                $video->setAttributes([
+                    'crossorigin' => '',
+                    'playsinline' => true,
+                    'controls' => true
+                ]);
+            }
+            
             return $video->generateFull();
         }, $content);
     }
