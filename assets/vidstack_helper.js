@@ -28,11 +28,11 @@
     }
 
     function rebuildMediaPlayer(existingPlayer, platform, videoId, placeholder) {
-        // Store the original attributes and innerHTML
+        // Store the original attributes and innerHTML, including the style attribute
         const attributes = {};
         for (let i = 0; i < existingPlayer.attributes.length; i++) {
             const attr = existingPlayer.attributes[i];
-            if (attr.name !== 'src' && attr.name !== 'style') {
+            if (attr.name !== 'src') { // Preserve all attributes except 'src'
                 attributes[attr.name] = attr.value;
             }
         }
