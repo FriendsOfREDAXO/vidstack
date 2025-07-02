@@ -32,8 +32,35 @@
         const mediaPlayer = placeholder.nextElementSibling;
 
         if (mediaPlayer?.tagName.toLowerCase() === 'media-player') {
-            mediaPlayer.style.display = '';
-            mediaPlayer.setAttribute('src', `${platform}/${videoId}`);
+            // Store the original attributes and innerHTML
+            const attributes = {};
+            for (let i = 0; i < mediaPlayer.attributes.length; i++) {
+                const attr = mediaPlayer.attributes[i];
+                if (attr.name !== 'src') {
+                    attributes[attr.name] = attr.value;
+                }
+            }
+            const innerHTML = mediaPlayer.innerHTML;
+            
+            // Remove the existing media player
+            mediaPlayer.remove();
+            
+            // Create a new media player element with the correct src from the start
+            const newPlayer = document.createElement('media-player');
+            
+            // Set all attributes including the new src
+            for (const [name, value] of Object.entries(attributes)) {
+                newPlayer.setAttribute(name, value);
+            }
+            newPlayer.setAttribute('src', `${platform}/${videoId}`);
+            
+            // Set inner HTML
+            newPlayer.innerHTML = innerHTML;
+            
+            // Insert the new player after the placeholder
+            placeholder.insertAdjacentElement('afterend', newPlayer);
+            
+            // Hide the placeholder
             placeholder.style.display = 'none';
         } else {
             console.error('Media player element not found');
@@ -76,11 +103,54 @@
         const platform = player.dataset.videoPlatform;
         if (hasConsent(platform)) {
             const videoId = player.dataset.videoId;
-            player.style.display = '';
-            player.setAttribute('src', `${platform}/${videoId}`);
+            
+            // Check if src is already set - if so, the player is already properly configured
+            if (player.getAttribute('src')) {
+                // Make sure the player is visible and the placeholder is hidden
+                player.style.display = '';
+                const placeholder = player.previousElementSibling;
+                if (placeholder?.classList.contains('consent-placeholder')) {
+                    placeholder.style.display = 'none';
+                }
+                return;
+            }
+            
+            // Only recreate the player if no src is set
+            
+            // Store the original attributes and innerHTML
+            const attributes = {};
+            for (let i = 0; i < player.attributes.length; i++) {
+                const attr = player.attributes[i];
+                if (attr.name !== 'src' && attr.name !== 'style') {
+                    attributes[attr.name] = attr.value;
+                }
+            }
+            const innerHTML = player.innerHTML;
             const placeholder = player.previousElementSibling;
+            
+            // Remove the existing media player
+            player.remove();
+            
+            // Create a new media player element with the correct src from the start
+            const newPlayer = document.createElement('media-player');
+            
+            // Set all attributes including the new src
+            for (const [name, value] of Object.entries(attributes)) {
+                newPlayer.setAttribute(name, value);
+            }
+            newPlayer.setAttribute('src', `${platform}/${videoId}`);
+            
+            // Set inner HTML
+            newPlayer.innerHTML = innerHTML;
+            
+            // Insert the new player
             if (placeholder?.classList.contains('consent-placeholder')) {
+                placeholder.insertAdjacentElement('afterend', newPlayer);
                 placeholder.style.display = 'none';
+            } else {
+                // If no placeholder, insert at the end of the container
+                const container = placeholder?.parentNode || document.body;
+                container.appendChild(newPlayer);
             }
         }
     }
