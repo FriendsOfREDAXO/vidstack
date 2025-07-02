@@ -27,14 +27,51 @@
         return videoConsent[platform] === true || document.cookie.includes(`${platform}_consent=true`);
     }
 
+    function rebuildMediaPlayer(existingPlayer, platform, videoId, placeholder) {
+        // Store the original attributes and innerHTML
+        const attributes = {};
+        for (let i = 0; i < existingPlayer.attributes.length; i++) {
+            const attr = existingPlayer.attributes[i];
+            if (attr.name !== 'src' && attr.name !== 'style') {
+                attributes[attr.name] = attr.value;
+            }
+        }
+        const innerHTML = existingPlayer.innerHTML;
+        
+        // Remove the existing media player
+        existingPlayer.remove();
+        
+        // Create a new media player element with the correct src from the start
+        const newPlayer = document.createElement('media-player');
+        
+        // Set all attributes including the new src
+        for (const [name, value] of Object.entries(attributes)) {
+            newPlayer.setAttribute(name, value);
+        }
+        newPlayer.setAttribute('src', `${platform}/${videoId}`);
+        
+        // Set inner HTML
+        newPlayer.innerHTML = innerHTML;
+        
+        // Insert the new player
+        if (placeholder?.classList.contains('consent-placeholder')) {
+            placeholder.insertAdjacentElement('afterend', newPlayer);
+            placeholder.style.display = 'none';
+        } else {
+            // If no placeholder, insert at the end of the container
+            const container = placeholder?.parentNode || document.body;
+            container.appendChild(newPlayer);
+        }
+        
+        return newPlayer;
+    }
+
     function loadVideo(placeholder) {
         const { platform, videoId } = placeholder.dataset;
         const mediaPlayer = placeholder.nextElementSibling;
 
         if (mediaPlayer?.tagName.toLowerCase() === 'media-player') {
-            mediaPlayer.style.display = '';
-            mediaPlayer.setAttribute('src', `${platform}/${videoId}`);
-            placeholder.style.display = 'none';
+            rebuildMediaPlayer(mediaPlayer, platform, videoId, placeholder);
         } else {
             console.error('Media player element not found');
         }
@@ -76,12 +113,21 @@
         const platform = player.dataset.videoPlatform;
         if (hasConsent(platform)) {
             const videoId = player.dataset.videoId;
-            player.style.display = '';
-            player.setAttribute('src', `${platform}/${videoId}`);
-            const placeholder = player.previousElementSibling;
-            if (placeholder?.classList.contains('consent-placeholder')) {
-                placeholder.style.display = 'none';
+            
+            // Check if src is already set - if so, the player is already properly configured
+            if (player.hasAttribute('src')) {
+                // Make sure the player is visible and the placeholder is hidden
+                player.style.display = '';
+                const placeholder = player.previousElementSibling;
+                if (placeholder?.classList.contains('consent-placeholder')) {
+                    placeholder.style.display = 'none';
+                }
+                return;
             }
+            
+            // Only recreate the player if no src is set
+            const placeholder = player.previousElementSibling;
+            rebuildMediaPlayer(player, platform, videoId, placeholder);
         }
     }
 
