@@ -7,17 +7,6 @@
     --aspect-ratio: 16 / 9; /* Default aspect ratio, can be overridden via style attribute */
 }
 
-/* Override the hardcoded aspect ratio with our custom property */
-[data-media-player][data-view-type=video] {
-    aspect-ratio: var(--aspect-ratio, 16 / 9);
-}
-
-/* Override for videos without explicit dimensions */
-[data-media-player] video:not([width]):not([height]),
-[data-media-player] iframe:not([width]):not([height]) {
-    aspect-ratio: var(--aspect-ratio, 16 / 9);
-}
-
 .video-container media-player {
     width: 100%;
 }
