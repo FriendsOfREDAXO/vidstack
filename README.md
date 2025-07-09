@@ -89,6 +89,68 @@ echo $video->generateFull();
 
 **Wie es funktioniert:** Der Browser wählt automatisch die beste verfügbare Quelle basierend auf Gerätegröße und Netzwerkbedingungen. Die Quellen werden nach Qualität sortiert ausgegeben (höchste zuerst). Das Sorting wird gecacht für bessere Performance.
 
+### Aspect Ratio Control für Portrait-Videos und andere Formate
+
+Mit dem neuen Aspect Ratio Control können Videos in ihrem natürlichen Seitenverhältnis dargestellt werden - keine schwarzen Balken mehr bei Portrait-Videos!
+
+```php
+<?php
+use FriendsOfRedaxo\VidStack\Video;
+
+// Portrait-Video (9:16) - Keine schwarzen Balken mehr!
+$video = new Video('portrait-video.mp4', 'Portrait Video');
+$video->setAspectRatio('9 / 16');
+echo $video->generateFull();
+
+// Quadratisches Video (1:1) - Perfekt für Social Media
+$video = new Video('square-video.mp4', 'Square Video');
+$video->setAspectRatio('1 / 1');
+echo $video->generateFull();
+
+// Klassisches TV-Format (4:3) - Archivmaterial
+$video = new Video('classic-video.mp4', 'Classic Video');
+$video->setAspectRatio('4 / 3');
+echo $video->generateFull();
+
+// Ultra-Wide/Kino-Format (21:9) - Cinematisch
+$video = new Video('cinematic-video.mp4', 'Cinematic Video');
+$video->setAspectRatio('21 / 9');
+echo $video->generateFull();
+```
+
+**Unterstützte Seitenverhältnisse:**
+- **16 / 9** - Standard HD/4K (Standard, rückwärtskompatibel)
+- **9 / 16** - Portrait/Vertikal (Smartphone-Videos, Stories, Shorts)
+- **4 / 3** - Klassisches TV-Format (Dokumentationen, Archivmaterial)
+- **1 / 1** - Quadratisch (Instagram-Posts, Social Media)
+- **21 / 9** - Ultra-Wide/Kino (filmische Inhalte)
+- **3 / 2** - Klassisches Fotoformat
+- **Custom** - Jeder gültige CSS aspect-ratio Wert
+
+**Responsive Aspect Ratio mit CSS:**
+```css
+/* Portrait auf Mobile, Landscape auf Desktop */
+@media (max-width: 768px) and (orientation: portrait) {
+    .responsive-video {
+        --aspect-ratio: 9 / 16;
+    }
+}
+
+@media (min-width: 769px) {
+    .responsive-video {
+        --aspect-ratio: 16 / 9;
+    }
+}
+```
+
+**Vorteile:**
+- Keine schwarzen Balken mehr bei Portrait-Videos
+- Perfekt für moderne Content-Erstellung (TikTok, Instagram Stories, YouTube Shorts)
+- Flexibel - unterstützt alle gängigen Seitenverhältnisse
+- Responsive - kann mit CSS Media Queries angepasst werden
+- Rückwärtskompatibel - bestehende Videos behalten 16:9 Format
+- Funktioniert überall - lokale Videos, YouTube, Vimeo
+
 ### Grundlegende Verwendung
 
 ```php
@@ -229,6 +291,7 @@ __construct($source, $title = '', $lang = 'de'): void
 - `setThumbnails($thumbnailsUrl): void`: Thumbnail-Vorschaubilder (VTT-Format)
 - `setPoster($posterSrc, $posterAlt): void`: Poster-Bild für das Video setzen
 - `addSubtitle($src, $kind, $label, $lang, $default = false): void`: Untertitel hinzufügen
+- `setAspectRatio(string $aspectRatio): void`: Seitenverhältnis für das Video setzen (z.B. '16 / 9', '9 / 16', '4 / 3', '1 / 1')
 - `generateFull(): string`: Vollständiger HTML-Code mit allen Schikanen
 - `generate(): string`: Einfacher Video-Player ohne Schnickschnack
 - `isMedia($url): bool`: Prüft, ob es sich um eine Mediendatei handelt
@@ -314,6 +377,9 @@ use FriendsOfRedaxo\VidStack\Video;
 
 // Initialisierung des Video-Objekts
 $video = new Video('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Ultimate Rickroll Experience', 'en');
+
+// Seitenverhältnis setzen (z.B. für Portrait-Format)
+$video->setAspectRatio('9 / 16');
 
 // Setzen aller möglichen Player-Attribute
 $video->setAttributes([
