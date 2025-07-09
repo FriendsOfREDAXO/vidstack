@@ -10,6 +10,7 @@ return [
         'a11y_video_player' => 'Video-Player',
         'a11y_video_from' => 'Video von',
         'a11y_additional_information' => 'Zusätzliche Informationen',
+        'Load Video' => 'Video laden',
     ],
     'en' => [
         'video_description' => 'Description',
@@ -21,6 +22,7 @@ return [
         'a11y_video_player' => 'Video Player',
         'a11y_video_from' => 'Video from',
         'a11y_additional_information' => 'Additional Information',
+        'Load Video' => 'Load Video',
     ],
     'es' => [
         'video_description' => 'Descripción',
@@ -32,6 +34,7 @@ return [
         'a11y_video_player' => 'Reproductor de video',
         'a11y_video_from' => 'Video de',
         'a11y_additional_information' => 'Información adicional',
+        'Load Video' => 'Cargar Video',
     ],
     'si' => [
         'video_description' => 'Opis',
@@ -43,6 +46,7 @@ return [
         'a11y_video_player' => 'Predvajalnik videa',
         'a11y_video_from' => 'Video iz',
         'a11y_additional_information' => 'Dodatne informacije',
+        'Load Video' => 'Naloži Video',
     ],
     'fr' => [
         'video_description' => 'Description',
@@ -54,6 +58,7 @@ return [
         'a11y_video_player' => 'Lecteur vidéo',
         'a11y_video_from' => 'Vidéo de',
         'a11y_additional_information' => 'Informations supplémentaires',
+        'Load Video' => 'Charger Vidéo',
     ],
 ];
 ?>
