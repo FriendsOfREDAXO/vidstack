@@ -3,8 +3,7 @@
 }
 
 [data-media-player] { 
-    contain: layout;
-    --aspect-ratio: 16 / 9; /* Default aspect ratio, can be overridden via style attribute */
+    contain: layout; 
 }
 
 .video-container media-player {
@@ -42,7 +41,7 @@
 }
 .video-wrapper {
     position: relative;
-    aspect-ratio: var(--aspect-ratio, 16 / 9);
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
     height: 0;
     overflow: hidden;
 }

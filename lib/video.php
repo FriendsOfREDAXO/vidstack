@@ -25,9 +25,6 @@ class Video
     private array $sources = [];
     private bool $useMultipleSources = false;
     private array $sortedSources = []; // Cache für sortierte Sources
-    
-    // Aspect Ratio Control
-    private string $aspectRatio = '16 / 9';
 
     public function __construct(string $source, string $title = '', string $lang = 'de')
     {
@@ -99,16 +96,6 @@ class Video
             'lang' => $lang,
             'default' => $default
         ];
-    }
-
-    /**
-     * Setzt das Seitenverhältnis für das Video
-     * 
-     * @param string $aspectRatio Seitenverhältnis im CSS-Format (z.B. '16 / 9', '9 / 16', '4 / 3', '1 / 1')
-     */
-    public function setAspectRatio(string $aspectRatio): void
-    {
-        $this->aspectRatio = $aspectRatio;
     }
 
     /**
@@ -386,10 +373,7 @@ class Video
         $mediaType = $isAudio ? 'audio' : 'video';
         $videoInfo = self::getVideoInfo($this->source);
 
-        // Add aspect ratio as CSS custom property for video players
-        $aspectRatioStyle = $isAudio ? '' : " style=\"--aspect-ratio: " . rex_escape($this->aspectRatio) . ";\"";
-
-        $code = "<media-player{$titleAttr}{$attributesString}{$aspectRatioStyle}";
+        $code = "<media-player{$titleAttr}{$attributesString}";
 
         if (!$isAudio && $videoInfo['platform'] !== 'default') {
             $code .= " data-video-platform=\"" . rex_escape($videoInfo['platform']) . "\" data-video-id=\"" . rex_escape($videoInfo['id']) . "\""
@@ -438,7 +422,7 @@ class Video
     public function generateConsentPlaceholder(string $consentText, string $platform, string $videoId): string
     {
         $buttonText = $this->getText('Load Video');
-        return "<div class=\"consent-placeholder\" aria-hidden=\"true\" data-platform=\"" . rex_escape($platform) . "\" data-video-id=\"" . rex_escape($videoId) . "\" style=\"aspect-ratio: " . rex_escape($this->aspectRatio) . ";\">"
+        return "<div class=\"consent-placeholder\" aria-hidden=\"true\" data-platform=\"" . rex_escape($platform) . "\" data-video-id=\"" . rex_escape($videoId) . "\" style=\"aspect-ratio: 16/9;\">"
             . "<p>" . rex_escape($consentText) . "</p>"
             . "<button type=\"button\" class=\"consent-button\">" . rex_escape($buttonText) . "</button>"
             . "</div>";
