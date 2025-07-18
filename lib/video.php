@@ -489,10 +489,132 @@ class Video
                 $newContent = $media->generate();
             }
 
+            // Video-Informationen hinzufügen, wenn FFmpeg-AddOn verfügbar ist
+            $videoInfo = self::getFFmpegVideoInfo($file);
+            if ($videoInfo) {
+                $newContent .= $videoInfo;
+            }
+
             return $existingContent . $newContent;
         }
 
         return $existingContent;
+    }
+
+    /**
+     * Video-Informationen für die Sidebar abrufen und formatieren
+     * 
+     * @param string $filename Dateiname der Video-Datei
+     * @return string|null HTML mit Video-Informationen oder null
+     */
+    private static function getFFmpegVideoInfo(string $filename): ?string
+    {
+        // Prüfen ob FFmpeg-AddOn verfügbar ist
+        $ffmpegAddon = \rex_addon::get('ffmpeg');
+        if (!$ffmpegAddon->isAvailable()) {
+            return null;
+        }
+
+        // Nur für Video-Dateien Informationen anzeigen
+        if (self::isAudio($filename)) {
+            return null;
+        }
+
+        try {
+            // Video-Informationen über FFmpeg-AddOn abrufen
+            $videoInfo = \FriendsOfRedaxo\FFmpeg\VideoInfo::getBasicInfo($filename);
+            
+            if (!$videoInfo) {
+                return null;
+            }
+
+            // Kompakte HTML-Ausgabe der Video-Informationen
+            $html = '<div class="vidstack-video-info">';
+            $html .= '<h4>Video-Informationen</h4>';
+            
+            // Dimensionen
+            if ($videoInfo['width'] && $videoInfo['height']) {
+                $html .= '<div><strong>Auflösung:</strong> ' . 
+                         rex_escape($videoInfo['width']) . ' × ' . rex_escape($videoInfo['height']) . ' px';
+                if ($videoInfo['aspect_ratio']) {
+                    $html .= ' (' . rex_escape($videoInfo['aspect_ratio']) . ')';
+                }
+                $html .= '</div>';
+            }
+            
+            // Codec
+            if ($videoInfo['video_codec']) {
+                $html .= '<div><strong>Video-Codec:</strong> ' . 
+                         rex_escape(strtoupper($videoInfo['video_codec'])) . '</div>';
+            }
+            
+            // Dauer
+            if ($videoInfo['duration_formatted']) {
+                $html .= '<div><strong>Dauer:</strong> ' . 
+                         rex_escape($videoInfo['duration_formatted']) . '</div>';
+            }
+            
+            // Dateigröße
+            if ($videoInfo['filesize_formatted']) {
+                $html .= '<div><strong>Dateigröße:</strong> ' . 
+                         rex_escape($videoInfo['filesize_formatted']) . '</div>';
+            }
+            
+            // Bitrate (optional, nur bei sinnvollen Werten)
+            if ($videoInfo['bitrate_formatted'] && $videoInfo['bitrate'] > 0) {
+                $html .= '<div><strong>Bitrate:</strong> ' . 
+                         rex_escape($videoInfo['bitrate_formatted']) . '</div>';
+            }
+            
+            // Action-Buttons für FFmpeg-Tools hinzufügen
+            $html .= self::generateFFmpegActionButtons($filename);
+            
+            $html .= '</div>';
+            
+            return $html;
+            
+        } catch (\Exception $e) {
+            // Bei Fehlern stillschweigend ignorieren
+            return null;
+        }
+    }
+
+    /**
+     * Generiert Action-Buttons für FFmpeg-Tools
+     * 
+     * @param string $filename Dateiname der Video-Datei
+     * @return string HTML mit Action-Buttons
+     */
+    private static function generateFFmpegActionButtons(string $filename): string
+    {
+        // Zusätzliche Prüfung: Sind die FFmpeg-Seiten verfügbar?
+        $ffmpegAddon = \rex_addon::get('ffmpeg');
+        if (!$ffmpegAddon->isAvailable()) {
+            return '';
+        }
+
+        $buttons = '<div class="vidstack-action-buttons">';
+        $buttons .= '<div class="vidstack-action-buttons-label"><strong>Video-Tools:</strong></div>';
+        $buttons .= '<div class="vidstack-action-buttons-group">';
+        
+        // Trimmer-Button
+        $trimmerUrl = rex_url::backendPage('mediapool/ffmpeg/trimmer') . '&video=' . urlencode($filename);
+        $buttons .= '<a href="' . rex_escape($trimmerUrl) . '" class="btn btn-xs btn-primary vidstack-tool-btn" title="Video trimmen und schneiden">';
+        $buttons .= '<i class="rex-icon fa-cut"></i> Trimmen</a>';
+        
+        // Optimieren-Button (zur Haupt-FFmpeg-Seite)
+        $optimizeUrl = rex_url::backendPage('mediapool/ffmpeg') . '&video=' . urlencode($filename);
+        $buttons .= '<a href="' . rex_escape($optimizeUrl) . '" class="btn btn-xs btn-success vidstack-tool-btn" title="Video für Web optimieren">';
+        $buttons .= '<i class="rex-icon fa-compress"></i> Optimieren</a>';
+        
+        // Info-Button
+        $infoUrl = rex_url::backendPage('mediapool/ffmpeg/info') . '&video=' . urlencode($filename);
+        $buttons .= '<a href="' . rex_escape($infoUrl) . '" class="btn btn-xs btn-info vidstack-tool-btn" title="Detaillierte Video-Informationen">';
+        $buttons .= '<i class="rex-icon fa-info-circle"></i> Details</a>';
+        
+        $buttons .= '</div></div>';
+        
+        return $buttons;
     }
 
     /**

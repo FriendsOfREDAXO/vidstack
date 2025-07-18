@@ -213,7 +213,53 @@ $audio = new Video('podcast.mp3', 'Podcast Episode #42');
 echo $audio->generate();
 ```
 
-## 🛠 Die Class
+## � FFmpeg-Integration (Backend-Funktionalität)
+
+Wenn das [FFmpeg-AddOn](https://github.com/FriendsOfREDAXO/ffmpeg) installiert und aktiv ist, zeigt Vidstack automatisch detaillierte Video-Informationen im Medienpool an.
+
+### Was wird angezeigt?
+
+Im Medienpool wird unter jedem Video automatisch eine kompakte Informationsbox eingeblendet mit:
+
+- **Auflösung**: Breite × Höhe in Pixeln (z.B. 1920 × 1080 px) und Seitenverhältnis (z.B. 16:9)
+- **Video-Codec**: Komprimierungsformat (z.B. H264, VP9, AV1)
+- **Dauer**: Formatierte Videolänge (z.B. 05:42 oder 01:23:45)
+- **Dateigröße**: Größe der Videodatei (z.B. 45.2 MB)
+- **Bitrate**: Datenrate des Videos (z.B. 2.4 Mbps) - nur bei aussagekräftigen Werten
+
+### Voraussetzungen
+
+```bash
+# FFmpeg muss auf dem Server installiert sein
+ffmpeg -version
+
+# FFmpeg-AddOn in REDAXO installieren und aktivieren
+```
+
+### Funktionsweise
+
+Die Integration erfolgt vollautomatisch:
+
+1. **Automatische Erkennung**: Vidstack prüft beim Laden einer Video-Datei im Medienpool, ob das FFmpeg-AddOn verfügbar ist
+2. **Video-Analyse**: Falls verfügbar, werden die Video-Metadaten über die FFmpeg VideoInfo-Klasse ausgelesen
+3. **Anzeige**: Die Informationen werden kompakt unter dem Video-Player dargestellt
+4. **Action-Buttons**: Direkte Verlinkung zu FFmpeg-Tools für weitere Bearbeitung
+
+### Action-Buttons
+
+Unter den Video-Informationen werden praktische Buttons angezeigt:
+
+- **🔧 Trimmen**: Öffnet den FFmpeg-Trimmer zum Schneiden des Videos
+- **📦 Optimieren**: Startet die Komprimierung für Web-optimierte Versionen  
+- **ℹ️ Details**: Zeigt ausführliche technische Video-Informationen
+
+Die Buttons führen direkt zu den entsprechenden FFmpeg-Tools und übertragen automatisch den Dateinamen.
+
+### Ohne FFmpeg-AddOn
+
+Ohne das FFmpeg-AddOn funktioniert Vidstack weiterhin normal, zeigt aber keine technischen Video-Informationen an.
+
+## �🛠 Die Class
 
 ### Konstruktor
 ```php
