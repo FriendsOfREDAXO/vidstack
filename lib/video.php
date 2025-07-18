@@ -7,7 +7,8 @@ use rex_path;
 use rex_url;
 use rex_media;
 use rex_extension;
-use rex_extension_point; 
+use rex_extension_point;
+use rex_i18n; 
 
 class Video
 {
@@ -530,11 +531,11 @@ class Video
 
             // Kompakte HTML-Ausgabe der Video-Informationen
             $html = '<div class="vidstack-video-info">';
-            $html .= '<h4>Video-Informationen</h4>';
+            $html .= '<h4>' . rex_i18n::msg('vidstack_video_info_title') . '</h4>';
             
             // Dimensionen
             if ($videoInfo['width'] && $videoInfo['height']) {
-                $html .= '<div><strong>Auflösung:</strong> ' . 
+                $html .= '<div><strong>' . rex_i18n::msg('vidstack_video_info_resolution') . ':</strong> ' . 
                          rex_escape($videoInfo['width']) . ' × ' . rex_escape($videoInfo['height']) . ' px';
                 if ($videoInfo['aspect_ratio']) {
                     $html .= ' (' . rex_escape($videoInfo['aspect_ratio']) . ')';
@@ -544,25 +545,25 @@ class Video
             
             // Codec
             if ($videoInfo['video_codec']) {
-                $html .= '<div><strong>Video-Codec:</strong> ' . 
+                $html .= '<div><strong>' . rex_i18n::msg('vidstack_video_info_codec') . ':</strong> ' . 
                          rex_escape(strtoupper($videoInfo['video_codec'])) . '</div>';
             }
             
             // Dauer
             if ($videoInfo['duration_formatted']) {
-                $html .= '<div><strong>Dauer:</strong> ' . 
+                $html .= '<div><strong>' . rex_i18n::msg('vidstack_video_info_duration') . ':</strong> ' . 
                          rex_escape($videoInfo['duration_formatted']) . '</div>';
             }
             
             // Dateigröße
             if ($videoInfo['filesize_formatted']) {
-                $html .= '<div><strong>Dateigröße:</strong> ' . 
+                $html .= '<div><strong>' . rex_i18n::msg('vidstack_video_info_filesize') . ':</strong> ' . 
                          rex_escape($videoInfo['filesize_formatted']) . '</div>';
             }
             
             // Bitrate (optional, nur bei sinnvollen Werten)
             if ($videoInfo['bitrate_formatted'] && $videoInfo['bitrate'] > 0) {
-                $html .= '<div><strong>Bitrate:</strong> ' . 
+                $html .= '<div><strong>' . rex_i18n::msg('vidstack_video_info_bitrate') . ':</strong> ' . 
                          rex_escape($videoInfo['bitrate_formatted']) . '</div>';
             }
             
@@ -594,23 +595,23 @@ class Video
         }
 
         $buttons = '<div class="vidstack-action-buttons">';
-        $buttons .= '<div class="vidstack-action-buttons-label"><strong>Video-Tools:</strong></div>';
+        $buttons .= '<div class="vidstack-action-buttons-label"><strong>' . rex_i18n::msg('vidstack_video_tools') . ':</strong></div>';
         $buttons .= '<div class="vidstack-action-buttons-group">';
         
         // Trimmer-Button
         $trimmerUrl = rex_url::backendPage('mediapool/ffmpeg/trimmer') . '&video=' . urlencode($filename);
-        $buttons .= '<a href="' . rex_escape($trimmerUrl) . '" class="btn btn-xs btn-primary vidstack-tool-btn" title="Video trimmen und schneiden">';
-        $buttons .= '<i class="rex-icon fa-cut"></i> Trimmen</a>';
+        $buttons .= '<a href="' . rex_escape($trimmerUrl) . '" class="btn btn-xs btn-primary vidstack-tool-btn" title="' . rex_i18n::msg('vidstack_tool_trim_title') . '">';
+        $buttons .= '<i class="rex-icon fa-cut"></i> ' . rex_i18n::msg('vidstack_tool_trim') . '</a>';
         
         // Optimieren-Button (zur Haupt-FFmpeg-Seite)
         $optimizeUrl = rex_url::backendPage('mediapool/ffmpeg') . '&video=' . urlencode($filename);
-        $buttons .= '<a href="' . rex_escape($optimizeUrl) . '" class="btn btn-xs btn-success vidstack-tool-btn" title="Video für Web optimieren">';
-        $buttons .= '<i class="rex-icon fa-compress"></i> Optimieren</a>';
+        $buttons .= '<a href="' . rex_escape($optimizeUrl) . '" class="btn btn-xs btn-success vidstack-tool-btn" title="' . rex_i18n::msg('vidstack_tool_optimize_title') . '">';
+        $buttons .= '<i class="rex-icon fa-compress"></i> ' . rex_i18n::msg('vidstack_tool_optimize') . '</a>';
         
         // Info-Button
         $infoUrl = rex_url::backendPage('mediapool/ffmpeg/info') . '&video=' . urlencode($filename);
-        $buttons .= '<a href="' . rex_escape($infoUrl) . '" class="btn btn-xs btn-info vidstack-tool-btn" title="Detaillierte Video-Informationen">';
-        $buttons .= '<i class="rex-icon fa-info-circle"></i> Details</a>';
+        $buttons .= '<a href="' . rex_escape($infoUrl) . '" class="btn btn-xs btn-info vidstack-tool-btn" title="' . rex_i18n::msg('vidstack_tool_details_title') . '">';
+        $buttons .= '<i class="rex-icon fa-info-circle"></i> ' . rex_i18n::msg('vidstack_tool_details') . '</a>';
         
         $buttons .= '</div></div>';
         

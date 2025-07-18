@@ -1,0 +1,18 @@
+# Backend translations for Vidstack AddOn
+
+# Video information in media pool
+vidstack_video_info_title = Video Information
+vidstack_video_info_resolution = Resolution
+vidstack_video_info_codec = Video Codec
+vidstack_video_info_duration = Duration
+vidstack_video_info_filesize = File Size
+vidstack_video_info_bitrate = Bitrate
+
+# Video tools buttons
+vidstack_video_tools = Video Tools
+vidstack_tool_trim = Trim
+vidstack_tool_optimize = Optimize
+vidstack_tool_details = Details
+vidstack_tool_trim_title = Trim and cut video
+vidstack_tool_optimize_title = Optimize video for web
+vidstack_tool_details_title = Detailed video information
