@@ -382,6 +382,9 @@ class Video
             // Never set src attribute for YouTube/Vimeo - this should be done by JavaScript after consent
         } else {
             $code .= " src=\"" . rex_escape($sourceUrl) . "\"";
+            // Add aria-label for local videos/audio to ensure proper accessibility
+            $ariaLabel = $this->title ?: $this->getText("a11y_{$mediaType}_player");
+            $code .= " aria-label=\"" . rex_escape($ariaLabel) . "\"";
         }
 
         $code .= " crossorigin>";
@@ -389,7 +392,9 @@ class Video
         $code .= "<media-provider>";
 
         if (!$isAudio && !empty($this->poster)) {
-            $code .= "<media-poster class=\"vds-poster\" src=\"" . rex_escape($this->poster['src']) . "\" alt=\"" . rex_escape($this->poster['alt']) . "\"></media-poster>";
+            // Use title as fallback alt text if poster alt is empty for accessibility
+            $posterAlt = !empty($this->poster['alt']) ? $this->poster['alt'] : (!empty($this->title) ? $this->title : $this->getText('a11y_video_poster'));
+            $code .= "<media-poster class=\"vds-poster\" src=\"" . rex_escape($this->poster['src']) . "\" alt=\"" . rex_escape($posterAlt) . "\"></media-poster>";
         }
 
         if ($videoInfo['platform'] === 'default') {
