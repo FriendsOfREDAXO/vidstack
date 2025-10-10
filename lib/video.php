@@ -393,7 +393,7 @@ class Video
 
         if (!$isAudio && !empty($this->poster)) {
             // Use title as fallback alt text if poster alt is empty for accessibility
-            $posterAlt = !empty($this->poster['alt']) ? $this->poster['alt'] : $this->title;
+            $posterAlt = !empty($this->poster['alt']) ? $this->poster['alt'] : (!empty($this->title) ? $this->title : $this->getText('a11y_video_poster'));
             $code .= "<media-poster class=\"vds-poster\" src=\"" . rex_escape($this->poster['src']) . "\" alt=\"" . rex_escape($posterAlt) . "\"></media-poster>";
         }
 
