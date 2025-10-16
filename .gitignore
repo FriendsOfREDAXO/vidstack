@@ -13,3 +13,5 @@ modules.xml
 .idea/encodings.xml
 *.ipr
 node_modules/
+build/dist/
+build/node_modules/

@@ -187,3 +187,12 @@ noscript  .js .a11y-content {
     background-color: #117a8b;
     color: white;
 }
+
+/* CSP-compliant styles to replace inline styles */
+.vds-controls-group {
+    pointer-events: none;
+}
+
+media-slider-video video {
+    max-width: unset;
+}
