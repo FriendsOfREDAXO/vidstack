@@ -209,7 +209,7 @@ echo $video->generateFull();
 - `setThumbnails($url)` - Thumbnail-Sprites (VTT-Datei)
 - `setAttribute($key, $value)` - Einzelnes Attribut setzen
 - `setAttributes($array)` - Mehrere Attribute setzen
-- `setA11yContent($content)` - Barrierefreier Alternativ-Content
+- `setA11yContent($content, $alternativeUrl = '')` - ⚠️ Legacy: Zusätzlicher A11y-Content (meist überflüssig, nutze stattdessen `addTranscript()`)
 - `generate()` - Player-HTML generieren
 - `generateFull()` - Player-HTML mit Container und A11y-Content
 
@@ -335,19 +335,20 @@ Vollständige Steuerung ohne Maus:
 #### Screen-Reader-Optimierung
 
 ```php
-// Skip-Links für schnelle Navigation
-Video::local('video.mp4', 'Tutorial')
-    ->setA11yContent('Detaillierte Videobeschreibung für Screen-Reader')
-    ->generateFull();
-
-// Transkript hinzufügen
+// ✅ Empfohlen: Transkript für Textversion (WCAG 2.1)
 Video::local('interview.mp4', 'Interview')
     ->addTranscript('transcript.vtt', 'Vollständiges Transkript')
     ->generateFull();
 
-// Audiodeskription für blinde Nutzer
+// ✅ Audiodeskription für blinde Nutzer
 Video::local('film.mp4', 'Kurzfilm')
     ->addAudioDescription('audiodesc.vtt', 'Audiodeskription', true)
+    ->generateFull();
+
+// ⚠️ Optional: setA11yContent() - meist nicht notwendig
+// Vidstack hat bereits native Screen-Reader-Unterstützung
+Video::local('video.mp4', 'Tutorial')
+    ->setA11yContent('Zusätzlicher Kontext für Screen-Reader')
     ->generateFull();
 ```
 
@@ -441,12 +442,17 @@ $video->setLoadStrategy('visible');
 $video->enableResume();
 ```
 
-#### 9. A11y-Content für Kontext
+#### 9. Transkripte bevorzugen statt A11y-Content
 ```php
+// ✅ Modern: Transkript verwenden (WCAG 2.1 Standard)
+$video->addTranscript('transcript.vtt', 'Vollständiges Transkript');
+
+// setA11yContent() ist weiterhin vorhanden
+// Vidstack hat bereits native Barrierefreiheit
+// Nur verwenden, wenn zusätzlicher Kontext nötig ist
 $video->setA11yContent(
-    'Dieses Video zeigt die Installation von REDAXO CMS Schritt für Schritt. ' .
-    'Es werden folgende Themen behandelt: Download, Upload, Installation, ' .
-    'erste Schritte im Backend.'
+    'Detaillierte Videobeschreibung für Screen-Reader',
+    'https://alternative-url.de/video'
 );
 ```
 
