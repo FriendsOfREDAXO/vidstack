@@ -343,29 +343,40 @@ class Video
 
         $code = "<div class=\"{$mediaType}-container\" role=\"region\" aria-label=\"" . rex_escape($this->getText("a11y_{$mediaType}_player")) . "\">";
 
-        if (!$isAudio && $videoInfo['platform'] !== 'default') {
-            $consentTextKey = "consent_text_{$videoInfo['platform']}";
-            $consentText = $this->getText($consentTextKey);
-            if ($consentText === "[[{$consentTextKey}]]") {
-                $consentText = $this->getText('consent_text_default');
+        // Consent Manager Integration für YouTube/Vimeo
+        $playerCode = $this->generate();
+        
+        if (!$isAudio && $videoInfo['platform'] !== 'default' && class_exists('consent_manager_inline')) {
+            // Consent Manager verfügbar - Inline-Consent nutzen
+            $serviceKey = strtolower($videoInfo['platform']); // 'youtube' oder 'vimeo'
+            
+            // Optionen für Consent Manager
+            $consentOptions = [
+                'title' => $this->title ?: ucfirst($videoInfo['platform']) . ' Video',
+                'width' => 'auto',
+                'height' => 'auto',
+            ];
+            
+            // Poster-Bild als Thumbnail nutzen, falls vorhanden
+            if (!empty($this->poster['src'])) {
+                $consentOptions['thumbnail'] = $this->poster['src'];
             }
-
-            $code .= $this->generateConsentPlaceholder($consentText, $videoInfo['platform'], $videoInfo['id']);
+            
+            // Consent Manager Inline-Consent verwenden
+            $playerCode = consent_manager_inline::doConsent($serviceKey, $playerCode, $consentOptions);
         }
-
-        $code .= $this->generate();
+        
+        $code .= $playerCode;
 
         if (!$isAudio && $this->a11yContent) {
-            $code .= "<div class=\"a11y-content\" role=\"complementary\" aria-label=\"" . rex_escape($this->getText('a11y_additional_information')) . "\">"
+            $code .= "<div class=\"a11y-content\" role=\"complementary\" aria-label=\"" . rex_escape($this->getText('a11y_additional_information')) . "\">" 
                 . $this->a11yContent
                 . "</div>";
         }
 
         $code .= "</div>";
         return $code;
-    }
-
-    public function generate(): string
+    }    public function generate(): string
     {
         $attributesString = $this->generateAttributesString();
         $titleAttr = $this->title ? " title=\"" . rex_escape($this->title) . "\"" : '';
@@ -376,13 +387,13 @@ class Video
 
         $code = "<media-player{$titleAttr}{$attributesString}";
 
+        // Set src for all video types (YouTube, Vimeo, local)
+        $code .= " src=\"" . rex_escape($sourceUrl) . "\"";
+        
+        // Add aria-label for accessibility
         if (!$isAudio && $videoInfo['platform'] !== 'default') {
-            $code .= " data-video-platform=\"" . rex_escape($videoInfo['platform']) . "\" data-video-id=\"" . rex_escape($videoInfo['id']) . "\""
-                . " aria-label=\"" . rex_escape($this->getText('a11y_video_from')) . " " . rex_escape($videoInfo['platform']) . "\"";
-            // Never set src attribute for YouTube/Vimeo - this should be done by JavaScript after consent
+            $code .= " aria-label=\"" . rex_escape($this->getText('a11y_video_from')) . " " . rex_escape($videoInfo['platform']) . "\"";
         } else {
-            $code .= " src=\"" . rex_escape($sourceUrl) . "\"";
-            // Add aria-label for local videos/audio to ensure proper accessibility
             $ariaLabel = $this->title ?: $this->getText("a11y_{$mediaType}_player");
             $code .= " aria-label=\"" . rex_escape($ariaLabel) . "\"";
         }
@@ -423,15 +434,6 @@ class Video
             $value = $this->attributes[$key];
             return $carry . (is_bool($value) ? ($value ? " " . rex_escape($key) : '') : " " . rex_escape($key) . "=\"" . rex_escape($value) . "\"");
         }, '');
-    }
-
-    public function generateConsentPlaceholder(string $consentText, string $platform, string $videoId): string
-    {
-        $buttonText = $this->getText('Load Video');
-        return "<div class=\"consent-placeholder\" aria-hidden=\"true\" data-platform=\"" . rex_escape($platform) . "\" data-video-id=\"" . rex_escape($videoId) . "\" style=\"aspect-ratio: 16/9;\">"
-            . "<p>" . rex_escape($consentText) . "</p>"
-            . "<button type=\"button\" class=\"consent-button\">" . rex_escape($buttonText) . "</button>"
-            . "</div>";
     }
 
     public static function videoOembedHelper(): void

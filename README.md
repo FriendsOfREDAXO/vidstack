@@ -30,9 +30,7 @@ echo '<script src="' . rex_url::addonAssets('vidstack', 'vidstack_helper.js') . 
 
 Was passiert hier? Wir benutzen `rex_url::addonAssets()`, um die richtigen URLs für unsere Assets zu generieren. Das ist wie ein Zauberstab, der immer auf die korrekten Dateien in deinem REDAXO-Setup zeigt, egal wo sie sich versteckt haben.
 
-Die `vidstack.css` und `vidstack.js` sind die Hauptdarsteller - sie bringen den Video-Player zum Laufen. Die `*_helper`-Dateien sind wie die fleißigen Backstage-Helfer. Sie kümmern sich um Extras wie die DSGVO-Abfrage und andere nützliche Funktionen.
-
-Übrigens: Wenn du nur die `generate()`-Methode verwendest und auf den ganzen Schnickschnack wie Consent-Abfragen verzichten möchtest, kannst du die Helper-Dateien weglassen. Aber für das volle Programm mit `generateFull()` braucht man alle vier Dateien.
+Die `vidstack.css` und `vidstack.js` sind die Hauptdarsteller - sie bringen den Video-Player zum Laufen. Die `*_helper`-Dateien sind wie die fleißigen Backstage-Helfer. Sie kümmern sich um Extras wie Übersetzungen und andere nützliche Funktionen.
 
 So, jetzt aber! Dein REDAXO ist jetzt bereit, Videos mit Style zu servieren. 🎬🍿
 
@@ -160,21 +158,20 @@ $video->addSubtitle('chapters.vtt', 'chapters', 'Kapitel', 'de');
 echo $video->generateFull();
 ```
 
-#### YouTube mit DSGVO-konformer Zwei-Klick-Lösung
+#### YouTube-Video einbinden
 
 ```php
 <?php
 use FriendsOfRedaxo\VidStack\Video;
 
-// YouTube-Video mit Datenschutzhinweis
-$video = new Video('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'DSGVO-konformes YouTube-Video');
+// YouTube-Video einbinden
+$video = new Video('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'YouTube-Video');
 
-// WICHTIG: Für die Consent-Funktionalität müssen die helper-Dateien im Frontend eingebunden sein!
-// Siehe Installation -> Für das Frontend
-
-// generateFull() erzeugt automatisch den DSGVO-konformen Platzhalter für YouTube und Vimeo
+// generateFull() erzeugt den vollständigen Player mit allen Features
 echo $video->generateFull();
 ```
+
+**Datenschutzhinweis:** Für DSGVO-konforme Einbindung von YouTube/Vimeo empfehlen wir die Nutzung des [Consent Manager AddOns](https://github.com/FriendsOfREDAXO/consent_manager), das eine Zwei-Klick-Lösung mit Inline-Consent bietet.
 
 #### Video mit Vorschaubildern für die Zeitleiste (VTT-Format)
 
@@ -286,7 +283,6 @@ __construct($source, $title = '', $lang = 'de'): void
 - `getAlternativeUrl(): string`: Gibt eine alternative URL für das Video zurück
 - `getVideoInfo($source): array`: Gibt Informationen über das Video zurück (Plattform und ID) [Statische Methode]
 - `generateAttributesString(): string`: Generiert einen String mit allen gesetzten Attributen
-- `generateConsentPlaceholder(string $consentText, string $platform, string $videoId): string`: Generiert einen Platzhalter für die Consent-Abfrage
 
 ## 📋 Optionen und Pflichtangaben
 
@@ -412,44 +408,7 @@ Dieses Beispiel zeigt die Hauptfunktionalität des Players mit allen verfügbare
 
 Die folgenden erweiterten Methoden sind für spezielle Anwendungsfälle gedacht, wenn Sie mehr Kontrolle über den Player benötigen oder eigene Implementierungen erstellen möchten.
 
-### Beispiel 1: Eigenen DSGVO-konformen Player mit zwei-Klick-Lösung erstellen
-
-```php
-<?php
-use FriendsOfRedaxo\VidStack\Video;
-
-// Video-Objekt erstellen
-$video = new Video('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Datenschutzkonformes YouTube-Video');
-
-// Plattform und Video-ID ermitteln
-$videoInfo = Video::getVideoInfo($video->getSourceUrl());
-
-// Nur wenn es ein YouTube oder Vimeo Video ist, DSGVO-Abfrage anzeigen
-if ($videoInfo['platform'] !== 'default') {
-    // Angepassten Consent-Text erstellen
-    $consentText = "Um dieses {$videoInfo['platform']}-Video anzusehen, klicken Sie bitte auf 'Video laden'. " .
-                  "Dadurch werden Daten an {$videoInfo['platform']} übermittelt. " .
-                  "Weitere Informationen finden Sie in unserer Datenschutzerklärung.";
-    
-    // Container mit eigener Klasse für Styling erstellen
-    echo '<div class="custom-video-consent">';
-    
-    // Vorschaubild mit Platzhalter anzeigen (nutzt die Video-Klassen-Methode)
-    echo $video->generateConsentPlaceholder($consentText, $videoInfo['platform'], $videoInfo['id']);
-    
-    // Informationstext anzeigen
-    echo '<div class="consent-info">';
-    echo '<p>Video-Quelle: ' . htmlspecialchars($video->getSourceUrl()) . '</p>';
-    echo '</div>';
-    
-    echo '</div>';
-} else {
-    // Bei lokalen Videos direkt anzeigen
-    echo $video->generate();
-}
-```
-
-### Beispiel 2: Erweiterter Player mit Analytics-Integration
+### Beispiel 1: Erweiterter Player mit Analytics-Integration
 
 ```php
 <?php
@@ -501,7 +460,7 @@ EOT;
 echo createTrackedVideo('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Tracking-Demo');
 ```
 
-### Beispiel 3: Eigenes Player-Layout mit vorgenerierten Elementen erstellen
+### Beispiel 2: Eigenes Player-Layout mit zusätzlichen Informationen
 
 ```php
 <?php
@@ -511,8 +470,7 @@ function createCustomLayoutVideo($source, $title, $showInfo = true) {
     $video = new Video($source, $title);
     
     // Video-Info ermitteln
-    $videoInfo = $video->getVideoInfo();
-    $isYouTube = $videoInfo['platform'] === 'youtube';
+    $videoInfo = Video::getVideoInfo($source);
     
     // Custom Container erstellen
     $output = '<div class="custom-video-player">';
@@ -522,8 +480,9 @@ function createCustomLayoutVideo($source, $title, $showInfo = true) {
         $output .= '<div class="video-header">';
         $output .= '<h3>' . htmlspecialchars($title) . '</h3>';
         
-        if ($isYouTube) {
-            $output .= '<div class="platform-info">Quelle: YouTube</div>';
+        if ($videoInfo['platform'] !== 'default') {
+            $platformName = ucfirst($videoInfo['platform']);
+            $output .= '<div class="platform-info">Quelle: ' . htmlspecialchars($platformName) . '</div>';
         }
         
         $output .= '</div>';
@@ -531,16 +490,7 @@ function createCustomLayoutVideo($source, $title, $showInfo = true) {
     
     // Player-Container
     $output .= '<div class="video-container">';
-    
-    // Für YouTube wird der Consent-Platzhalter verwendet
-    if ($isYouTube) {
-        $consentText = "YouTube-Videos werden erst nach Zustimmung geladen, um Ihre Privatsphäre zu schützen.";
-        $output .= $video->generateConsentPlaceholder($consentText, 'youtube', $videoInfo['id']);
-    } else {
-        // Für lokale Videos normalen Player anzeigen
-        $output .= $video->generate();
-    }
-    
+    $output .= $video->generate();
     $output .= '</div>';
     
     // Custom Controls oder zusätzliche Informationen
@@ -559,7 +509,7 @@ function createCustomLayoutVideo($source, $title, $showInfo = true) {
 echo createCustomLayoutVideo('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Custom Layout Demo');
 ```
 
-### Beispiel 4: Adaptive Einbindung basierend auf Gerätetyp
+### Beispiel 3: Adaptive Einbindung basierend auf Gerätetyp
 
 ```php
 <?php
@@ -602,7 +552,7 @@ $isMobile = strpos($_SERVER['HTTP_USER_AGENT'], 'Mobile') !== false;
 echo createResponsiveVideo('https://example.com/video.mp4', 'Responsives Video', $isMobile);
 ```
 
-### Beispiel 5: Integration mit REX_MEDIA-Variablen
+### Beispiel 4: Integration mit REX_MEDIA-Variablen
 
 ```php
 <?php
@@ -681,45 +631,58 @@ Hier muss man nichts machen - außer Videos schauen.
 ![Screenshot](https://github.com/FriendsOfREDAXO/vidstack/blob/assets/mediapool.png?raw=true)
 
 
-## 🍪 Consent und Kekse
+## 🔒 DSGVO & Datenschutz für YouTube/Vimeo
 
-Leider muss es ja sein. 
+Für die datenschutzkonforme Einbindung von YouTube- und Vimeo-Videos nutzt Vidstack automatisch das **[Consent Manager AddOn](https://github.com/FriendsOfREDAXO/consent_manager)**, falls installiert.
 
-Hiermit kann man in einem Consent-Manager oder auch so mal zwischendurch die Erlaubnis für Vimeo oder Youtube setzen. Wer keine Cookies erlaubt bekommt halt Local-Storage 😉.
+### Automatische Integration
 
-```js
-<script>
-// YouTube
-(()=>{let v=JSON.parse(localStorage.getItem('video_consent')||'{}');v.youtube=true;localStorage.setItem('video_consent',JSON.stringify(v));document.cookie='youtube_consent=true; path=/; max-age=2592000; SameSite=Lax; Secure';})();
-// Vimeo
-(()=>{let v=JSON.parse(localStorage.getItem('video_consent')||'{}');v.vimeo=true;localStorage.setItem('video_consent',JSON.stringify(v));document.cookie='vimeo_consent=true; path=/; max-age=2592000; SameSite=Lax; Secure';})();
-</script>
+Der Consent Manager bietet:
+- ✅ **Inline-Consent**: Platzhalter mit Zwei-Klick-Lösung direkt beim Video
+- ✅ **Automatisches Blocking**: Videos werden erst nach Zustimmung geladen
+- ✅ **Cookie-Verwaltung**: Zentrale Verwaltung aller Consent-Einstellungen
+- ✅ **Mehrsprachig**: Deutsche und englische Texte
+- ✅ **Anpassbar**: 5 Theme-Varianten und individuelle Texte
+
+### Voraussetzungen
+
+1. **Consent Manager installieren**:
+   ```
+   REDAXO Installer → AddOns → consent_manager
+   ```
+
+2. **Services konfigurieren**:
+   ```
+   Consent Manager → Services → YouTube/Vimeo hinzufügen
+   ```
+   
+   Empfohlene Service-UIDs:
+   - `youtube` für YouTube-Videos
+   - `vimeo` für Vimeo-Videos
+
+### Beispiel-Integration
+
+```php
+<?php
+use FriendsOfRedaxo\VidStack\Video;
+
+// YouTube-Video einbinden
+$video = new Video('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Mein Video');
+$video->setPoster('vorschau.jpg', 'Vorschaubild');
+
+// generateFull() nutzt automatisch den Consent Manager, falls verfügbar
+echo $video->generateFull();
 ```
 
-oder für beide
-```js
-<script>
-// Consent für alle unterstützten Video-Plattformen automatisch setzen
-(function() {
-    // Vorhandene Einstellungen auslesen
-    let videoConsent = JSON.parse(localStorage.getItem('video_consent') || '{}');
-    
-    // Consent für alle Plattformen setzen
-    videoConsent.youtube = true;
-    videoConsent.vimeo = true;
-    
-    // Speichern in localStorage
-    localStorage.setItem('video_consent', JSON.stringify(videoConsent));
-    
-    // Cookies ebenfalls setzen
-    document.cookie = 'youtube_consent=true; path=/; max-age=2592000; SameSite=Lax; Secure';
-    document.cookie = 'vimeo_consent=true; path=/; max-age=2592000; SameSite=Lax; Secure';
-    
-    // Optional: Event auslösen, um vorhandene Player zu aktualisieren
-    document.dispatchEvent(new Event('vsrun'));
-})();
-    </script>
-```
+**Wie es funktioniert:**
+- `generateFull()` erkennt automatisch YouTube/Vimeo-URLs
+- Falls Consent Manager installiert ist: Inline-Consent-Platzhalter wird gezeigt
+- Falls nicht installiert: Video wird direkt geladen (ohne Consent-Abfrage)
+- Poster-Bild wird automatisch als Thumbnail für den Platzhalter verwendet
+
+### Ohne Consent Manager
+
+Falls der Consent Manager nicht installiert ist, werden Videos **direkt geladen**. Sie sind dann selbst für die DSGVO-Konformität verantwortlich.
 
 
 
