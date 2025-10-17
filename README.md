@@ -2,6 +2,54 @@
 
 ![Screenshot](https://github.com/FriendsOfREDAXO/vidstack/blob/assets/screenshot.png?raw=true)
 
+## Features
+
+✨ **Einfache Integration**
+- Auto-Erkennung von YouTube, Vimeo und lokalen Videos
+- Fluent Interface für verkettbare Konfiguration
+- Factory Methods für schnelle Einrichtung
+
+🎬 **Video-Plattformen**
+- YouTube & YouTube Shorts
+- Vimeo
+- Lokale Videos (MP4, WebM, OGG)
+- Audio-Dateien (MP3, OGG, WAV, AAC)
+- Externe Video-URLs
+
+🔒 **DSGVO-konform**
+- Integration mit Consent Manager AddOn
+- Automatische Consent-Platzhalter für YouTube/Vimeo
+- Poster-Bilder als Consent-Thumbnails
+- Graceful Degradation ohne Consent Manager
+
+⚡ **Performance & UX**
+- Lazy Loading (eager, idle, visible, play)
+- Aspect Ratio für Layout-Stabilität
+- Resume-Funktion (Wiedergabe-Position speichern)
+- Multi-Resolution Support
+- Responsive Video-Quellen
+
+♿ **Barrierefreiheit (WCAG 2.1 Level AA)**
+- Vollständige Tastaturnavigation
+- Screen-Reader-Optimierung
+- Untertitel & Transkripte (VTT)
+- Audiodeskription
+- High-Contrast & Reduced Motion Support
+
+📱 **Moderne Player-Features**
+- Kapitel-Navigation (VTT Chapters)
+- Thumbnail-Vorschau (VTT Thumbnails)
+- Mehrsprachige Untertitel
+- Picture-in-Picture
+- Autoplay, Loop, Mute
+
+🛠️ **Developer-friendly**
+- Utility-Methoden (isMedia, isAudio, getVideoInfo)
+- REX_MEDIA Integration
+- OEmbed Support für CKEditor 5
+- FFmpeg AddOn Integration
+- Keine Breaking Changes (v1.x kompatibel)
+
 Moderner Video-Player für REDAXO mit YouTube, Vimeo und lokalen Videos.
 
 ## Installation
