@@ -1,4 +1,4 @@
-# [Vidstack.io](https://www.vidstack.io) für REDAXO# [Vidstack.io](https://www.vidstack.io) für REDAXO# [Vidstack.io](https://www.vidstack.io) for REDAXO
+# 🎬 Vidstack für REDAXO# [Vidstack.io](https://www.vidstack.io) für REDAXO# [Vidstack.io](https://www.vidstack.io) für REDAXO# [Vidstack.io](https://www.vidstack.io) for REDAXO
 
 
 
@@ -6,7 +6,39 @@
 
 
 
-Eine moderne PHP-Klasse für elegante Video-Einbindung: YouTube, Vimeo, lokale Videos - alles mit einem schönen Player und DSGVO-konform dank Consent Manager Integration.![Screenshot](https://github.com/FriendsOfREDAXO/vidstack/blob/assets/screenshot.png?raw=true)![Screenshot](https://github.com/FriendsOfREDAXO/vidstack/blob/assets/screenshot.png?raw=true)
+**Vorhang auf für den modernsten Video-Player im REDAXO-Universum!**![Screenshot](https://github.com/FriendsOfREDAXO/vidstack/blob/assets/screenshot.png?raw=true)
+
+
+
+Vidstack bringt YouTube, Vimeo und lokale Videos mit Style auf deine Website. Barrierefreie Controls, DSGVO-konform dank Consent Manager und so einfach zu bedienen, dass selbst der Praktikant damit klarkommt.
+
+
+
+---Eine moderne PHP-Klasse für elegante Video-Einbindung: YouTube, Vimeo, lokale Videos - alles mit einem schönen Player und DSGVO-konform dank Consent Manager Integration.![Screenshot](https://github.com/FriendsOfREDAXO/vidstack/blob/assets/screenshot.png?raw=true)![Screenshot](https://github.com/FriendsOfREDAXO/vidstack/blob/assets/screenshot.png?raw=true)
+
+
+
+## 🍿 Was ist das hier?
+
+
+
+Ein REDAXO-AddOn, das [Vidstack.io](https://www.vidstack.io) in eine elegante PHP-Klasse verpackt. Du gibst eine URL ein, wir zaubern einen vollwertigen Video-Player. Mit Untertiteln, Kapiteln, Thumbnails und allem Schnickschnack, den das Kino-Herz begehrt.---
+
+
+
+**Die Highlights:**
+
+- 🎯 **Einfache API**: Factory Methods und Fluent Interface für cleanen Code
+
+- 🌍 **Multi-Platform**: YouTube, Vimeo, lokale Videos, HLS, DASH## 🚀 SchnellstartEine moderne PHP-Klasse für elegante Video-Einbindung: YouTube, Vimeo, lokale Videos - alles mit einem schönen Player und DSGVO-konform dank Consent Manager Integration.## Was ist das hier?
+
+- ♿ **Barrierefrei**: WCAG 2.1 AA konform
+
+- 🔒 **DSGVO**: Automatische Consent Manager Integration
+
+- 📱 **Responsive**: Passt sich allen Bildschirmen an
+
+- ⚡ **Performance**: Smart Loading Strategies### Installation
 
 
 
@@ -14,615 +46,1208 @@ Eine moderne PHP-Klasse für elegante Video-Einbindung: YouTube, Vimeo, lokale V
 
 
 
-## 🚀 SchnellstartEine moderne PHP-Klasse für elegante Video-Einbindung: YouTube, Vimeo, lokale Videos - alles mit einem schönen Player und DSGVO-konform dank Consent Manager Integration.## Was ist das hier?
+## 🚀 SchnellstartVia REDAXO-Installer oder als GitHub Release.---Eine PHP-Klasse, die Videos auf Websites einbindet - mit Style! YouTube, Vimeo oder eigene Videos? Alles kein Problem. Und das Beste? Es ist so einfach zu benutzen, dass selbst ein Kater es könnte (wenn er Daumen hätte).
 
 
 
-### Installation
+### 1. Installation
 
 
 
-Via REDAXO-Installer oder als GitHub Release.---Eine PHP-Klasse, die Videos auf Websites einbindet - mit Style! YouTube, Vimeo oder eigene Videos? Alles kein Problem. Und das Beste? Es ist so einfach zu benutzen, dass selbst ein Kater es könnte (wenn er Daumen hätte).
+Wie immer: REDAXO Installer → AddOns → Vidstack installieren. Oder GitHub Release runterladen und entpacken.### Frontend-Integration
 
 
 
-### Frontend-Integration
+### 2. Assets einbinden
 
 
 
-```php## 🚀 Schnellstart## 🌟 Neue Features (Phase 1)
-
-// Im Template <head> oder vor </body>:
+Im Template (am besten im `<head>` oder vor `</body>`):```php## 🚀 Schnellstart## 🌟 Neue Features (Phase 1)
 
 
+
+```php// Im Template <head> oder vor </body>:
 
 // CSS
 
-echo '<link rel="stylesheet" href="' . rex_url::addonAssets('vidstack', 'vidstack.css') . '">';### InstallationDas Addon wurde massiv vereinfacht und modernisiert:
+echo '<link rel="stylesheet" href="' . rex_url::addonAssets('vidstack', 'vidstack.css') . '">';
 
 echo '<link rel="stylesheet" href="' . rex_url::addonAssets('vidstack', 'vidstack_helper.css') . '">';
 
-
+// CSS
 
 // JavaScript
 
-echo '<script src="' . rex_url::addonAssets('vidstack', 'vidstack.js') . '"></script>';Via REDAXO-Installer oder als GitHub Release.### ⛓️ Fluent Interface - Sauberer Code durch Method Chaining
+echo '<script src="' . rex_url::addonAssets('vidstack', 'vidstack.js') . '"></script>';echo '<link rel="stylesheet" href="' . rex_url::addonAssets('vidstack', 'vidstack.css') . '">';### InstallationDas Addon wurde massiv vereinfacht und modernisiert:
 
 echo '<script src="' . rex_url::addonAssets('vidstack', 'vidstack_helper.js') . '"></script>';
 
-```Alle Methoden geben `$this` zurück, was elegantes Chaining ermöglicht:
+```echo '<link rel="stylesheet" href="' . rex_url::addonAssets('vidstack', 'vidstack_helper.css') . '">';
 
 
 
----### Frontend-Integration
+### 3. Erstes Video einbinden
 
 
 
-## 🎯 Die neue API (v2.0+)```php
-
-
-
-### Factory Methods - Der einfache Einstieg```php$video = Video::local('video.mp4', 'Tutorial')
-
-
-
-```php// Im Template <head> oder vor </body>:    ->setPoster('thumb.jpg')
+```php// JavaScript
 
 use FriendsOfRedaxo\VidStack\Video;
 
-    ->setAspectRatio('16/9')
+echo '<script src="' . rex_url::addonAssets('vidstack', 'vidstack.js') . '"></script>';Via REDAXO-Installer oder als GitHub Release.### ⛓️ Fluent Interface - Sauberer Code durch Method Chaining
 
-// YouTube (automatische URL-Erkennung + Consent Manager Integration)
+// YouTube
 
-$video = Video::youtube('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Rick Astley')// CSS    ->addChapters('chapters.vtt')
-
-    ->autoplay()
-
-    ->loop();echo '<link rel="stylesheet" href="' . rex_url::addonAssets('vidstack', 'vidstack.css') . '">';    ->enableResume();
-
-echo $video->generateFull();
-
-echo '<link rel="stylesheet" href="' . rex_url::addonAssets('vidstack', 'vidstack_helper.css') . '">';```
-
-// Vimeo
-
-$video = Video::vimeo('https://vimeo.com/148751763', 'Mein Vimeo Video')
-
-    ->setPoster('vorschau.jpg');
-
-echo $video->generateFull();// JavaScript### 🏭 Factory-Methoden - Weniger Boilerplate
+echo Video::youtube('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Never Gonna Give You Up')->generateFull();echo '<script src="' . rex_url::addonAssets('vidstack', 'vidstack_helper.js') . '"></script>';
 
 
 
-// Lokales Video (mit Smart Defaults: playsInline, preload)echo '<script src="' . rex_url::addonAssets('vidstack', 'vidstack.js') . '"></script>';```php
+// Lokales Video```Alle Methoden geben `$this` zurück, was elegantes Chaining ermöglicht:
 
-$video = Video::local('video.mp4', 'Mein Video')
-
-    ->setPoster('thumb.jpg')echo '<script src="' . rex_url::addonAssets('vidstack', 'vidstack_helper.js') . '"></script>';Video::youtube($url, $title)   // YouTube mit Smart Defaults
-
-    ->setAspectRatio('16/9')
-
-    ->addCaptions('subtitles.vtt');```Video::vimeo($url, $title)     // Vimeo optimiert
-
-echo $video->generateFull();
-
-Video::local($filename, $title) // Lokale Videos mit playsInline
-
-// Tutorial-Video (mit automatischer Resume-Funktion)
-
-$video = Video::tutorial('tutorial.mp4', 'REDAXO Tutorial')---Video::tutorial($source, $title) // Mit Resume-Funktion
-
-    ->setPoster('thumb.jpg')
-
-    ->addChapters('kapitel.vtt')```
-
-    ->enableResume();
-
-echo $video->generateFull();## 🎯 Die neue API (v2.0+)
+echo Video::local('video.mp4', 'Mein Video')->setPoster('thumb.jpg')->generateFull();
 
 ```
 
-### 📐 Aspect Ratio - Verhindert Layout-Shift
 
-### Fluent Interface - Method Chaining
 
-### Factory Methods - Der einfache Einstieg```php
+**Das war's!** 🎉---### Frontend-Integration
 
-Alle Methoden geben `$this` zurück → elegantes Chaining:
 
-$video->setAspectRatio('16/9');  // Auch: '4/3', '21/9', '1/1'
 
-```php
+---
 
-$video = Video::local('produkt.mp4', 'Produktvideo')```php```
 
-    ->setPoster('preview.jpg', 'Produktvorschau')
 
-    ->setAspectRatio('16/9')use FriendsOfRedaxo\VidStack\Video;
+## 🎯 Einfache Beispiele## 🎯 Die neue API (v2.0+)```php
 
-    ->setLoadStrategy('visible')
 
-    ->addChapters('chapters.vtt')### ⚡ Loading Strategy - Performance-Optimierung
 
-    ->addCaptions('de.vtt', 'Deutsch', true)
+### YouTube-Video mit Autoplay
 
-    ->addCaptions('en.vtt', 'English')// YouTube (automatische URL-Erkennung + Consent Manager Integration)```php
+
+
+```php### Factory Methods - Der einfache Einstieg```php$video = Video::local('video.mp4', 'Tutorial')
+
+$video = Video::youtube('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Rick Astley')
 
     ->autoplay()
 
-    ->muted();$video = Video::youtube('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Rick Astley')$video->setLoadStrategy('idle');  
+    ->loop();
+
+    ```php// Im Template <head> oder vor </body>:    ->setPoster('thumb.jpg')
 
 echo $video->generateFull();
 
-```    ->autoplay()// 'eager' → Sofort laden
+```use FriendsOfRedaxo\VidStack\Video;
 
 
 
----    ->loop();// 'idle' → Laden wenn Browser idle
+**Hinweis:** Consent Manager blockiert YouTube automatisch (DSGVO) - siehe unten!    ->setAspectRatio('16/9')
 
 
 
-## 🌟 Neue Features in v2.0echo $video->generateFull();// 'visible' → Laden wenn sichtbar (Standard)
+### Lokales Video mit Poster// YouTube (automatische URL-Erkennung + Consent Manager Integration)
 
 
 
-### 1️⃣ Aspect Ratio - Verhindert Layout Shift// 'play' → Erst beim Abspielen laden
+```php$video = Video::youtube('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Rick Astley')// CSS    ->addChapters('chapters.vtt')
+
+$video = Video::local('produkt.mp4', 'Produktvideo')
+
+    ->setPoster('preview.jpg')    ->autoplay()
+
+    ->setAspectRatio('16/9');
+
+        ->loop();echo '<link rel="stylesheet" href="' . rex_url::addonAssets('vidstack', 'vidstack.css') . '">';    ->enableResume();
+
+echo $video->generateFull();
+
+```echo $video->generateFull();
 
 
 
-```php// Vimeo```
-
-$video = Video::local('video.mp4')
-
-    ->setAspectRatio('16/9');  // Standard Breitbild$video = Video::vimeo('https://vimeo.com/148751763', 'Mein Vimeo Video')
+### Video mit Untertitelnecho '<link rel="stylesheet" href="' . rex_url::addonAssets('vidstack', 'vidstack_helper.css') . '">';```
 
 
 
-// Weitere Optionen:    ->setPoster('vorschau.jpg');### 💾 Resume - Position automatisch merken
+```php// Vimeo
 
-->setAspectRatio('4/3')   // Klassisch
+$video = Video::local('film.mp4', 'Der große Film')
 
-->setAspectRatio('21/9')  // Ultrawide/Kinoecho $video->generateFull();```php
+    ->setPoster('poster.jpg')$video = Video::vimeo('https://vimeo.com/148751763', 'Mein Vimeo Video')
+
+    ->addCaptions('deutsch.vtt', 'Deutsch', true)
+
+    ->addCaptions('english.vtt', 'English');    ->setPoster('vorschau.jpg');
+
+    
+
+echo $video->generateFull();echo $video->generateFull();// JavaScript### 🏭 Factory-Methoden - Weniger Boilerplate
+
+```
+
+
+
+### Tutorial-Video mit Kapitel-Navigation
+
+// Lokales Video (mit Smart Defaults: playsInline, preload)echo '<script src="' . rex_url::addonAssets('vidstack', 'vidstack.js') . '"></script>';```php
+
+```php
+
+$video = Video::tutorial('tutorial.mp4', 'REDAXO für Anfänger')$video = Video::local('video.mp4', 'Mein Video')
+
+    ->setPoster('thumb.jpg')
+
+    ->addChapters('chapters.vtt')    ->setPoster('thumb.jpg')echo '<script src="' . rex_url::addonAssets('vidstack', 'vidstack_helper.js') . '"></script>';Video::youtube($url, $title)   // YouTube mit Smart Defaults
+
+    ->enableResume(); // Merkt sich die Position!
+
+        ->setAspectRatio('16/9')
+
+echo $video->generateFull();
+
+```    ->addCaptions('subtitles.vtt');```Video::vimeo($url, $title)     // Vimeo optimiert
+
+
+
+**chapters.vtt Beispiel:**echo $video->generateFull();
+
+```vtt
+
+WEBVTTVideo::local($filename, $title) // Lokale Videos mit playsInline
+
+
+
+00:00:00.000 --> 00:01:30.000// Tutorial-Video (mit automatischer Resume-Funktion)
+
+Intro
+
+$video = Video::tutorial('tutorial.mp4', 'REDAXO Tutorial')---Video::tutorial($source, $title) // Mit Resume-Funktion
+
+00:01:30.000 --> 00:05:00.000
+
+Installation    ->setPoster('thumb.jpg')
+
+
+
+00:05:00.000 --> 00:10:00.000    ->addChapters('kapitel.vtt')```
+
+Erste Schritte
+
+```    ->enableResume();
+
+
+
+---echo $video->generateFull();## 🎯 Die neue API (v2.0+)
+
+
+
+## 🔒 DSGVO & Consent Manager```
+
+
+
+### Automatische Consent-Integration### 📐 Aspect Ratio - Verhindert Layout-Shift
+
+
+
+Ab v2.0 nutzt Vidstack automatisch den [Consent Manager](https://github.com/FriendsOfREDAXO/consent_manager):### Fluent Interface - Method Chaining
+
+
+
+```php### Factory Methods - Der einfache Einstieg```php
+
+// YouTube wird automatisch geblockt bis zur Einwilligung
+
+$video = Video::youtube('https://youtube.com/watch?v=xyz', 'Trailer')Alle Methoden geben `$this` zurück → elegantes Chaining:
+
+    ->setPoster('preview.jpg'); // Wird als Platzhalter genutzt
+
+    $video->setAspectRatio('16/9');  // Auch: '4/3', '21/9', '1/1'
+
+echo $video->generateFull();
+
+``````php
+
+
+
+**Was passiert:**$video = Video::local('produkt.mp4', 'Produktvideo')```php```
+
+1. ✅ Vidstack erkennt YouTube/Vimeo automatisch
+
+2. ✅ Consent Manager zeigt Platzhalter mit Einwilligungsbutton    ->setPoster('preview.jpg', 'Produktvorschau')
+
+3. ✅ Poster-Bild wird als Thumbnail verwendet
+
+4. ✅ Nach Klick auf "Zustimmen": Video lädt    ->setAspectRatio('16/9')use FriendsOfRedaxo\VidStack\Video;
+
+
+
+### Setup Consent Manager    ->setLoadStrategy('visible')
+
+
+
+Im Consent Manager müssen diese Services angelegt sein:    ->addChapters('chapters.vtt')### ⚡ Loading Strategy - Performance-Optimierung
+
+- Service-UID: `youtube` für YouTube-Videos
+
+- Service-UID: `vimeo` für Vimeo-Videos    ->addCaptions('de.vtt', 'Deutsch', true)
+
+
+
+### Ohne Consent Manager?    ->addCaptions('en.vtt', 'English')// YouTube (automatische URL-Erkennung + Consent Manager Integration)```php
+
+
+
+Kein Problem! Videos werden dann direkt geladen. Du bist aber selbst für DSGVO-Konformität verantwortlich.    ->autoplay()
+
+
+
+---    ->muted();$video = Video::youtube('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Rick Astley')$video->setLoadStrategy('idle');  
+
+
+
+## 🎪 Erweiterte Beispieleecho $video->generateFull();
+
+
+
+### Barrierefreies Video (A11y)```    ->autoplay()// 'eager' → Sofort laden
+
+
+
+```php
+
+$video = Video::local('erklaervideo.mp4', 'Wie funktioniert REDAXO?')
+
+    ->setPoster('poster.jpg')---    ->loop();// 'idle' → Laden wenn Browser idle
+
+    ->addCaptions('de.vtt', 'Deutsch', true)
+
+    ->addCaptions('en.vtt', 'English')
+
+    ->setA11yContent('
+
+        <h3>Inhalt des Videos</h3>## 🌟 Neue Features in v2.0echo $video->generateFull();// 'visible' → Laden wenn sichtbar (Standard)
+
+        <p>In diesem Video zeigen wir dir die Grundlagen von REDAXO CMS.</p>
+
+        <ul>
+
+            <li>Installation (0:00 - 2:30)</li>
+
+            <li>Backend-Tour (2:30 - 5:00)</li>### 1️⃣ Aspect Ratio - Verhindert Layout Shift// 'play' → Erst beim Abspielen laden
+
+            <li>Erste Seite erstellen (5:00 - 8:00)</li>
+
+        </ul>
+
+    ');
+
+    ```php// Vimeo```
+
+echo $video->generateFull();
+
+```$video = Video::local('video.mp4')
+
+
+
+### Video mit Performance-Optimierung    ->setAspectRatio('16/9');  // Standard Breitbild$video = Video::vimeo('https://vimeo.com/148751763', 'Mein Vimeo Video')
+
+
+
+```php
+
+$video = Video::local('heavy-video.mp4', 'Heavy Video')
+
+    ->setPoster('poster.jpg')// Weitere Optionen:    ->setPoster('vorschau.jpg');### 💾 Resume - Position automatisch merken
+
+    ->setAspectRatio('16/9')        // Verhindert Layout Shift
+
+    ->setLoadStrategy('visible');    // Lädt erst wenn sichtbar->setAspectRatio('4/3')   // Klassisch
+
+    
+
+echo $video->generateFull();->setAspectRatio('21/9')  // Ultrawide/Kinoecho $video->generateFull();```php
+
+```
 
 ->setAspectRatio('1/1')   // Quadratisch (Instagram)
 
-```$video->enableResume();              // Auto Storage-Key
+**Loading Strategien:**
 
+- `eager` - Sofort laden (Above the Fold)```$video->enableResume();              // Auto Storage-Key
 
+- `idle` - Laden wenn Browser idle ist
+
+- `visible` - Laden wenn Video sichtbar (Standard)
+
+- `play` - Erst beim Abspielen laden
 
 **Vorteil:** Verhindert Cumulative Layout Shift (CLS), bessere Core Web Vitals!// Lokales Video (mit Smart Defaults: playsInline, preload)$video->enableResume('mein-tutorial'); // Custom Key
 
+### Multi-Resolution für Desktop/Mobile
 
 
-### 2️⃣ Loading Strategy - Performance-Optimierung$video = Video::local('video.mp4', 'Mein Video')```
+
+```php
+
+$video = Video::local('video.mp4', 'Responsive Video')### 2️⃣ Loading Strategy - Performance-Optimierung$video = Video::local('video.mp4', 'Mein Video')```
+
+    ->setResponsiveSourcesWithPresets(
+
+        'video-1080p.mp4',  // Desktop
+
+        'video-480p.mp4',   // Mobile
+
+        '1080p',```php    ->setPoster('thumb.jpg')
+
+        'mobile_sd'
+
+    )$video = Video::local('video.mp4')
+
+    ->setPoster('preview.jpg');
+
+        ->setLoadStrategy('idle');    ->setAspectRatio('16/9')### 📑 Chapters & Captions - Vereinfacht
+
+echo $video->generateFull();
+
+```
+
+
+
+**Verfügbare Presets:**// Strategien:    ->addCaptions('subtitles.vtt');```php
+
+- `4k`, `2k`, `1080p`, `720p`, `480p`
+
+- `mobile_hd` (960×540), `mobile_sd` (640×360)->setLoadStrategy('eager')    // Sofort laden
+
+
+
+### Auto-Detection mehrerer Auflösungen->setLoadStrategy('idle')     // Laden wenn Browser idleecho $video->generateFull();$video->addChapters('chapters.vtt');         // Kapitel-Navigation
+
+
+
+```php->setLoadStrategy('visible')  // Laden wenn sichtbar (Standard)
+
+$video = Video::local('video.mp4', 'Multi-Quality');
+
+->setLoadStrategy('play')     // Erst beim Abspielen laden$video->addCaptions('subtitles.vtt');        // Standard-Untertitel
+
+// Sucht automatisch nach:
+
+// - video-1080p.mp4```
+
+// - video-720p.mp4  
+
+// - video-480p.mp4// Tutorial-Video (mit automatischer Resume-Funktion)$video->addCaptions('de.vtt', 'Deutsch', true); // Mit Label
+
+if ($video->createAutoSources('video')) {
+
+    echo $video->generateFull();**Vorteil:** Optimiert Page Load, reduziert initiale Bandwidth!
+
+}
+
+```$video = Video::tutorial('tutorial.mp4', 'REDAXO Tutorial')```
+
+
+
+### Audio-Player### 3️⃣ Resume Support - Position merken
 
 
 
 ```php    ->setPoster('thumb.jpg')
 
-$video = Video::local('video.mp4')
+$audio = Video::local('podcast.mp3', 'Podcast Episode 42')
 
-    ->setLoadStrategy('idle');    ->setAspectRatio('16/9')### 📑 Chapters & Captions - Vereinfacht
+    ->setAttribute('audio', true);```php
 
+    
 
-
-// Strategien:    ->addCaptions('subtitles.vtt');```php
-
-->setLoadStrategy('eager')    // Sofort laden
-
-->setLoadStrategy('idle')     // Laden wenn Browser idleecho $video->generateFull();$video->addChapters('chapters.vtt');         // Kapitel-Navigation
-
-->setLoadStrategy('visible')  // Laden wenn sichtbar (Standard)
-
-->setLoadStrategy('play')     // Erst beim Abspielen laden$video->addCaptions('subtitles.vtt');        // Standard-Untertitel
+echo $audio->generateFull();// Automatischer Storage-Key    ->addChapters('kapitel.vtt')### 🎬 Convenience-Methoden
 
 ```
-
-// Tutorial-Video (mit automatischer Resume-Funktion)$video->addCaptions('de.vtt', 'Deutsch', true); // Mit Label
-
-**Vorteil:** Optimiert Page Load, reduziert initiale Bandwidth!
-
-$video = Video::tutorial('tutorial.mp4', 'REDAXO Tutorial')```
-
-### 3️⃣ Resume Support - Position merken
-
-    ->setPoster('thumb.jpg')
-
-```php
-
-// Automatischer Storage-Key    ->addChapters('kapitel.vtt')### 🎬 Convenience-Methoden
 
 $video = Video::tutorial('tutorial.mp4')
 
+---
+
     ->enableResume();    ->enableResume();```php
 
+## 🎬 Die neue API (v2.0)
 
+
+
+### Factory Methods - Weniger Tippen, mehr Film
 
 // Custom Storage-Key (für mehrere Videos)echo $video->generateFull();$video->autoplay();  // Autoplay mit Mute
 
-$video = Video::local('lesson-01.mp4')
+```php
+
+// YouTube$video = Video::local('lesson-01.mp4')
+
+Video::youtube($url, $title)
 
     ->enableResume('kurs-lesson-01');```$video->loop();      // Endlos-Schleife
 
-```
+// Vimeo
 
-$video->muted();     // Stumm schalten
+Video::vimeo($url, $title)```
+
+
+
+// Lokales Video mit Smart Defaults$video->muted();     // Stumm schalten
+
+Video::local($filename, $title)
 
 **Vorteil:** User kann Video fortsetzen wo aufgehört - perfekt für Tutorials!
 
-### Fluent Interface - Method Chaining```
+// Tutorial mit Auto-Resume
+
+Video::tutorial($source, $title)### Fluent Interface - Method Chaining```
+
+```
 
 ### 4️⃣ Chapters - Kapitel-Navigation
 
+**Smart Defaults:**
 
+- `playsInline="true"` für Mobile
 
-```php
+- `preload="metadata"` für Performance
 
-$video = Video::local('long-video.mp4')Alle Methoden geben `$this` zurück → elegantes Chaining:### 🎯 Smart Defaults
-
-    ->addChapters('chapters.vtt');
-
-```Das Addon setzt automatisch sinnvolle Standardwerte:
-
-
-
-**chapters.vtt Beispiel:**```php- `playsInline="true"` für Mobile
-
-```vtt
-
-WEBVTT$video = Video::local('produkt.mp4', 'Produktvideo')- `preload="metadata"` für Performance
+- `enableResume()` bei `tutorial()````php
 
 
 
-00:00:00.000 --> 00:01:30.000    ->setPoster('preview.jpg', 'Produktvorschau')
-
-Einleitung
-
-    ->setAspectRatio('16/9')## 🚀 Los geht's!
-
-00:01:30.000 --> 00:05:00.000
-
-Hauptteil    ->setLoadStrategy('visible')
+### Fluent Interface - Verketten wie im Kino$video = Video::local('long-video.mp4')Alle Methoden geben `$this` zurück → elegantes Chaining:### 🎯 Smart Defaults
 
 
 
-00:05:00.000 --> 00:07:00.000    ->addChapters('chapters.vtt')### Installation
+Alle Methoden geben `$this` zurück:    ->addChapters('chapters.vtt');
 
-Zusammenfassung
+
+
+```php```Das Addon setzt automatisch sinnvolle Standardwerte:
+
+$video = Video::local('trailer.mp4', 'Blockbuster Trailer')
+
+    ->setPoster('poster.jpg')
+
+    ->setAspectRatio('21/9')
+
+    ->setLoadStrategy('idle')**chapters.vtt Beispiel:**```php- `playsInline="true"` für Mobile
+
+    ->addChapters('chapters.vtt')
+
+    ->addCaptions('de.vtt', 'Deutsch', true)```vtt
+
+    ->addCaptions('en.vtt', 'English')
+
+    ->autoplay()WEBVTT$video = Video::local('produkt.mp4', 'Produktvideo')- `preload="metadata"` für Performance
+
+    ->muted();
+
+    
+
+echo $video->generateFull();
+
+```00:00:00.000 --> 00:01:30.000    ->setPoster('preview.jpg', 'Produktvorschau')
+
+
+
+### Neue Convenience MethodsEinleitung
+
+
+
+```php    ->setAspectRatio('16/9')## 🚀 Los geht's!
+
+// Autoplay (mit Mute, wegen Browser-Policies)
+
+$video->autoplay();00:01:30.000 --> 00:05:00.000
+
+
+
+// Endlos-SchleifeHauptteil    ->setLoadStrategy('visible')
+
+$video->loop();
+
+
+
+// Stumm schalten
+
+$video->muted();00:05:00.000 --> 00:07:00.000    ->addChapters('chapters.vtt')### Installation
+
+
+
+// Kapitel (vereinfacht)Zusammenfassung
+
+$video->addChapters('chapters.vtt');
 
 ```    ->addCaptions('de.vtt', 'Deutsch', true)
 
+// Untertitel (vereinfacht)
 
+$video->addCaptions('subtitles.vtt', 'Deutsch', true);
+
+```
 
 ### 5️⃣ Convenience Methods    ->addCaptions('en.vtt', 'English')Klar, natürlich über den REDAXO-Installer oder als GitHub Release. Aber das war's noch nicht ganz:
 
-
-
-```php    ->autoplay()
-
-$video = Video::youtube('https://youtube.com/watch?v=xyz')
-
-    ->autoplay()     // Autoplay mit Mute (Browser-konform)    ->muted();#### Für das Frontend:
-
-    ->loop()         // Endlos-Schleife
-
-    ->muted();       // Stumm schaltenecho $video->generateFull();
+### Aspect Ratio - Verhindert Layout Shift
 
 
 
-// Untertitel vereinfacht```Jetzt kommt der interessante Teil - wir müssen noch ein paar Dateien in unser Frontend einbinden, damit der ganze Zauber funktioniert. Hier ist, was du brauchst:
+```php
 
-$video->addCaptions('subtitles.vtt');                    // Einfach
+$video->setAspectRatio('16/9');  // Standard```php    ->autoplay()
 
-$video->addCaptions('de.vtt', 'Deutsch', true);         // Mit Label + Default
+$video->setAspectRatio('4/3');   // Klassisch
 
-```
+$video->setAspectRatio('21/9');  // Kino$video = Video::youtube('https://youtube.com/watch?v=xyz')
 
----```php
+$video->setAspectRatio('1/1');   // Instagram
 
----
+```    ->autoplay()     // Autoplay mit Mute (Browser-konform)    ->muted();#### Für das Frontend:
 
-// In deinem Template oder an einer anderen passenden Stelle:
 
-## 📚 Alle Methoden
 
-## 🌟 Neue Features in v2.0
+**Vorteil:** Google Core Web Vitals lieben dich dafür!    ->loop()         // Endlos-Schleife
 
-### ✨ Factory Methods (NEU)
 
-// CSS einbinden
+
+### Resume-Funktion - Position merken    ->muted();       // Stumm schaltenecho $video->generateFull();
+
+
+
+```php
+
+// Auto Storage-Key
+
+$video->enableResume();// Untertitel vereinfacht```Jetzt kommt der interessante Teil - wir müssen noch ein paar Dateien in unser Frontend einbinden, damit der ganze Zauber funktioniert. Hier ist, was du brauchst:
+
+
+
+// Custom Key für mehrere Videos$video->addCaptions('subtitles.vtt');                    // Einfach
+
+$video->enableResume('tutorial-teil-1');
+
+```$video->addCaptions('de.vtt', 'Deutsch', true);         // Mit Label + Default
+
+
+
+**Nutzen:** User kann Video später genau da weiterschauen, wo aufgehört wurde.```
+
+
+
+------```php
+
+
+
+## 📚 API-Referenz---
+
+
+
+### ✨ Neue API (v2.0) - Empfohlen!// In deinem Template oder an einer anderen passenden Stelle:
+
+
+
+#### Factory Methods## 📚 Alle Methoden
+
+
+
+| Methode | Was macht die? |## 🌟 Neue Features in v2.0
+
+|---------|----------------|
+
+| `Video::youtube($url, $title)` | YouTube mit Consent Manager |### ✨ Factory Methods (NEU)
+
+| `Video::vimeo($url, $title)` | Vimeo mit Consent Manager |
+
+| `Video::local($filename, $title)` | Lokales Video, optimiert |// CSS einbinden
+
+| `Video::tutorial($source, $title)` | Mit Resume-Funktion |
 
 | Methode | Beschreibung |
 
+#### Phase 1 Features
+
 |---------|--------------|### 1️⃣ Aspect Ratio - Verhindert Layout Shiftecho '<link rel="stylesheet" href="' . rex_url::addonAssets('vidstack', 'vidstack.css') . '">';
-
-| `Video::youtube($url, $title)` | YouTube mit Consent Manager Integration |
-
-| `Video::vimeo($url, $title)` | Vimeo mit Consent Manager Integration |echo '<link rel="stylesheet" href="' . rex_url::addonAssets('vidstack', 'vidstack_helper.css') . '">';
-
-| `Video::local($filename, $title)` | Lokales Video mit Smart Defaults |
-
-| `Video::tutorial($source, $title)` | Mit automatischer Resume-Funktion |```php
-
-
-
-### ⚡ Phase 1 Features (NEU)$video = Video::local('video.mp4')// JavaScript einbinden
-
-
-
-| Methode | Parameter | Beschreibung |    ->setAspectRatio('16/9');  // Standard Breitbildecho '<script src="' . rex_url::addonAssets('vidstack', 'vidstack.js') . '"></script>';
-
-|---------|-----------|--------------|
-
-| `setAspectRatio()` | `'16/9'`, `'4/3'`, `'21/9'`, `'1/1'` | Verhindert Layout Shift |echo '<script src="' . rex_url::addonAssets('vidstack', 'vidstack_helper.js') . '"></script>';
-
-| `setLoadStrategy()` | `'eager'`, `'idle'`, `'visible'`, `'play'` | Performance-Optimierung |
-
-| `enableResume()` | `?string $storageKey` | Position automatisch merken |// Weitere Optionen:```
-
-| `addChapters()` | `string $vttFile` | Kapitel-Navigation |
-
-| `addCaptions()` | `string $vtt, string $label, bool $default` | Untertitel vereinfacht |->setAspectRatio('4/3')   // Klassisch
-
-| `autoplay()` | - | Autoplay mit Mute |
-
-| `loop()` | - | Endlos-Schleife |->setAspectRatio('21/9')  // Ultrawide/KinoWas passiert hier? Wir benutzen `rex_url::addonAssets()`, um die richtigen URLs für unsere Assets zu generieren. Das ist wie ein Zauberstab, der immer auf die korrekten Dateien in deinem REDAXO-Setup zeigt, egal wo sie sich versteckt haben.
-
-| `muted()` | `bool $muted = true` | Stumm schalten |
-
-->setAspectRatio('1/1')   // Quadratisch (Instagram)
-
-### 🔧 Basis-Methoden (weiterhin verfügbar)
-
-```Die `vidstack.css` und `vidstack.js` sind die Hauptdarsteller - sie bringen den Video-Player zum Laufen. Die `*_helper`-Dateien sind wie die fleißigen Backstage-Helfer. Sie kümmern sich um Extras wie Übersetzungen und andere nützliche Funktionen.
 
 | Methode | Parameter | Beschreibung |
 
-|---------|-----------|--------------|
+|---------|-----------|--------------|| `Video::youtube($url, $title)` | YouTube mit Consent Manager Integration |
 
-| `new Video()` | `string $source, string $title, string $lang` | Konstruktor (auch mit Factory Methods nutzbar) |
+| `setAspectRatio()` | `'16/9'`, `'4/3'`, `'21/9'`, `'1/1'` | Layout Shift vermeiden |
 
-| `setAttributes()` | `array $attributes` | Setzt HTML-Attribute |**Vorteil:** Verhindert Cumulative Layout Shift (CLS), bessere Core Web Vitals!So, jetzt aber! Dein REDAXO ist jetzt bereit, Videos mit Style zu servieren. 🎬🍿
+| `setLoadStrategy()` | `'eager'`, `'idle'`, `'visible'`, `'play'` | Performance tunen || `Video::vimeo($url, $title)` | Vimeo mit Consent Manager Integration |echo '<link rel="stylesheet" href="' . rex_url::addonAssets('vidstack', 'vidstack_helper.css') . '">';
 
-| `setAttribute()` | `string $key, mixed $value` | Setzt einzelnes Attribut |
+| `enableResume()` | `?string $key` | Position speichern |
 
-| `setPoster()` | `string $src, string $alt` | Setzt Vorschaubild |
+| `addChapters()` | `string $vttFile` | Kapitel hinzufügen || `Video::local($filename, $title)` | Lokales Video mit Smart Defaults |
 
-| `setThumbnails()` | `string $url` | Setzt Thumbnail-Sprites |
+| `addCaptions()` | `string $vtt, string $label, bool $default` | Untertitel easy |
 
-| `addSubtitle()` | `string $src, string $kind, string $label, string $lang, bool $default` | Fügt Untertitel/Chapters hinzu |### 2️⃣ Loading Strategy - Performance-Optimierung### Source Sizes für Desktop/Mobile Videos
+| `autoplay()` | - | Autoplay mit Mute || `Video::tutorial($source, $title)` | Mit automatischer Resume-Funktion |```php
 
-| `setSources()` | `array $sources` | Mehrere Video-Quellen (Multi-Resolution) |
+| `loop()` | - | Endlos-Schleife |
 
-| `setResponsiveSources()` | `string $desktopSrc, string $mobileSrc, ?array $desktopSize, ?array $mobileSize` | Desktop/Mobile Video-Varianten |
-
-| `setResponsiveSourcesWithPresets()` | `string $desktopSrc, string $mobileSrc, string $desktopPreset, string $mobilePreset` | Mit Presets (2k, 1080p, 720p, etc.) |
-
-| `createAutoSources()` | `string $baseFilename` | Automatische Quellen aus Dateiname-Pattern |```phpMit dem Vidstack-Addon können Sie verschiedene Video-Auflösungen für Desktop und Mobile bereitstellen:
-
-| `setA11yContent()` | `string $content` | Barrierefreie Zusatzinformationen |
-
-| `generate()` | - | Generiert Player-HTML |$video = Video::local('video.mp4')
-
-| `generateFull()` | - | Generiert Player mit Wrapper + Consent Manager |
-
-    ->setLoadStrategy('idle');```php
-
----
-
-<?php
-
-## 💡 Praktische Beispiele
-
-// Strategien:use FriendsOfRedaxo\VidStack\Video;
-
-### YouTube mit Autoplay
-
-->setLoadStrategy('eager')    // Sofort laden
-
-```php
-
-$video = Video::youtube('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Rick Astley')->setLoadStrategy('idle')     // Laden wenn Browser idle// Einfache Desktop/Mobile Setup mit Standard-Auflösungen
-
-    ->autoplay()
-
-    ->loop();->setLoadStrategy('visible')  // Laden wenn sichtbar (Standard)$video = new Video('video-desktop.mp4', 'Responsives Video');
-
-echo $video->generateFull();
-
-```->setLoadStrategy('play')     // Erst beim Abspielen laden$video->setResponsiveSources('video-1080p.mp4', 'video-480p.mp4');
+| `muted()` | `bool $muted` | Ton aus |
 
 
 
-**DSGVO:** Consent Manager blockiert automatisch YouTube, bis User zustimmt!```echo $video->generateFull();
+#### Basis-Methoden### ⚡ Phase 1 Features (NEU)$video = Video::local('video.mp4')// JavaScript einbinden
 
 
 
-### Lokales Video mit allem Drum und Dran
+| Methode | Was macht die? |
+
+|---------|----------------|
+
+| `setPoster($src, $alt)` | Vorschaubild setzen || Methode | Parameter | Beschreibung |    ->setAspectRatio('16/9');  // Standard Breitbildecho '<script src="' . rex_url::addonAssets('vidstack', 'vidstack.js') . '"></script>';
+
+| `setThumbnails($url)` | Thumbnail-Sprites (VTT) |
+
+| `setAttributes($array)` | HTML-Attribute setzen ||---------|-----------|--------------|
+
+| `setAttribute($key, $value)` | Einzelnes Attribut |
+
+| `setA11yContent($content)` | Barrierefreie Infos || `setAspectRatio()` | `'16/9'`, `'4/3'`, `'21/9'`, `'1/1'` | Verhindert Layout Shift |echo '<script src="' . rex_url::addonAssets('vidstack', 'vidstack_helper.js') . '"></script>';
+
+| `generate()` | Player-HTML ohne Wrapper |
+
+| `generateFull()` | Voller Player mit Consent || `setLoadStrategy()` | `'eager'`, `'idle'`, `'visible'`, `'play'` | Performance-Optimierung |
 
 
 
-```php**Vorteil:** Optimiert Page Load, reduziert initiale Bandwidth!// Mit benutzerdefinierten Auflösungen
+### 🔧 Alte API (v1.x) - Funktioniert weiter!| `enableResume()` | `?string $storageKey` | Position automatisch merken |// Weitere Optionen:```
 
-$video = Video::local('produkt.mp4', 'Produktvideo')
 
-    ->setPoster('preview.jpg', 'Produktvorschau')$video = new Video('video-desktop.mp4', 'Custom Responsive Video');
 
-    ->setAspectRatio('16/9')
+```php| `addChapters()` | `string $vttFile` | Kapitel-Navigation |
 
-    ->setLoadStrategy('visible')### 3️⃣ Resume Support - Position merken$video->setResponsiveSources(
+// Der alte Weg funktioniert nach wie vor:
 
-    ->addCaptions('de.vtt', 'Deutsch', true)
+$video = new Video('video.mp4', 'Titel');| `addCaptions()` | `string $vtt, string $label, bool $default` | Untertitel vereinfacht |->setAspectRatio('4/3')   // Klassisch
 
-    ->addCaptions('en.vtt', 'English')    'video-high.mp4', 
+$video->setPoster('thumb.jpg');
 
-    ->addChapters('chapters.vtt');
+$video->addSubtitle('de.vtt', 'captions', 'Deutsch', 'de', true);| `autoplay()` | - | Autoplay mit Mute |
 
-echo $video->generateFull();```php    'video-low.mp4',
+$video->setAttributes(['data-foo' => 'bar']);
+
+echo $video->generateFull();| `loop()` | - | Endlos-Schleife |->setAspectRatio('21/9')  // Ultrawide/KinoWas passiert hier? Wir benutzen `rex_url::addonAssets()`, um die richtigen URLs für unsere Assets zu generieren. Das ist wie ein Zauberstab, der immer auf die korrekten Dateien in deinem REDAXO-Setup zeigt, egal wo sie sich versteckt haben.
 
 ```
 
-// Automatischer Storage-Key    [2560, 1440], // Desktop: 2K
+| `muted()` | `bool $muted = true` | Stumm schalten |
 
-### Tutorial mit Resume-Funktion
+**Wichtig:** Keine Breaking Changes außer dem alten Consent-System (siehe Migration)!
 
-$video = Video::tutorial('tutorial.mp4')    [960, 540]    // Mobile: Mobile HD
+->setAspectRatio('1/1')   // Quadratisch (Instagram)
 
-```php
+#### Alte Methoden die noch funktionieren
 
-$video = Video::tutorial('redaxo-tutorial.mp4', 'REDAXO Grundlagen')    ->enableResume(););
+### 🔧 Basis-Methoden (weiterhin verfügbar)
 
-    ->setPoster('thumbnail.jpg')
+| Methode | Parameter |
 
-    ->addChapters('chapters.vtt')echo $video->generateFull();
+|---------|-----------|```Die `vidstack.css` und `vidstack.js` sind die Hauptdarsteller - sie bringen den Video-Player zum Laufen. Die `*_helper`-Dateien sind wie die fleißigen Backstage-Helfer. Sie kümmern sich um Extras wie Übersetzungen und andere nützliche Funktionen.
 
-    ->setAspectRatio('16/9')
+| `new Video()` | `$source, $title, $lang` |
 
-    ->setLoadStrategy('idle');// Custom Storage-Key (für mehrere Videos)
+| `addSubtitle()` | `$src, $kind, $label, $lang, $default` || Methode | Parameter | Beschreibung |
+
+| `setSources()` | `array $sources` |
+
+| `setResponsiveSources()` | Desktop/Mobile Quellen ||---------|-----------|--------------|
+
+| `setResponsiveSourcesWithPresets()` | Mit Presets |
+
+| `createAutoSources()` | Auto-Detection Pattern || `new Video()` | `string $source, string $title, string $lang` | Konstruktor (auch mit Factory Methods nutzbar) |
+
+
+
+---| `setAttributes()` | `array $attributes` | Setzt HTML-Attribute |**Vorteil:** Verhindert Cumulative Layout Shift (CLS), bessere Core Web Vitals!So, jetzt aber! Dein REDAXO ist jetzt bereit, Videos mit Style zu servieren. 🎬🍿
+
+
+
+## 🎭 Migration v1.x → v2.0| `setAttribute()` | `string $key, mixed $value` | Setzt einzelnes Attribut |
+
+
+
+### Was funktioniert noch?| `setPoster()` | `string $src, string $alt` | Setzt Vorschaubild |
+
+
+
+**Alles!** Dein alter Code läuft unverändert:| `setThumbnails()` | `string $url` | Setzt Thumbnail-Sprites |
+
+
+
+```php| `addSubtitle()` | `string $src, string $kind, string $label, string $lang, bool $default` | Fügt Untertitel/Chapters hinzu |### 2️⃣ Loading Strategy - Performance-Optimierung### Source Sizes für Desktop/Mobile Videos
+
+// v1.x Code - läuft problemlos!
+
+$video = new Video('video.mp4', 'Mein Video');| `setSources()` | `array $sources` | Mehrere Video-Quellen (Multi-Resolution) |
+
+$video->setPoster('thumb.jpg');
+
+$video->addSubtitle('de.vtt', 'captions', 'Deutsch', 'de', true);| `setResponsiveSources()` | `string $desktopSrc, string $mobileSrc, ?array $desktopSize, ?array $mobileSize` | Desktop/Mobile Video-Varianten |
 
 echo $video->generateFull();
 
-```$video = Video::local('lesson-01.mp4')// Mit Auflösungspresets
+```| `setResponsiveSourcesWithPresets()` | `string $desktopSrc, string $mobileSrc, string $desktopPreset, string $mobilePreset` | Mit Presets (2k, 1080p, 720p, etc.) |
 
 
 
-**Automatisch:** Position wird gespeichert, User kann fortsetzen!    ->enableResume('kurs-lesson-01');$video = new Video('video.mp4', 'Preset Video');
+### Was ist neu?| `createAutoSources()` | `string $baseFilename` | Automatische Quellen aus Dateiname-Pattern |```phpMit dem Vidstack-Addon können Sie verschiedene Video-Auflösungen für Desktop und Mobile bereitstellen:
 
 
 
-### Barrierefreies Video```$video->setResponsiveSourcesWithPresets('video-2k.mp4', 'video-mobile.mp4', '2k', 'mobile_hd');
+**Schönere Syntax, gleiche Funktion:**| `setA11yContent()` | `string $content` | Barrierefreie Zusatzinformationen |
+
+
+
+```php| `generate()` | - | Generiert Player-HTML |$video = Video::local('video.mp4')
+
+// v2.0 Code - mit Fluent Interface
+
+$video = Video::local('video.mp4', 'Mein Video')| `generateFull()` | - | Generiert Player mit Wrapper + Consent Manager |
+
+    ->setPoster('thumb.jpg')
+
+    ->addCaptions('de.vtt', 'Deutsch', true);    ->setLoadStrategy('idle');```php
+
+echo $video->generateFull();
+
+```---
+
+
+
+### Breaking Changes?<?php
+
+
+
+⚠️ **Nur wenn du das alte Consent-System genutzt hast:**## 💡 Praktische Beispiele
+
+
+
+- `generateConsentPlaceholder()` entfernt// Strategien:use FriendsOfRedaxo\VidStack\Video;
+
+- Consent JavaScript entfernt  
+
+- **Lösung:** [Consent Manager AddOn](https://github.com/FriendsOfREDAXO/consent_manager) installieren### YouTube mit Autoplay
+
+
+
+**Für 99% der Nutzer: Keine Änderungen nötig!**->setLoadStrategy('eager')    // Sofort laden
+
+
+
+---```php
+
+
+
+## 💡 Tipps & Tricks$video = Video::youtube('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Rick Astley')->setLoadStrategy('idle')     // Laden wenn Browser idle// Einfache Desktop/Mobile Setup mit Standard-Auflösungen
+
+
+
+### URL-Autoerkennung    ->autoplay()
+
+
+
+Vidstack erkennt YouTube/Vimeo automatisch:    ->loop();->setLoadStrategy('visible')  // Laden wenn sichtbar (Standard)$video = new Video('video-desktop.mp4', 'Responsives Video');
 
 
 
 ```phpecho $video->generateFull();
 
-$video = Video::local('video.mp4', 'Barrierefreies Video')
+// Alle Varianten funktionieren:
 
-    ->setPoster('preview.jpg')**Vorteil:** User kann Video fortsetzen wo aufgehört - perfekt für Tutorials!
+new Video('https://www.youtube.com/watch?v=xyz', 'Titel');```->setLoadStrategy('play')     // Erst beim Abspielen laden$video->setResponsiveSources('video-1080p.mp4', 'video-480p.mp4');
 
-    ->addCaptions('de.vtt', 'Deutsch', true)
+new Video('https://youtu.be/xyz', 'Titel');
 
-    ->setA11yContent('// Automatische Erstellung aus Dateinamen-Pattern
+Video::youtube('https://www.youtube.com/watch?v=xyz', 'Titel');
+
+```
+
+**DSGVO:** Consent Manager blockiert automatisch YouTube, bis User zustimmt!```echo $video->generateFull();
+
+### Helper-Funktion für Standard-Videos
+
+
+
+```php
+
+function standardVideo($source, $title = '') {### Lokales Video mit allem Drum und Dran
+
+    return Video::local($source, $title)
+
+        ->setPoster('default-poster.jpg')
+
+        ->setAspectRatio('16/9')
+
+        ->setLoadStrategy('visible');```php**Vorteil:** Optimiert Page Load, reduziert initiale Bandwidth!// Mit benutzerdefinierten Auflösungen
+
+}
+
+$video = Video::local('produkt.mp4', 'Produktvideo')
+
+// Nutzen:
+
+echo standardVideo('video.mp4', 'Mein Video')->generateFull();    ->setPoster('preview.jpg', 'Produktvorschau')$video = new Video('video-desktop.mp4', 'Custom Responsive Video');
+
+```
+
+    ->setAspectRatio('16/9')
+
+### REX_MEDIA Integration
+
+    ->setLoadStrategy('visible')### 3️⃣ Resume Support - Position merken$video->setResponsiveSources(
+
+```php
+
+$mediaFile = 'REX_MEDIA[1]';    ->addCaptions('de.vtt', 'Deutsch', true)
+
+
+
+if ($mediaFile) {    ->addCaptions('en.vtt', 'English')    'video-high.mp4', 
+
+    $video = Video::local($mediaFile, 'Video aus Medienpool');
+
+        ->addChapters('chapters.vtt');
+
+    // Poster auch aus REDAXO?
+
+    if ('REX_MEDIA[2]') {echo $video->generateFull();```php    'video-low.mp4',
+
+        $video->setPoster(rex_url::media('REX_MEDIA[2]'));
+
+    }```
+
+    
+
+    echo $video->generateFull();// Automatischer Storage-Key    [2560, 1440], // Desktop: 2K
+
+}
+
+```### Tutorial mit Resume-Funktion
+
+
+
+### FFmpeg-Integration$video = Video::tutorial('tutorial.mp4')    [960, 540]    // Mobile: Mobile HD
+
+
+
+Wenn [FFmpeg AddOn](https://github.com/FriendsOfREDAXO/ffmpeg) installiert ist:```php
+
+
+
+- ✅ Zeigt Video-Infos im Medienpool (Auflösung, Codec, Bitrate)$video = Video::tutorial('redaxo-tutorial.mp4', 'REDAXO Grundlagen')    ->enableResume(););
+
+- ✅ Action-Buttons (Trimmen, Optimieren)
+
+- ✅ Automatische Metadaten    ->setPoster('thumbnail.jpg')
+
+
+
+### OEmbed für CKE5    ->addChapters('chapters.vtt')echo $video->generateFull();
+
+
+
+CKE5 kann Videos einbinden, aber nicht im Frontend ausgeben. Die Lösung:    ->setAspectRatio('16/9')
+
+
+
+```php    ->setLoadStrategy('idle');// Custom Storage-Key (für mehrere Videos)
+
+// In boot.php vom Project-AddOn:
+
+if (rex::isFrontend()) {echo $video->generateFull();
+
+    Video::videoOembedHelper();
+
+}```$video = Video::local('lesson-01.mp4')// Mit Auflösungspresets
+
+```
+
+
+
+Oder manuell parsen:
+
+**Automatisch:** Position wird gespeichert, User kann fortsetzen!    ->enableResume('kurs-lesson-01');$video = new Video('video.mp4', 'Preset Video');
+
+```php
+
+$content = 'Hier ist ein <oembed url="https://youtube.com/..."></oembed>';
+
+echo Video::parseOembedTags($content);
+
+```### Barrierefreies Video```$video->setResponsiveSourcesWithPresets('video-2k.mp4', 'video-mobile.mp4', '2k', 'mobile_hd');
+
+
+
+### CSS-Anpassungen
+
+
+
+```css```phpecho $video->generateFull();
+
+/* Vidstack Container */
+
+.vidstack-wrapper {$video = Video::local('video.mp4', 'Barrierefreies Video')
+
+    /* Deine Styles */
+
+}    ->setPoster('preview.jpg')**Vorteil:** User kann Video fortsetzen wo aufgehört - perfekt für Tutorials!
+
+
+
+/* Player */    ->addCaptions('de.vtt', 'Deutsch', true)
+
+media-player {
+
+    --media-brand: #ff0000;    ->setA11yContent('// Automatische Erstellung aus Dateinamen-Pattern
+
+}
 
         <h3>Videoinhalt</h3>
 
-        <p>Dieses Video zeigt...</p>### 4️⃣ Chapters - Kapitel-Navigation$video = new Video('produktvideo.mp4', 'Produktvideo');
+/* Controls */
 
-        <ul>
+.vds-controls {        <p>Dieses Video zeigt...</p>### 4️⃣ Chapters - Kapitel-Navigation$video = new Video('produktvideo.mp4', 'Produktvideo');
+
+    /* Custom Controls */
+
+}        <ul>
+
+```
 
             <li>Punkt 1</li>if ($video->createAutoSources('produktvideo')) {
 
+### Performance: Lazy Loading
+
             <li>Punkt 2</li>
 
-        </ul>```php    // Sucht automatisch nach: produktvideo-1080p.mp4, produktvideo-720p.mp4, produktvideo-480p.mp4
-
-    ');
-
-echo $video->generateFull();$video = Video::local('long-video.mp4')    echo $video->generateFull();
-
-```
-
-    ->addChapters('chapters.vtt');}
-
-### Audio-Player
-
-```
-
 ```php
 
-$video = Video::local('podcast.mp3', 'Mein Podcast')// Mehrere Qualitätsstufen mit manueller Kontrolle
+$videos = [];        </ul>```php    // Sucht automatisch nach: produktvideo-1080p.mp4, produktvideo-720p.mp4, produktvideo-480p.mp4
 
-    ->setAttribute('audio', true);
 
-echo $video->generateFull();**chapters.vtt Beispiel:**$video = new Video('video.mp4', 'Multi-Quality Video');
 
-```
+// Mehrere Videos vorbereiten    ');
 
-```vtt$video->setSources([
+$videos[] = Video::local('video1.mp4')->setLoadStrategy('visible');
 
----
+$videos[] = Video::local('video2.mp4')->setLoadStrategy('visible');echo $video->generateFull();$video = Video::local('long-video.mp4')    echo $video->generateFull();
 
-WEBVTT    ['src' => 'video-4k.mp4', 'width' => 3840, 'height' => 2160, 'type' => 'video/mp4'],
-
-## 🎬 Responsive Videos (Multi-Resolution)
-
-    ['src' => 'video-1080p.mp4', 'width' => 1920, 'height' => 1080, 'type' => 'video/mp4'],
-
-### Desktop/Mobile mit Presets
-
-00:00:00.000 --> 00:01:30.000    ['src' => 'video-720p.mp4', 'width' => 1280, 'height' => 720, 'type' => 'video/mp4'],
-
-```php
-
-$video = Video::local('video.mp4', 'Responsives Video')Einleitung    ['src' => 'video-480p.mp4', 'width' => 854, 'height' => 480, 'type' => 'video/mp4']
-
-    ->setResponsiveSourcesWithPresets(
-
-        'video-1080p.mp4',  // Desktop]);
-
-        'video-480p.mp4',   // Mobile
-
-        '1080p',            // Desktop Preset00:01:30.000 --> 00:05:00.000echo $video->generateFull();
-
-        'mobile_sd'         // Mobile Preset
-
-    )Hauptteil```
-
-    ->setPoster('preview.jpg');
-
-echo $video->generateFull();
+$videos[] = Video::local('video3.mp4')->setLoadStrategy('visible');
 
 ```
 
-00:05:00.000 --> 00:07:00.000**Verfügbare Auflösungspresets:**
+// Nur sichtbare Videos werden geladen!
 
-**Verfügbare Presets:**
-
-- `4k`: 3840×2160Zusammenfassung- `4k` (3840×2160), `2k` (2560×1440), `1080p` (1920×1080)
-
-- `2k`: 2560×1440
-
-- `1080p`: 1920×1080```- `720p` (1280×720), `480p` (854×480), `360p` (640×360)
-
-- `720p`: 1280×720
-
-- `480p`: 854×480- `mobile_hd` (960×540), `mobile_sd` (640×360), `tablet` (1024×576)
-
-- `mobile_hd`: 960×540
-
-- `mobile_sd`: 640×360### 5️⃣ Convenience Methods
-
-
-
-### Automatische Quellen aus Dateiname-Pattern**Wie es funktioniert:** Der Browser wählt automatisch die beste verfügbare Quelle basierend auf Gerätegröße und Netzwerkbedingungen. Die Quellen werden nach Qualität sortiert ausgegeben (höchste zuerst). Das Sorting wird gecacht für bessere Performance.
-
-
-
-```php```php
-
-$video = Video::local('video.mp4', 'Auto-Quality Video');
-
-if ($video->createAutoSources('video')) {$video = Video::youtube('https://youtube.com/watch?v=xyz')### 🔄 Vorher vs. Nachher - Wie viel einfacher es geworden ist
-
-    // Sucht automatisch nach:
-
-    // - video-1080p.mp4    ->autoplay()     // Autoplay mit Mute (Browser-konform)
-
-    // - video-720p.mp4
-
-    // - video-480p.mp4    ->loop()         // Endlos-Schleife#### Altes API (vor Phase 1)
+foreach ($videos as $video) {    ->addChapters('chapters.vtt');}
 
     echo $video->generateFull();
 
-}    ->muted();       // Stumm schalten```php
+}### Audio-Player
 
 ```
 
-$video = new Video('tutorial.mp4', 'Mein Tutorial');
+```
 
-### Manuelle Multi-Resolution
+---
 
-// Untertitel vereinfacht$video->setPoster('thumb.jpg');
+```php
+
+## 🎪 Backend-Integration
+
+$video = Video::local('podcast.mp3', 'Mein Podcast')// Mehrere Qualitätsstufen mit manueller Kontrolle
+
+### Medienpool-Vorschau
+
+    ->setAttribute('audio', true);
+
+Videos im Medienpool werden automatisch mit Player angezeigt. Keine Konfiguration nötig!
+
+echo $video->generateFull();**chapters.vtt Beispiel:**$video = new Video('video.mp4', 'Multi-Quality Video');
+
+![Medienpool Screenshot](https://github.com/FriendsOfREDAXO/vidstack/blob/assets/mediapool.png?raw=true)
+
+```
+
+### FFmpeg-Infos
+
+```vtt$video->setSources([
+
+Mit FFmpeg AddOn siehst du:
+
+- **Auflösung**: 1920×1080 px (16:9)---
+
+- **Codec**: H264, VP9, AV1
+
+- **Dauer**: 05:42WEBVTT    ['src' => 'video-4k.mp4', 'width' => 3840, 'height' => 2160, 'type' => 'video/mp4'],
+
+- **Dateigröße**: 45.2 MB
+
+- **Bitrate**: 2.4 Mbps## 🎬 Responsive Videos (Multi-Resolution)
+
+
+
+---    ['src' => 'video-1080p.mp4', 'width' => 1920, 'height' => 1080, 'type' => 'video/mp4'],
+
+
+
+## 🌍 Mehrsprachigkeit### Desktop/Mobile mit Presets
+
+
+
+Vidstack spricht mehr Sprachen als ein Eurovision-Moderator:00:00:00.000 --> 00:01:30.000    ['src' => 'video-720p.mp4', 'width' => 1280, 'height' => 720, 'type' => 'video/mp4'],
+
+
+
+- 🇩🇪 Deutsch (de)```php
+
+- 🇬🇧 Englisch (en)
+
+- 🇪🇸 Spanisch (es)$video = Video::local('video.mp4', 'Responsives Video')Einleitung    ['src' => 'video-480p.mp4', 'width' => 854, 'height' => 480, 'type' => 'video/mp4']
+
+- 🇫🇷 Französisch (fr)
+
+- 🇸🇮 Slowenisch (si)    ->setResponsiveSourcesWithPresets(
+
+
+
+```php        'video-1080p.mp4',  // Desktop]);
+
+$video = new Video('video.mp4', 'Mi Video', 'es');
+
+```        'video-480p.mp4',   // Mobile
+
+
+
+---        '1080p',            // Desktop Preset00:01:30.000 --> 00:05:00.000echo $video->generateFull();
+
+
+
+## 🆘 Support        'mobile_sd'         // Mobile Preset
+
+
+
+- **GitHub Issues:** [github.com/FriendsOfREDAXO/vidstack/issues](https://github.com/FriendsOfREDAXO/vidstack/issues)    )Hauptteil```
+
+- **REDAXO Forum:** [redaxo.org/forum](https://www.redaxo.org/forum/)
+
+- **Slack:** [FriendsOfREDAXO Slack](https://friendsofredaxo.slack.com/)    ->setPoster('preview.jpg');
+
+
+
+---echo $video->generateFull();
+
+
+
+## 📖 Weitere Docs```
+
+
+
+- **[PHASE1_FEATURES.md](PHASE1_FEATURES.md)** - Alle v2.0 Features im Detail00:05:00.000 --> 00:07:00.000**Verfügbare Auflösungspresets:**
+
+- **[CONSENT_MANAGER_INTEGRATION.md](CONSENT_MANAGER_INTEGRATION.md)** - DSGVO deep dive
+
+- **[INTEGRATION_FLOW.md](INTEGRATION_FLOW.md)** - Architektur-Diagramme**Verfügbare Presets:**
+
+
+
+---- `4k`: 3840×2160Zusammenfassung- `4k` (3840×2160), `2k` (2560×1440), `1080p` (1920×1080)
+
+
+
+## 👨‍💻 Für Entwickler- `2k`: 2560×1440
+
+
+
+### Vendor-Update- `1080p`: 1920×1080```- `720p` (1280×720), `480p` (854×480), `360p` (640×360)
+
+
+
+```bash- `720p`: 1280×720
+
+cd build/
+
+npm install- `480p`: 854×480- `mobile_hd` (960×540), `mobile_sd` (640×360), `tablet` (1024×576)
+
+npm run build
+
+# Kopiere aus dist/ nach assets/- `mobile_hd`: 960×540
+
+```
+
+- `mobile_sd`: 640×360### 5️⃣ Convenience Methods
+
+### Contribution
+
+
+
+Pull Requests sind willkommen! Bitte:
+
+- Code testen### Automatische Quellen aus Dateiname-Pattern**Wie es funktioniert:** Der Browser wählt automatisch die beste verfügbare Quelle basierend auf Gerätegröße und Netzwerkbedingungen. Die Quellen werden nach Qualität sortiert ausgegeben (höchste zuerst). Das Sorting wird gecacht für bessere Performance.
+
+- Dokumentation updaten
+
+- Commit Messages sinnvoll schreiben
+
+
+
+---```php```php
+
+
+
+## 🎬 Credits$video = Video::local('video.mp4', 'Auto-Quality Video');
+
+
+
+**Roll the Credits:**if ($video->createAutoSources('video')) {$video = Video::youtube('https://youtube.com/watch?v=xyz')### 🔄 Vorher vs. Nachher - Wie viel einfacher es geworden ist
+
+
+
+- **Vidstack.io** - Der Player: [vidstack.io](https://www.vidstack.io)    // Sucht automatisch nach:
+
+- **REDAXO CMS** - Das System: [redaxo.org](https://www.redaxo.org)
+
+- **FriendsOfREDAXO** - Die Community: [github.com/FriendsOfREDAXO](https://github.com/FriendsOfREDAXO)    // - video-1080p.mp4    ->autoplay()     // Autoplay mit Mute (Browser-konform)
+
+- **Thomas Skerbis** - Projektleitung: [github.com/skerbis](https://github.com/skerbis)
+
+- **Ein bisschen KI** 🤖    // - video-720p.mp4
+
+
+
+---    // - video-480p.mp4    ->loop()         // Endlos-Schleife#### Altes API (vor Phase 1)
+
+
+
+## 📄 Lizenz    echo $video->generateFull();
+
+
+
+MIT License - Mach was draus!}    ->muted();       // Stumm schalten```php
+
+
+
+---```
+
+
+
+**Und Action! 🎬🍿**$video = new Video('tutorial.mp4', 'Mein Tutorial');
+
+
+
+Jetzt hast du alles, was du brauchst, um Videos wie ein Profi einzubinden. Bei Fragen: Einfach ein Issue öffnen oder im Forum melden.### Manuelle Multi-Resolution
+
+
+
+Viel Erfolg mit deinen Videos! 🚀// Untertitel vereinfacht$video->setPoster('thumb.jpg');
+
 
 ```php
 
