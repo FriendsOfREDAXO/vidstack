@@ -1,4 +1,6 @@
-# Vidstack für REDAXO
+# [Vidstack.io](https://www.vidstack.io) for REDAXO
+
+![Screenshot](https://github.com/FriendsOfREDAXO/vidstack/blob/assets/screenshot.png?raw=true)
 
 Moderner Video-Player für REDAXO mit YouTube, Vimeo und lokalen Videos.
 
