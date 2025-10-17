@@ -409,13 +409,6 @@ Video::local('podcast.mp3', 'Podcast Episode 42: REDAXO AddOns')
     ->generateFull();
 ```
 
-### Testing
-
-Siehe `A11Y_TESTING_GUIDE.md` für:
-- Manuelle Tests (Tastatur, Screen-Reader, etc.)
-- Automatisierte Tools (axe DevTools, WAVE, Lighthouse, Pa11y)
-- WCAG-Checklisten
-- Screen-Reader-Kompatibilität (NVDA, JAWS, VoiceOver, etc.)
 
 ### Weitere Ressourcen
 
