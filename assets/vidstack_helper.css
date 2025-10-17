@@ -10,12 +10,6 @@
     width: 100%;
 }
 
-/* Fix für Vidstack inline-style pointer-events Bug */
-/* Überschreibt das inline-style aus der Vidstack-Library */
-.vds-controls-group {
-    pointer-events: auto !important;
-}
-
 .video-description, .video-transcript, .alternative-links {
     margin-top: 10px;
     display: none;
@@ -172,8 +166,14 @@ noscript  .js .a11y-content {
 }
 
 /* CSP-compliant styles to replace inline styles */
+/* Fix für Vidstack pointer-events inline-style */
 .vds-controls-group {
     pointer-events: none;
+}
+
+/* Kindelemente müssen klickbar sein */
+.vds-controls-group > * {
+    pointer-events: auto;
 }
 
 media-slider-video video {
