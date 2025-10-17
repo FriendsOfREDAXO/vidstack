@@ -11556,7 +11556,7 @@
 
         ${DefaultControlsSpacer()}
 
-        <media-controls-group class="vds-controls-group">
+        <media-controls-group class="vds-controls-group" style="pointer-events: none;">
           ${[
         DefaultControlsSpacer(),
         DefaultPlayButton({ tooltip: "top" }),
@@ -16555,7 +16555,7 @@
         static tagName = "media-slider";
       };
       videoTemplate = /* @__PURE__ */ createTemplate(
-        `<video muted playsinline preload="none"></video>`
+        `<video muted playsinline preload="none" style="max-width: unset;"></video>`
       );
       MediaSliderVideoElement = class extends Host(HTMLElement, SliderVideo) {
         static tagName = "media-slider-video";
