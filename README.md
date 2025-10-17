@@ -9,7 +9,7 @@
 - Fluent Interface für verkettbare Konfiguration
 - Factory Methods für schnelle Einrichtung
 
-🎬 **Video-Plattformen**
+🎬 **Media-Plattformen**
 - YouTube & YouTube Shorts
 - Vimeo
 - Lokale Videos (MP4, WebM, OGG)
