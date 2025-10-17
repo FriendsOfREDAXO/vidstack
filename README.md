@@ -6,6 +6,68 @@
 
 Eine PHP-Klasse, die Videos auf Websites einbindet - mit Style! YouTube, Vimeo oder eigene Videos? Alles kein Problem. Und das Beste? Es ist so einfach zu benutzen, dass selbst ein Kater es könnte (wenn er Daumen hätte).
 
+## 🌟 Neue Features (Phase 1)
+
+Das Addon wurde massiv vereinfacht und modernisiert:
+
+### ⛓️ Fluent Interface - Sauberer Code durch Method Chaining
+Alle Methoden geben `$this` zurück, was elegantes Chaining ermöglicht:
+
+```php
+$video = Video::local('video.mp4', 'Tutorial')
+    ->setPoster('thumb.jpg')
+    ->setAspectRatio('16/9')
+    ->addChapters('chapters.vtt')
+    ->enableResume();
+```
+
+### 🏭 Factory-Methoden - Weniger Boilerplate
+```php
+Video::youtube($url, $title)   // YouTube mit Smart Defaults
+Video::vimeo($url, $title)     // Vimeo optimiert
+Video::local($filename, $title) // Lokale Videos mit playsInline
+Video::tutorial($source, $title) // Mit Resume-Funktion
+```
+
+### 📐 Aspect Ratio - Verhindert Layout-Shift
+```php
+$video->setAspectRatio('16/9');  // Auch: '4/3', '21/9', '1/1'
+```
+
+### ⚡ Loading Strategy - Performance-Optimierung
+```php
+$video->setLoadStrategy('idle');  
+// 'eager' → Sofort laden
+// 'idle' → Laden wenn Browser idle
+// 'visible' → Laden wenn sichtbar (Standard)
+// 'play' → Erst beim Abspielen laden
+```
+
+### 💾 Resume - Position automatisch merken
+```php
+$video->enableResume();              // Auto Storage-Key
+$video->enableResume('mein-tutorial'); // Custom Key
+```
+
+### 📑 Chapters & Captions - Vereinfacht
+```php
+$video->addChapters('chapters.vtt');         // Kapitel-Navigation
+$video->addCaptions('subtitles.vtt');        // Standard-Untertitel
+$video->addCaptions('de.vtt', 'Deutsch', true); // Mit Label
+```
+
+### 🎬 Convenience-Methoden
+```php
+$video->autoplay();  // Autoplay mit Mute
+$video->loop();      // Endlos-Schleife
+$video->muted();     // Stumm schalten
+```
+
+### 🎯 Smart Defaults
+Das Addon setzt automatisch sinnvolle Standardwerte:
+- `playsInline="true"` für Mobile
+- `preload="metadata"` für Performance
+
 ## 🚀 Los geht's!
 
 ### Installation
@@ -87,28 +149,70 @@ echo $video->generateFull();
 
 **Wie es funktioniert:** Der Browser wählt automatisch die beste verfügbare Quelle basierend auf Gerätegröße und Netzwerkbedingungen. Die Quellen werden nach Qualität sortiert ausgegeben (höchste zuerst). Das Sorting wird gecacht für bessere Performance.
 
+### 🔄 Vorher vs. Nachher - Wie viel einfacher es geworden ist
+
+#### Altes API (vor Phase 1)
+```php
+$video = new Video('tutorial.mp4', 'Mein Tutorial');
+$video->setPoster('thumb.jpg');
+$video->setAttributes(['data-aspect-ratio' => '16/9']);
+$video->addSubtitle('chapters.vtt', 'Chapters', 'en', 'chapters', false);
+$video->addSubtitle('subtitles.vtt', 'Deutsch', 'de', 'captions', true);
+$video->setAttributes(array_merge($video->getAttributes() ?? [], [
+    'autoplay' => 'true',
+    'muted' => 'true',
+    'loop' => 'true'
+]));
+echo $video->generateFull();
+```
+
+#### Neues API (Phase 1)
+```php
+$video = Video::tutorial('tutorial.mp4', 'Mein Tutorial')
+    ->setPoster('thumb.jpg')
+    ->setAspectRatio('16/9')
+    ->addChapters('chapters.vtt')
+    ->addCaptions('subtitles.vtt', 'Deutsch', true)
+    ->autoplay()
+    ->loop();
+echo $video->generateFull();
+```
+
+**Unterschied:** 
+- ✅ **8 Zeilen → 8 verkettete Aufrufe** (aber viel lesbarer!)
+- ✅ **Keine manuelle Array-Manipulation** mehr nötig
+- ✅ **Selbsterklärende Methoden** wie `autoplay()` statt kryptischem Array
+- ✅ **Factory-Methoden** mit Smart Defaults (`Video::tutorial()`)
+- ✅ **Spezielle Methoden** wie `addChapters()` statt generischem `addSubtitle()`
+
 ### Grundlegende Verwendung
 
 ```php
 <?php
 use FriendsOfRedaxo\VidStack\Video;
 
-// YouTube-Video
-$video = new Video('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Never Gonna Give You Up');
+// Einfachste Variante - YouTube
+$video = Video::youtube('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Never Gonna Give You Up');
 echo $video->generateFull();
 
-// Vimeo-Video
-$vimeoVideo = new Video('https://vimeo.com/148751763', 'Vimeo-Beispiel');
-echo $vimeoVideo->generateFull();
+// Vimeo mit Poster
+$video = Video::vimeo('https://vimeo.com/148751763', 'Vimeo-Beispiel')
+    ->setPoster('vorschau.jpg');
+echo $video->generateFull();
 
-// Lokales Video
-$localVideo = new Video('video.mp4', 'Eigenes Video');
-echo $localVideo->generate();
+// Lokales Video mit Smart Defaults
+$video = Video::local('video.mp4', 'Eigenes Video')
+    ->setPoster('thumb.jpg');
+echo $video->generateFull();
 
-// Externes Video
-$externalVideo = new Video('https://somedomain.tld/video.mp4', 'Eigenes Video');
-echo $externalVideo->generate();
+// Tutorial-Video (merkt sich Position)
+$video = Video::tutorial('tutorial.mp4', 'REDAXO Tutorial')
+    ->setPoster('thumb.jpg')
+    ->addChapters('kapitel.vtt');
+echo $video->generateFull();
 ```
+
+**Neu:** Fluent Interface (Method Chaining) macht den Code lesbarer!
 
 ### Grundlegende Beispiele für den Alltag
 
@@ -118,10 +222,11 @@ echo $externalVideo->generate();
 <?php
 use FriendsOfRedaxo\VidStack\Video;
 
-// Video aus dem Medienpool mit Poster-Bild
-$video = new Video('mein_video.mp4', 'Mein tolles Video mit Vorschaubild');
-$video->setPoster('vorschaubild.jpg', 'Beschreibung des Vorschaubilds');
-echo $video->generate();
+// Einfach mit Fluent Interface
+$video = Video::local('mein_video.mp4', 'Mein tolles Video')
+    ->setPoster('vorschaubild.jpg', 'Beschreibung des Vorschaubilds')
+    ->setAspectRatio('16/9');
+echo $video->generateFull();
 ```
 
 #### Video mit Untertiteln (VTT-Format)
@@ -130,11 +235,11 @@ echo $video->generate();
 <?php
 use FriendsOfRedaxo\VidStack\Video;
 
-// Video mit mehrsprachigen Untertiteln
-$video = new Video('erklaervideo.mp4', 'Erklärvideo mit Untertiteln');
-$video->addSubtitle('untertitel_de.vtt', 'captions', 'Deutsch', 'de', true); // Standard-Untertitel
-$video->addSubtitle('untertitel_en.vtt', 'captions', 'Englisch', 'en');
-echo $video->generate();
+// Vereinfacht mit addCaptions()
+$video = Video::local('erklaervideo.mp4', 'Erklärvideo')
+    ->addCaptions('untertitel_de.vtt', 'Deutsch', true)
+    ->addCaptions('untertitel_en.vtt', 'Englisch');
+echo $video->generateFull();
 ```
 
 #### Barrierefreies Video mit Beschreibungen
@@ -143,17 +248,15 @@ echo $video->generate();
 <?php
 use FriendsOfRedaxo\VidStack\Video;
 
-// Barrierefreies Video mit zusätzlichen Informationen
-$video = new Video('tutorial.mp4', 'Tutorial: REDAXO Installation');
-
-// Ausführliche Beschreibung für Screenreader hinzufügen
-$video->setA11yContent(
-    'Das Video zeigt Schritt für Schritt, wie REDAXO installiert wird. Beginnend mit dem Download bis zur ersten Anmeldung im Backend.',
-    'https://beispiel.de/redaxo-installation-text.html' // Alternative Text-Version
-);
-
-// Kapitelmarken hinzufügen
-$video->addSubtitle('chapters.vtt', 'chapters', 'Kapitel', 'de');
+// Alles in einer fluent chain
+$video = Video::tutorial('tutorial.mp4', 'Tutorial: REDAXO Installation')
+    ->setPoster('thumb.jpg')
+    ->addChapters('chapters.vtt')
+    ->addCaptions('untertitel.vtt', 'Deutsch', true)
+    ->setA11yContent(
+        'Das Video zeigt Schritt für Schritt, wie REDAXO installiert wird.',
+        'https://beispiel.de/redaxo-installation-text.html'
+    );
 
 echo $video->generateFull();
 ```
@@ -164,10 +267,14 @@ echo $video->generateFull();
 <?php
 use FriendsOfRedaxo\VidStack\Video;
 
-// YouTube-Video einbinden
-$video = new Video('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'YouTube-Video');
+// Einfachste Variante
+echo Video::youtube('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Mein Video')->generateFull();
 
-// generateFull() erzeugt den vollständigen Player mit allen Features
+// Mit Optionen
+$video = Video::youtube('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'YouTube-Video')
+    ->autoplay(true)  // Autoplay mit Mute
+    ->loop();         // Endlos-Schleife
+
 echo $video->generateFull();
 ```
 
@@ -256,15 +363,82 @@ Die Buttons führen direkt zu den entsprechenden FFmpeg-Tools und übertragen au
 
 Ohne das FFmpeg-AddOn funktioniert Vidstack weiterhin normal, zeigt aber keine technischen Video-Informationen an.
 
+## 🎯 Neue vereinfachte API (Phase 1)
+
+### Factory-Methoden (einfacher Einstieg)
+
+```php
+// YouTube
+Video::youtube($url, $title)
+
+// Vimeo
+Video::vimeo($url, $title)
+
+// Lokales Video (mit Smart Defaults)
+Video::local($filename, $title)
+
+// Tutorial-Video (mit Resume-Funktion)
+Video::tutorial($source, $title)
+```
+
+### Neue Features
+
+#### Aspect Ratio (verhindert Layout-Shift)
+```php
+$video->setAspectRatio('16/9');  // oder '4/3', '21/9', '1/1'
+```
+
+#### Loading Strategy (Performance)
+```php
+$video->setLoadStrategy('idle');  // 'eager', 'idle', 'visible', 'play'
+```
+
+#### Resume/Position merken
+```php
+$video->enableResume();  // Auto Storage-Key
+$video->enableResume('mein-tutorial');  // Custom Key
+```
+
+#### Chapters (Kapitel-Navigation)
+```php
+$video->addChapters('kapitel.vtt');
+```
+
+#### Vereinfachte Methoden
+```php
+$video->autoplay();        // Autoplay mit Mute
+$video->loop();            // Endlos-Schleife
+$video->muted();           // Stumm schalten
+$video->addCaptions($vtt); // Untertitel ohne komplizierte Parameter
+```
+
+### Fluent Interface (Method Chaining)
+
+Alle Methoden geben `$this` zurück → Chaining möglich!
+
+```php
+$video = Video::tutorial('video.mp4', 'Mein Tutorial')
+    ->setPoster('thumb.jpg')
+    ->setAspectRatio('16/9')
+    ->addChapters('chapters.vtt')
+    ->addCaptions('subtitles.vtt')
+    ->enableResume()
+    ->setLoadStrategy('idle');
+
+echo $video->generateFull();
+```
+
 ## �🛠 Die Class
 
 ### Konstruktor
 ```php
-__construct($source, $title = '', $lang = 'de'): void
+__construct($source, $title = '', $lang = 'de'): self
 ```
 - `$source`: URL oder Pfad zum Video (Pflicht)
 - `$title`: Titel des Videos (Optional)
 - `$lang`: Sprachcode (Optional, Standard: 'de')
+
+**Tipp:** Nutze die Factory-Methoden `Video::youtube()`, `Video::local()` etc. für einfacheren Code!
 
 ### Methoden
 - `setAttributes(array $attributes): void`: Zusätzliche Player-Attribute

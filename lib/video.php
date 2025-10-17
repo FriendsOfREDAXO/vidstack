@@ -26,6 +26,12 @@ class Video
     private array $sources = [];
     private bool $useMultipleSources = false;
     private array $sortedSources = []; // Cache für sortierte Sources
+    
+    // Phase 1 Features
+    private ?string $aspectRatio = null;
+    private string $loadStrategy = 'visible';
+    private bool $enableResume = false;
+    private ?string $storageKey = null;
 
     public function __construct(string $source, string $title = '', string $lang = 'de')
     {
@@ -34,6 +40,49 @@ class Video
         $this->lang = $lang;
         $this->attributes['lang'] = $lang;
         $this->loadTranslations();
+        
+        // Smart Defaults für bessere UX
+        $this->attributes['playsInline'] = true;
+        $this->attributes['preload'] = 'metadata';
+    }
+    
+    /**
+     * Vereinfachte Factory: YouTube Video
+     */
+    public static function youtube(string $url, string $title = ''): self
+    {
+        return new self($url, $title);
+    }
+    
+    /**
+     * Vereinfachte Factory: Vimeo Video
+     */
+    public static function vimeo(string $url, string $title = ''): self
+    {
+        return new self($url, $title);
+    }
+    
+    /**
+     * Vereinfachte Factory: Lokales Video mit Best Practices
+     */
+    public static function local(string $filename, string $title = ''): self
+    {
+        $video = new self($filename, $title);
+        $video->setAspectRatio('16/9')
+              ->setLoadStrategy('idle');
+        return $video;
+    }
+    
+    /**
+     * Vereinfachte Factory: Tutorial-Video (mit Resume)
+     */
+    public static function tutorial(string $source, string $title = ''): self
+    {
+        $video = new self($source, $title);
+        $video->setAspectRatio('16/9')
+              ->enableResume()
+              ->setLoadStrategy('idle');
+        return $video;
     }
 
     private static function getTranslationsFile(): string
@@ -58,37 +107,39 @@ class Video
         return self::$translations[$this->lang][$key] ?? "[[{$key}]]";
     }
 
-    public function setAttributes(array $attributes): void
+    public function setAttributes(array $attributes): self
     {
         $this->attributes = array_merge($this->attributes, $attributes);
+        return $this;
     }
 
-    public function setA11yContent(string $description, string $alternativeUrl = ''): void
+    public function setA11yContent(string $description, string $alternativeUrl = ''): self
     {
         $alternativeUrl = $alternativeUrl ?: $this->getAlternativeUrl();
 
         $this->a11yContent = "<div class=\"video-description\">"
             . "<p>" . rex_escape($this->getText('video_description')) . ": " . $description . "</p></div>"
             . "<div class=\"alternative-links\">"
-            . "<p>" . rex_escape($this->getText('video_alternative_view')) . ": <a href=\"" . rex_escape($alternativeUrl) . "\">"
+            . "<p>" . rex_escape($this->getText('video_alternative_view')) . ": <a href=\"" . rex_escape($alternativeUrl) . "\">" 
             . rex_escape($this->getText('video_open_alternative_view')) . "</a></p>"
             . "</div>";
-    }
-
-    public function setThumbnails(string $thumbnailsUrl): void
+        return $this;
+    }    public function setThumbnails(string $thumbnailsUrl): self
     {
         $this->thumbnails = $thumbnailsUrl;
+        return $this;
     }
 
-    public function setPoster(string $posterSrc, string $posterAlt = ''): void
+    public function setPoster(string $posterSrc, string $posterAlt = ''): self
     {
         $this->poster = [
             'src' => $posterSrc,
             'alt' => $posterAlt
         ];
+        return $this;
     }
 
-    public function addSubtitle(string $src, string $kind, string $label, string $lang, bool $default = false): void
+    public function addSubtitle(string $src, string $kind, string $label, string $lang, bool $default = false): self
     {
         $this->subtitles[] = [
             'src' => $src,
@@ -97,6 +148,24 @@ class Video
             'lang' => $lang,
             'default' => $default
         ];
+        return $this;
+    }
+    
+    /**
+     * Vereinfachte Methode für Kapitel
+     */
+    public function addChapters(string $vttFile): self
+    {
+        return $this->addSubtitle($vttFile, 'chapters', 'Kapitel', $this->lang);
+    }
+    
+    /**
+     * Vereinfachte Methode für Untertitel (automatisch Sprache aus Video)
+     */
+    public function addCaptions(string $vttFile, string $label = '', bool $default = false): self
+    {
+        $label = $label ?: 'Untertitel';
+        return $this->addSubtitle($vttFile, 'captions', $label, $this->lang, $default);
     }
 
     /**
@@ -109,7 +178,7 @@ class Video
      * ]
      * @param bool $autoSort Automatisch nach Qualität sortieren (default: true)
      */
-    public function setSources(array $sources, bool $autoSort = true): void
+    public function setSources(array $sources, bool $autoSort = true): self
     {
         $this->sources = $sources;
         $this->useMultipleSources = !empty($sources);
@@ -118,6 +187,7 @@ class Video
         if ($autoSort && $this->useMultipleSources) {
             $this->sortSourcesByQuality();
         }
+        return $this;
     }
 
     /**
@@ -157,7 +227,7 @@ class Video
         string $mobileSource, 
         array $desktopResolution = [1920, 1080], 
         array $mobileResolution = [854, 480]
-    ): void {
+    ): self {
         $sources = [];
         
         // Desktop-Version (höhere Auflösung)
@@ -181,6 +251,7 @@ class Video
         }
         
         $this->setSources($sources);
+        return $this;
     }
 
     /**
@@ -201,6 +272,66 @@ class Video
             'mov' => 'video/quicktime',
             default => 'video/mp4'
         };
+    }
+    
+    /**
+     * Phase 1: Aspect Ratio setzen (z.B. '16/9', '4/3', '21/9')
+     */
+    public function setAspectRatio(string $ratio): self
+    {
+        $this->aspectRatio = $ratio;
+        return $this;
+    }
+    
+    /**
+     * Phase 1: Loading Strategy (Performance-Optimierung)
+     * @param string $strategy 'eager', 'idle', 'visible', 'play'
+     */
+    public function setLoadStrategy(string $strategy): self
+    {
+        $this->loadStrategy = $strategy;
+        return $this;
+    }
+    
+    /**
+     * Phase 1: Resume/Storage aktivieren (merkt sich Position)
+     * @param string|null $key Custom Storage-Key (null = auto)
+     */
+    public function enableResume(?string $key = null): self
+    {
+        $this->enableResume = true;
+        $this->storageKey = $key ?: 'vidstack-' . md5($this->source);
+        return $this;
+    }
+    
+    /**
+     * Vereinfachte Methode: Autoplay setzen
+     */
+    public function autoplay(bool $muted = true): self
+    {
+        $this->attributes['autoplay'] = true;
+        if ($muted) {
+            $this->attributes['muted'] = true;
+        }
+        return $this;
+    }
+    
+    /**
+     * Vereinfachte Methode: Loop aktivieren
+     */
+    public function loop(): self
+    {
+        $this->attributes['loop'] = true;
+        return $this;
+    }
+    
+    /**
+     * Vereinfachte Methode: Muted setzen
+     */
+    public function muted(bool $muted = true): self
+    {
+        $this->attributes['muted'] = $muted;
+        return $this;
     }
 
     /**
@@ -430,8 +561,23 @@ class Video
 
     public function generateAttributesString(): string
     {
-        return array_reduce(array_keys($this->attributes), function ($carry, $key) {
-            $value = $this->attributes[$key];
+        // Phase 1 Features zu Attributes hinzufügen
+        $attrs = $this->attributes;
+        
+        if ($this->aspectRatio !== null) {
+            $attrs['aspectRatio'] = $this->aspectRatio;
+        }
+        
+        if ($this->loadStrategy !== 'visible') {
+            $attrs['load'] = $this->loadStrategy;
+        }
+        
+        if ($this->enableResume && $this->storageKey) {
+            $attrs['storage'] = $this->storageKey;
+        }
+        
+        return array_reduce(array_keys($attrs), function ($carry, $key) use ($attrs) {
+            $value = $attrs[$key];
             return $carry . (is_bool($value) ? ($value ? " " . rex_escape($key) : '') : " " . rex_escape($key) . "=\"" . rex_escape($value) . "\"");
         }, '');
     }
