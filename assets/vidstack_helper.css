@@ -9,6 +9,13 @@
 .video-container media-player {
     width: 100%;
 }
+
+/* Fix für Vidstack inline-style pointer-events Bug */
+/* Überschreibt das inline-style aus der Vidstack-Library */
+.vds-controls-group {
+    pointer-events: auto !important;
+}
+
 .video-description, .video-transcript, .alternative-links {
     margin-top: 10px;
     display: none;
