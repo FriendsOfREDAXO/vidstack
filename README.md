@@ -178,16 +178,17 @@ echo $video->generateFull();
 - `Video::local($filename, $title)`
 - `Video::tutorial($source, $title)`
 
-### Phase 1 Features (NEU)
-- `setAspectRatio($ratio)`
-- `setLoadStrategy($strategy)`
-- `enableResume($key = null)`
-- `addChapters($vttFile)`
-- `addCaptions($vtt, $label, $default = false)`
-- `autoplay()`
-- `loop()`
-- `muted($muted = true)`
-
+### V. 2.x Features (NEU)
+- `setAspectRatio($ratio)` - Seitenverhältnis (16/9, 4/3, 21/9, 1/1)
+- `setLoadStrategy($strategy)` - Ladeverhalten: eager, idle, visible, play
+- `enableResume($key = null)` - Wiedergabeposition speichern
+- `addChapters($vttFile)` - Kapitel-Navigation
+- `addCaptions($vtt, $label, $default = false)` - Untertitel
+- `addTranscript($vttFile, $label = "")` - Transkript für Screen-Reader
+- `addAudioDescription($vttFile, $label = "", $default = false)` - Audiodeskription
+- `autoplay()` - Automatische Wiedergabe (mit Mute)
+- `loop()` - Endlos-Wiedergabe
+- `muted($muted = true)` - Stumm schalten
 ### Basis-Methoden
 - `setPoster($src, $alt = '')`
 - `setThumbnails($url)`
@@ -253,6 +254,174 @@ Mit FFmpeg AddOn:
 - Video-Infos im Medienpool
 - Action-Buttons (Trimmen, Optimieren)
 - Automatische Metadaten
+
+
+## Barrierefreiheit (A11y)
+
+### WCAG-Konformität
+
+**Status:** WCAG 2.1 Level AA konform ✅
+
+- **Level A:** Vollständig erfüllt
+- **Level AA:** Vollständig erfüllt  
+- **Level AAA:** Teilweise erfüllt
+
+### Unterstützte Features
+
+#### Tastaturnavigation
+Vollständige Steuerung ohne Maus:
+
+| Taste | Funktion |
+|-------|----------|
+| **Space / K** | Play/Pause |
+| **←/→** | 5 Sekunden vor/zurück |
+| **J / L** | 10 Sekunden vor/zurück |
+| **↑/↓** | Lautstärke +/- 5% |
+| **M** | Stumm schalten |
+| **F** | Vollbild |
+| **C** | Untertitel an/aus |
+| **0-9** | Zu Position springen (0%, 10%, ..., 90%) |
+| **Home / End** | Zum Anfang/Ende |
+
+#### Screen-Reader-Optimierung
+
+```php
+// Skip-Links für schnelle Navigation
+Video::local('video.mp4', 'Tutorial')
+    ->setA11yContent('Detaillierte Videobeschreibung für Screen-Reader')
+    ->generateFull();
+
+// Transkript hinzufügen
+Video::local('interview.mp4', 'Interview')
+    ->addTranscript('transcript.vtt', 'Vollständiges Transkript')
+    ->generateFull();
+
+// Audiodeskription für blinde Nutzer
+Video::local('film.mp4', 'Kurzfilm')
+    ->addAudioDescription('audiodesc.vtt', 'Audiodeskription', true)
+    ->generateFull();
+```
+
+#### Untertitel & Transkripte
+
+```php
+// Mehrsprachige Untertitel
+$video = Video::local('presentation.mp4', 'Präsentation')
+    ->addCaptions('de.vtt', 'Deutsch', true)
+    ->addCaptions('en.vtt', 'English', false)
+    ->addCaptions('fr.vtt', 'Français', false)
+    ->addTranscript('transcript-de.vtt', 'Transkript (Deutsch)')
+    ->generateFull();
+```
+
+**VTT-Format-Beispiel:**
+```vtt
+WEBVTT
+
+00:00:00.000 --> 00:00:05.000
+Willkommen zu unserem Tutorial über REDAXO CMS.
+
+00:00:05.000 --> 00:00:10.000
+In diesem Video zeigen wir die Installation.
+```
+
+#### Visuelle Anpassungen
+
+- **Fokus-Indikatoren:** 3px blaue Umrandung + Schatten
+- **High-Contrast Modus:** Automatische Anpassung bei `prefers-contrast: high`
+- **Reduced Motion:** Respektiert `prefers-reduced-motion` (keine Animationen)
+- **Touch-Targets:** Mindestgröße 44x44px (WCAG 2.5.5)
+
+#### Live-Regions
+
+Automatische Status-Ansagen für Screen-Reader:
+- Play/Pause-Status
+- Lautstärke-Änderungen
+- Zeitsprünge
+- Fehler-Meldungen
+
+### Best Practices
+
+#### 1. Immer Titel angeben
+```php
+// ✅ Gut: Beschreibender Titel
+Video::youtube('...', 'REDAXO Installation Tutorial - Teil 1')
+
+// ❌ Schlecht: Keine Beschreibung
+Video::youtube('...', 'Video')
+```
+
+#### 2. Poster-Bilder mit Alt-Text
+```php
+$video->setPoster('thumb.jpg', 'Screenshot: REDAXO Dashboard mit Modul-Editor');
+```
+
+#### 3. Untertitel für alle Sprach-Inhalte
+```php
+// Für Videos mit gesprochenem Text IMMER Untertitel hinzufügen
+$video->addCaptions('de.vtt', 'Deutsch', true);
+```
+
+#### 4. Transkripte für komplexe Inhalte
+```php
+// Bei Interviews, Präsentationen, Tutorials
+$video->addTranscript('transcript.vtt', 'Vollständiges Transkript');
+```
+
+#### 5. Audiodeskription für visuelle Inhalte
+```php
+// Wenn wichtige Informationen nur visuell vermittelt werden
+$video->addAudioDescription('audiodesc.vtt', 'Audiodeskription');
+```
+
+#### 6. Sinnvolle Aspect Ratios
+```php
+// Verhindert Layout-Shift beim Laden
+$video->setAspectRatio('16/9');
+```
+
+#### 7. Loading Strategy für Performance
+```php
+// Lädt Video erst bei Sichtbarkeit → bessere Performance
+$video->setLoadStrategy('visible');
+```
+
+#### 8. Resume-Funktion für lange Videos
+```php
+// Nutzerfreundlich bei Tutorials > 5 Minuten
+$video->enableResume();
+```
+
+#### 9. A11y-Content für Kontext
+```php
+$video->setA11yContent(
+    'Dieses Video zeigt die Installation von REDAXO CMS Schritt für Schritt. ' .
+    'Es werden folgende Themen behandelt: Download, Upload, Installation, ' .
+    'erste Schritte im Backend.'
+);
+```
+
+#### 10. Audio-Player explizit kennzeichnen
+```php
+Video::local('podcast.mp3', 'Podcast Episode 42: REDAXO AddOns')
+    ->setAttribute('audio', true)
+    ->addTranscript('podcast-transcript.vtt')
+    ->generateFull();
+```
+
+### Testing
+
+Siehe `A11Y_TESTING_GUIDE.md` für:
+- Manuelle Tests (Tastatur, Screen-Reader, etc.)
+- Automatisierte Tools (axe DevTools, WAVE, Lighthouse, Pa11y)
+- WCAG-Checklisten
+- Screen-Reader-Kompatibilität (NVDA, JAWS, VoiceOver, etc.)
+
+### Weitere Ressourcen
+
+- [Vidstack Accessibility Guide](https://vidstack.io/docs/player/getting-started/accessibility)
+- [WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
+- [WebVTT Specification](https://www.w3.org/TR/webvtt1/)
 
 ## Support
 
