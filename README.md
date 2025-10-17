@@ -27,10 +27,14 @@ echo '<script src="' . rex_url::addonAssets('vidstack', 'vidstack_helper.js') . 
 ```php
 use FriendsOfRedaxo\VidStack\Video;
 
-// YouTube
+// Auto-Erkennung 
+echo Video::create('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Mein Video')->generateFull();
+echo Video::create('video.mp4', 'Lokales Video')->generateFull();
+
+// Oder explizit
 echo Video::youtube('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'Mein Video')->generateFull();
 
-// Lokales Video
+// Lokales Video mit Optionen
 echo Video::local('video.mp4', 'Mein Video')
     ->setPoster('thumb.jpg')
     ->setAspectRatio('16/9')
@@ -42,6 +46,7 @@ echo Video::local('video.mp4', 'Mein Video')
 ### Factory Methods
 
 ```php
+Video::create($source, $title) // Auto-Erkennung (YouTube, Vimeo, lokal)
 Video::youtube($url, $title)   // YouTube mit Consent Manager
 Video::vimeo($url, $title)     // Vimeo mit Consent Manager
 Video::local($file, $title)    // Lokales Video mit Smart Defaults
@@ -116,6 +121,15 @@ echo $video->generateFull();
 
 ## Beispiele
 
+### Auto-Erkennung
+
+```php
+// Erkennt automatisch YouTube, Vimeo oder lokale Dateien
+echo Video::create('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'YouTube Video')->generateFull();
+echo Video::create('https://vimeo.com/123456789', 'Vimeo Video')->generateFull();
+echo Video::create('video.mp4', 'Lokales Video')->generateFull();
+```
+
 ### YouTube mit Autoplay
 
 ```php
@@ -173,10 +187,11 @@ echo $video->generateFull();
 ## API-Referenz
 
 ### Factory Methods (NEU)
-- `Video::youtube($url, $title)`
-- `Video::vimeo($url, $title)`
-- `Video::local($filename, $title)`
-- `Video::tutorial($source, $title)`
+- `Video::create($source, $title)` - Automatische Erkennung (YouTube, Vimeo, lokal)
+- `Video::youtube($url, $title)` - YouTube-Video mit Consent Manager
+- `Video::vimeo($url, $title)` - Vimeo-Video mit Consent Manager
+- `Video::local($filename, $title)` - Lokales Video/Audio
+- `Video::tutorial($source, $title)` - Tutorial-Video mit Resume
 
 ### V. 2.x Features (NEU)
 - `setAspectRatio($ratio)` - Seitenverhältnis (16/9, 4/3, 21/9, 1/1)
@@ -190,13 +205,20 @@ echo $video->generateFull();
 - `loop()` - Endlos-Wiedergabe
 - `muted($muted = true)` - Stumm schalten
 ### Basis-Methoden
-- `setPoster($src, $alt = '')`
-- `setThumbnails($url)`
-- `setAttribute($key, $value)`
-- `setAttributes($array)`
-- `setA11yContent($content)`
-- `generate()`
-- `generateFull()`
+- `setPoster($src, $alt = '')` - Poster-Bild setzen
+- `setThumbnails($url)` - Thumbnail-Sprites (VTT-Datei)
+- `setAttribute($key, $value)` - Einzelnes Attribut setzen
+- `setAttributes($array)` - Mehrere Attribute setzen
+- `setA11yContent($content)` - Barrierefreier Alternativ-Content
+- `generate()` - Player-HTML generieren
+- `generateFull()` - Player-HTML mit Container und A11y-Content
+
+### Utility-Methoden (Statisch)
+- `Video::getVideoInfo($source)` - Plattform und ID ermitteln (youtube, vimeo, default)
+- `Video::isMedia($url)` - Prüft ob es eine Medien-Datei ist
+- `Video::isAudio($url)` - Prüft ob es eine Audio-Datei ist
+- `Video::isPlayable($source)` - Prüft ob die Quelle abspielbar ist
+- `Video::getResolutionPresets()` - Verfügbare Auflösungs-Presets
 
 ### Alte Methoden
 - `new Video($source, $title, $lang = 'de')`
@@ -216,6 +238,33 @@ echo $video->generateFull();
 3. Consent Manager statt eigener Placeholder-Logik
 
 ## Tipps
+
+### Utility-Methoden verwenden
+
+```php
+// Video-Typ und ID ermitteln
+$info = Video::getVideoInfo('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+// ['platform' => 'youtube', 'id' => 'dQw4w9WgXcQ']
+
+$info = Video::getVideoInfo('https://vimeo.com/123456789');
+// ['platform' => 'vimeo', 'id' => '123456789']
+
+$info = Video::getVideoInfo('video.mp4');
+// ['platform' => 'default', 'id' => '']
+
+// Medien-Typ prüfen
+if (Video::isAudio('podcast.mp3')) {
+    echo 'Das ist eine Audio-Datei';
+}
+
+if (Video::isMedia('video.mp4')) {
+    echo 'Das ist eine Medien-Datei';
+}
+
+if (Video::isPlayable($source)) {
+    echo Video::create($source, 'Mein Video')->generateFull();
+}
+```
 
 ### Helper-Funktion
 
