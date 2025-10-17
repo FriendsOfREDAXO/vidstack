@@ -2,7 +2,7 @@
 
 ## Überblick
 
-Vidstack nutzt den Consent Manager **direkt** über die `doConsent()` API - **kein** automatisches Scanning via Output-Filter.
+Vidstack nutzt den Consent Manager **direkt** über die `doConsent()` API - **kein** automatisches Scanning via Output-Filter mehr.
 
 ## Architektur-Diagramm
 

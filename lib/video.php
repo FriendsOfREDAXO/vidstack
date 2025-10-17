@@ -494,7 +494,15 @@ class Video
             }
             
             // Consent Manager Inline-Consent verwenden
-            $playerCode = consent_manager_inline::doConsent($serviceKey, $playerCode, $consentOptions);
+            try {
+                $playerCode = consent_manager_inline::doConsent($serviceKey, $playerCode, $consentOptions);
+            } catch (\Exception $e) {
+                // Fallback: Video ohne Consent laden (Graceful Degradation)
+                if (function_exists('rex_logger')) {
+                    rex_logger::logException($e);
+                }
+                // $playerCode bleibt unverändert (direktes Video-Loading)
+            }
         }
         
         $code .= $playerCode;

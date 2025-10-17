@@ -2,7 +2,7 @@
 
 ## Übersicht
 
-Ab Version X.X.X nutzt das Vidstack-Addon das [Consent Manager AddOn](https://github.com/FriendsOfREDAXO/consent_manager) für DSGVO-konforme Einbindung von YouTube- und Vimeo-Videos.
+Ab Version 2.0.0 nutzt das Vidstack-Addon das [Consent Manager AddOn](https://github.com/FriendsOfREDAXO/consent_manager) für DSGVO-konforme Einbindung von YouTube- und Vimeo-Videos.
 
 ## Was wurde geändert?
 
@@ -294,7 +294,7 @@ Consent Manager → Texte → Inline-Texte bearbeiten
 
 ## Changelog
 
-### Version X.X.X (2025-10-17)
+### Version 2.0.0 (2025-10-17)
 
 **Breaking Changes:**
 - ❌ Entfernt: Eigenes Consent-System
