@@ -474,38 +474,8 @@ class Video
 
         $code = "<div class=\"{$mediaType}-container\" role=\"region\" aria-label=\"" . rex_escape($this->getText("a11y_{$mediaType}_player")) . "\">";
 
-        // Consent Manager Integration für YouTube/Vimeo
-        $playerCode = $this->generate();
-        
-        if (!$isAudio && $videoInfo['platform'] !== 'default' && class_exists('\consent_manager_inline')) {
-            // Consent Manager verfügbar - Inline-Consent nutzen
-            $serviceKey = strtolower($videoInfo['platform']); // 'youtube' oder 'vimeo'
-            
-            // Optionen für Consent Manager
-            $consentOptions = [
-                'title' => $this->title ?: ucfirst($videoInfo['platform']) . ' Video',
-                'width' => 'auto',
-                'height' => 'auto',
-            ];
-            
-            // Poster-Bild als Thumbnail nutzen, falls vorhanden
-            if (!empty($this->poster['src'])) {
-                $consentOptions['thumbnail'] = $this->poster['src'];
-            }
-            
-            // Consent Manager Inline-Consent verwenden
-            try {
-                $playerCode = \consent_manager_inline::doConsent($serviceKey, $playerCode, $consentOptions);
-            } catch (\Exception $e) {
-                // Fallback: Video ohne Consent laden (Graceful Degradation)
-                if (function_exists('rex_logger')) {
-                    rex_logger::logException($e);
-                }
-                // $playerCode bleibt unverändert (direktes Video-Loading)
-            }
-        }
-        
-        $code .= $playerCode;
+        // Generiere Video-Player
+        $code .= $this->generate();
 
         if (!$isAudio && $this->a11yContent) {
             $code .= "<div class=\"a11y-content\" role=\"complementary\" aria-label=\"" . rex_escape($this->getText('a11y_additional_information')) . "\">" 
