@@ -477,7 +477,7 @@ class Video
         // Consent Manager Integration für YouTube/Vimeo
         $playerCode = $this->generate();
         
-        if (!$isAudio && $videoInfo['platform'] !== 'default' && class_exists('consent_manager_inline')) {
+        if (!$isAudio && $videoInfo['platform'] !== 'default' && class_exists('\consent_manager_inline')) {
             // Consent Manager verfügbar - Inline-Consent nutzen
             $serviceKey = strtolower($videoInfo['platform']); // 'youtube' oder 'vimeo'
             
@@ -495,7 +495,7 @@ class Video
             
             // Consent Manager Inline-Consent verwenden
             try {
-                $playerCode = consent_manager_inline::doConsent($serviceKey, $playerCode, $consentOptions);
+                $playerCode = \consent_manager_inline::doConsent($serviceKey, $playerCode, $consentOptions);
             } catch (\Exception $e) {
                 // Fallback: Video ohne Consent laden (Graceful Degradation)
                 if (function_exists('rex_logger')) {
