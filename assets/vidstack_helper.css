@@ -9,6 +9,7 @@
 .video-container media-player {
     width: 100%;
 }
+
 .video-description, .video-transcript, .alternative-links {
     margin-top: 10px;
     display: none;
@@ -51,30 +52,6 @@
     left: 0;
     width: 100%;
     height: 100%;
-}
-.consent-placeholder {
-    background-color: #f0f0f0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-.consent-placeholder button {
-    margin-top: 10px;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.consent-placeholder button:hover {
-    background-color: #0056b3;
 }
 noscript  .js .a11y-content {
     position: static;
@@ -189,8 +166,14 @@ noscript  .js .a11y-content {
 }
 
 /* CSP-compliant styles to replace inline styles */
+/* Fix für Vidstack pointer-events inline-style */
 .vds-controls-group {
     pointer-events: none;
+}
+
+/* Kindelemente müssen klickbar sein */
+.vds-controls-group > * {
+    pointer-events: auto;
 }
 
 media-slider-video video {

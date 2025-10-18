@@ -1,7 +1,7 @@
 {
     "dependencies": {
         "media-captions": "^1.0.4",
-        "vidstack": "^1.11.24"
+        "vidstack": "^1.12.12"
     },
     "devDependencies": {
         "esbuild": "^0.25.0"

@@ -17,3 +17,4 @@ if (rex::isBackend() && is_object(rex::getUser())) {
     rex_view::addJsFile($vs->getAssetsUrl('vidstack_helper.js'));
     rex_extension::register('MEDIA_DETAIL_SIDEBAR', Video::show_sidebar(...));
 }
+
