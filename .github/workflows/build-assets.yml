@@ -35,18 +35,18 @@ jobs:
 
       - name: Check if assets were built
         run: |
-          ls -la assets/vidstack.js
-          ls -la assets/vidstack.css
-          ls -la assets/vidstack_helper.js
-          ls -la assets/vidstack_helper.css
+          ls -la assets/vidstack.min.js
+          ls -la assets/vidstack.min.css
+          ls -la assets/vidstack-backend.min.js
+          ls -la assets/vidstack-backend.min.css
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: built-assets
           path: |
-            assets/vidstack.js
-            assets/vidstack.css
-            assets/vidstack_helper.js
-            assets/vidstack_helper.css
+            assets/vidstack.min.js
+            assets/vidstack.min.css
+            assets/vidstack-backend.min.js
+            assets/vidstack-backend.min.css
           retention-days: 7
