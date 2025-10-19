@@ -70,10 +70,10 @@ class BackendIntegration
         }
 
         try {
-            /** @phpstan-ignore class.notFound */
-            $info = VideoInfo::getInfo($filename);
+            /** @phpstan-ignore undefinedClass */
+            $videoInfo = \FriendsOfRedaxo\FFmpeg\VideoInfo::getInfo($filename);
 
-            if (!$info) {
+            if (!$videoInfo) {
                 return null;
             }
 
@@ -83,37 +83,37 @@ class BackendIntegration
             ];
 
             // Resolution
-            if ($info['width'] && $info['height']) {
+            if ($videoInfo['width'] && $videoInfo['height']) {
                 $resolution = '<div><strong>' . rex_i18n::msg('vidstack_video_info_resolution') . ':</strong> '
-                    . rex_escape($info['width']) . ' × ' . rex_escape($info['height']) . ' px';
-                if ($info['aspect_ratio']) {
-                    $resolution .= ' (' . rex_escape($info['aspect_ratio']) . ')';
+                    . rex_escape($videoInfo['width']) . ' × ' . rex_escape($videoInfo['height']) . ' px';
+                if ($videoInfo['aspect_ratio']) {
+                    $resolution .= ' (' . rex_escape($videoInfo['aspect_ratio']) . ')';
                 }
                 $parts[] = $resolution . '</div>';
             }
 
             // Codec
-            if ($info['video_codec']) {
+            if ($videoInfo['video_codec']) {
                 $parts[] = '<div><strong>' . rex_i18n::msg('vidstack_video_info_codec') . ':</strong> '
-                    . rex_escape(strtoupper($info['video_codec'])) . '</div>';
+                    . rex_escape(strtoupper($videoInfo['video_codec'])) . '</div>';
             }
 
             // Duration
-            if ($info['duration_formatted']) {
+            if ($videoInfo['duration_formatted']) {
                 $parts[] = '<div><strong>' . rex_i18n::msg('vidstack_video_info_duration') . ':</strong> '
-                    . rex_escape($info['duration_formatted']) . '</div>';
+                    . rex_escape($videoInfo['duration_formatted']) . '</div>';
             }
 
             // Filesize
-            if ($info['filesize_formatted']) {
+            if ($videoInfo['filesize_formatted']) {
                 $parts[] = '<div><strong>' . rex_i18n::msg('vidstack_video_info_filesize') . ':</strong> '
-                    . rex_escape($info['filesize_formatted']) . '</div>';
+                    . rex_escape($videoInfo['filesize_formatted']) . '</div>';
             }
 
             // Bitrate
-            if (!empty($info['bitrate_formatted']) && $info['bitrate'] > 0) {
+            if (!empty($videoInfo['bitrate_formatted']) && $videoInfo['bitrate'] > 0) {
                 $parts[] = '<div><strong>' . rex_i18n::msg('vidstack_video_info_bitrate') . ':</strong> '
-                    . rex_escape($info['bitrate_formatted']) . '</div>';
+                    . rex_escape($videoInfo['bitrate_formatted']) . '</div>';
             }
 
             // Action buttons

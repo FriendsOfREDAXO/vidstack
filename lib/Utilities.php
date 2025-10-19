@@ -37,7 +37,7 @@ class Utilities
             } else {
                 /**
                  * @psalm-suppress MixedOperand
-                 * @phpstan-ignore binaryOp.invalid
+                 * @phpstan-ignore binaryOp.invalidTypes
                  */
                 $parts[] = rex_escape($key) . '="' . rex_escape($value) . '"';
             }

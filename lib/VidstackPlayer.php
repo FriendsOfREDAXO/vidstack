@@ -112,12 +112,12 @@ class VidstackPlayer
     }
 
     /**
-     * Set single HTML attribute.
+     * Set single attribute.
      *
      * @param string $key Attribute name
      * @param mixed $value Attribute value
      */
-    public function attr(string $key, $value): self
+    public function attr(string $key, mixed $value): self
     {
         $this->attributes[$key] = $value;
         return $this;

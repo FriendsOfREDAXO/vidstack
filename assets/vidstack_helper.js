@@ -12,7 +12,7 @@
      */
     async function loadTranslations() {
         try {
-            translations = await (await fetch('/assets/addons/vidstack/translations.json')).json();
+            translations = await (await fetch('/assets/addons/vidstack_player/translations.json')).json();
         } catch (error) {
             console.error('Vidstack: Error loading translations:', error);
             translations = { de: {}, en: {} };
