@@ -9,7 +9,7 @@
       __defProp(target, name, { get: all[name], enumerable: true });
   };
 
-  // node_modules/vidstack/prod/chunks/vidstack-CRlI3Mh7.js
+  // node_modules/vidstack/prod/chunks/vidstack-BGSTndAW.js
   function flushEffects() {
     scheduledEffects = true;
     queueMicrotask(runEffects);
@@ -851,8 +851,8 @@
     }
   }
   var SCOPE, scheduledEffects, runningEffects, currentScope, currentObserver, currentObservers, currentObserversIndex, effects, defaultContext, NOOP, STATE_CLEAN, STATE_CHECK, STATE_DIRTY, STATE_DISPOSED, ScopeNode, ScopeProto, ComputeNode, ComputeProto, EVENT, DOM_EVENT, DOMEvent, EventTriggers, EventsTarget, EventsController, effect, PROPS, METHODS, ON_DISPATCH, EMPTY_PROPS, Instance, currentInstance, ViewController, Component, State, requestIdleCallback, key, webkit, moz, ms, document$1, vendor, fscreen, functionThrottle, functionDebounce, t, e, n, o, l, r, STRING, NULLABLE_STRING, NUMBER, BOOLEAN, FUNCTION, ARRAY, OBJECT, ATTRS, SETUP, SETUP_STATE, SETUP_CALLBACKS, SetupState, Icon$24, Icon$0, Icon$5, Icon$8, Icon$11, Icon$13, Icon$16, Icon$19, Icon$22, Icon$26, Icon$27, Icon$31, Icon$33, Icon$34, Icon$35, Icon$39, Icon$40, Icon$53, Icon$54, Icon$56, Icon$59, Icon$60, Icon$61, Icon$62, Icon$63, Icon$74, Icon$77, Icon$81, Icon$88, Icon$104, Icon$105;
-  var init_vidstack_CRlI3Mh7 = __esm({
-    "node_modules/vidstack/prod/chunks/vidstack-CRlI3Mh7.js"() {
+  var init_vidstack_BGSTndAW = __esm({
+    "node_modules/vidstack/prod/chunks/vidstack-BGSTndAW.js"() {
       SCOPE = Symbol(0);
       scheduledEffects = false;
       runningEffects = false;
@@ -1458,18 +1458,18 @@
         let k2 = "start" === f2 || "nearest" === f2 ? x2 - T2 : "end" === f2 ? I2 + F : x2 + v2 / 2 - T2 + F, D2 = "center" === u2 ? R2 + E2 / 2 - V2 + B2 : "end" === u2 ? C2 + B2 : R2 - V2;
         const L2 = [];
         for (let t22 = 0; t22 < w2.length; t22++) {
-          const e32 = w2[t22], { height: n22, width: l22, top: r32, right: i22, bottom: s22, left: d22 } = e32.getBoundingClientRect();
-          if ("if-needed" === c3 && x2 >= 0 && R2 >= 0 && I2 <= H2 && C2 <= b2 && x2 >= r32 && I2 <= s22 && R2 >= d22 && C2 <= i22) return L2;
-          const h22 = getComputedStyle(e32), a22 = parseInt(h22.borderLeftWidth, 10), g22 = parseInt(h22.borderTopWidth, 10), p22 = parseInt(h22.borderRightWidth, 10), W2 = parseInt(h22.borderBottomWidth, 10);
-          let T22 = 0, B22 = 0;
-          const F2 = "offsetWidth" in e32 ? e32.offsetWidth - e32.clientWidth - a22 - p22 : 0, V22 = "offsetHeight" in e32 ? e32.offsetHeight - e32.clientHeight - g22 - W2 : 0, S2 = "offsetWidth" in e32 ? 0 === e32.offsetWidth ? 0 : l22 / e32.offsetWidth : 0, X = "offsetHeight" in e32 ? 0 === e32.offsetHeight ? 0 : n22 / e32.offsetHeight : 0;
-          if (m2 === e32) T22 = "start" === f2 ? k2 : "end" === f2 ? k2 - H2 : "nearest" === f2 ? o(M2, M2 + H2, H2, g22, W2, M2 + k2, M2 + k2 + v2, v2) : k2 - H2 / 2, B22 = "start" === u2 ? D2 : "center" === u2 ? D2 - b2 / 2 : "end" === u2 ? D2 - b2 : o(y2, y2 + b2, b2, a22, p22, y2 + D2, y2 + D2 + E2, E2), T22 = Math.max(0, T22 + M2), B22 = Math.max(0, B22 + y2);
+          const e32 = w2[t22], { height: l22, width: r32, top: i22, right: s22, bottom: d22, left: h22 } = e32.getBoundingClientRect();
+          if ("if-needed" === c3 && x2 >= 0 && R2 >= 0 && I2 <= H2 && C2 <= b2 && (e32 === m2 && !n(e32) || x2 >= i22 && I2 <= d22 && R2 >= h22 && C2 <= s22)) return L2;
+          const a22 = getComputedStyle(e32), g22 = parseInt(a22.borderLeftWidth, 10), p22 = parseInt(a22.borderTopWidth, 10), W2 = parseInt(a22.borderRightWidth, 10), T22 = parseInt(a22.borderBottomWidth, 10);
+          let B22 = 0, F2 = 0;
+          const V22 = "offsetWidth" in e32 ? e32.offsetWidth - e32.clientWidth - g22 - W2 : 0, S2 = "offsetHeight" in e32 ? e32.offsetHeight - e32.clientHeight - p22 - T22 : 0, X = "offsetWidth" in e32 ? 0 === e32.offsetWidth ? 0 : r32 / e32.offsetWidth : 0, Y = "offsetHeight" in e32 ? 0 === e32.offsetHeight ? 0 : l22 / e32.offsetHeight : 0;
+          if (m2 === e32) B22 = "start" === f2 ? k2 : "end" === f2 ? k2 - H2 : "nearest" === f2 ? o(M2, M2 + H2, H2, p22, T22, M2 + k2, M2 + k2 + v2, v2) : k2 - H2 / 2, F2 = "start" === u2 ? D2 : "center" === u2 ? D2 - b2 / 2 : "end" === u2 ? D2 - b2 : o(y2, y2 + b2, b2, g22, W2, y2 + D2, y2 + D2 + E2, E2), B22 = Math.max(0, B22 + M2), F2 = Math.max(0, F2 + y2);
           else {
-            T22 = "start" === f2 ? k2 - r32 - g22 : "end" === f2 ? k2 - s22 + W2 + V22 : "nearest" === f2 ? o(r32, s22, n22, g22, W2 + V22, k2, k2 + v2, v2) : k2 - (r32 + n22 / 2) + V22 / 2, B22 = "start" === u2 ? D2 - d22 - a22 : "center" === u2 ? D2 - (d22 + l22 / 2) + F2 / 2 : "end" === u2 ? D2 - i22 + p22 + F2 : o(d22, i22, l22, a22, p22 + F2, D2, D2 + E2, E2);
-            const { scrollLeft: t32, scrollTop: h32 } = e32;
-            T22 = 0 === X ? 0 : Math.max(0, Math.min(h32 + T22 / X, e32.scrollHeight - n22 / X + V22)), B22 = 0 === S2 ? 0 : Math.max(0, Math.min(t32 + B22 / S2, e32.scrollWidth - l22 / S2 + F2)), k2 += h32 - T22, D2 += t32 - B22;
+            B22 = "start" === f2 ? k2 - i22 - p22 : "end" === f2 ? k2 - d22 + T22 + S2 : "nearest" === f2 ? o(i22, d22, l22, p22, T22 + S2, k2, k2 + v2, v2) : k2 - (i22 + l22 / 2) + S2 / 2, F2 = "start" === u2 ? D2 - h22 - g22 : "center" === u2 ? D2 - (h22 + r32 / 2) + V22 / 2 : "end" === u2 ? D2 - s22 + W2 + V22 : o(h22, s22, r32, g22, W2 + V22, D2, D2 + E2, E2);
+            const { scrollLeft: t32, scrollTop: n22 } = e32;
+            B22 = 0 === Y ? 0 : Math.max(0, Math.min(n22 + B22 / Y, e32.scrollHeight - l22 / Y + S2)), F2 = 0 === X ? 0 : Math.max(0, Math.min(t32 + F2 / X, e32.scrollWidth - r32 / X + V22)), k2 += n22 - B22, D2 += t32 - F2;
           }
-          L2.push({ el: e32, top: T22, left: B22 });
+          L2.push({ el: e32, top: B22, left: F2 });
         }
         return L2;
       };
@@ -1526,7 +1526,7 @@
     }
   });
 
-  // node_modules/vidstack/prod/chunks/vidstack-DwhHIY5e.js
+  // node_modules/vidstack/prod/chunks/vidstack-xMS8dnYq.js
   function canOrientScreen() {
     return canRotateScreen() && isFunction(screen.orientation.unlock);
   }
@@ -1593,9 +1593,9 @@
     return typeof window.MediaStream !== "undefined" && src instanceof window.MediaStream;
   }
   var UA, IS_IOS, IS_IPHONE, IS_CHROME, IS_SAFARI, AUDIO_EXTENSIONS, AUDIO_TYPES, VIDEO_EXTENSIONS, VIDEO_TYPES, HLS_VIDEO_EXTENSIONS, DASH_VIDEO_EXTENSIONS, HLS_VIDEO_TYPES, DASH_VIDEO_TYPES;
-  var init_vidstack_DwhHIY5e = __esm({
-    "node_modules/vidstack/prod/chunks/vidstack-DwhHIY5e.js"() {
-      init_vidstack_CRlI3Mh7();
+  var init_vidstack_xMS8dnYq = __esm({
+    "node_modules/vidstack/prod/chunks/vidstack-xMS8dnYq.js"() {
+      init_vidstack_BGSTndAW();
       UA = navigator?.userAgent.toLowerCase() || "";
       IS_IOS = /iphone|ipad|ipod|ios|crios|fxios/i.test(UA);
       IS_IPHONE = /(iphone|ipod)/gi.test(navigator?.platform || "");
@@ -1643,7 +1643,7 @@
     }
   });
 
-  // node_modules/vidstack/prod/chunks/vidstack-BmMUBVGQ.js
+  // node_modules/vidstack/prod/chunks/vidstack-ChQTHmIQ.js
   function getTimeRangesStart(range) {
     if (!range.length) return null;
     let min2 = range.start(0);
@@ -1697,9 +1697,9 @@
     return interval;
   }
   var TimeRange;
-  var init_vidstack_BmMUBVGQ = __esm({
-    "node_modules/vidstack/prod/chunks/vidstack-BmMUBVGQ.js"() {
-      init_vidstack_CRlI3Mh7();
+  var init_vidstack_ChQTHmIQ = __esm({
+    "node_modules/vidstack/prod/chunks/vidstack-ChQTHmIQ.js"() {
+      init_vidstack_BGSTndAW();
       TimeRange = class {
         #ranges;
         get length() {
@@ -1724,7 +1724,7 @@
     }
   });
 
-  // node_modules/vidstack/prod/chunks/vidstack-A9j--j6J.js
+  // node_modules/vidstack/prod/chunks/vidstack-CTojmhKq.js
   function appendParamsToURL(baseUrl, params) {
     const url = new URL(baseUrl);
     for (const key2 of Object.keys(params)) {
@@ -1786,15 +1786,15 @@
     return isString(url) && (download && download !== true || isAudioSrc(src) || isVideoSrc(src));
   }
   var pendingRequests;
-  var init_vidstack_A9j_j6J = __esm({
-    "node_modules/vidstack/prod/chunks/vidstack-A9j--j6J.js"() {
-      init_vidstack_CRlI3Mh7();
-      init_vidstack_DwhHIY5e();
+  var init_vidstack_CTojmhKq = __esm({
+    "node_modules/vidstack/prod/chunks/vidstack-CTojmhKq.js"() {
+      init_vidstack_BGSTndAW();
+      init_vidstack_xMS8dnYq();
       pendingRequests = {};
     }
   });
 
-  // node_modules/vidstack/prod/chunks/vidstack-lwuXewh7.js
+  // node_modules/vidstack/prod/chunks/vidstack-DYbwIVLq.js
   function isCueActive(cue, time) {
     return time >= cue.startTime && time < cue.endTime;
   }
@@ -1843,9 +1843,9 @@
       listenEvent(track, "cue-change", onCueChange);
     });
   }
-  var init_vidstack_lwuXewh7 = __esm({
-    "node_modules/vidstack/prod/chunks/vidstack-lwuXewh7.js"() {
-      init_vidstack_CRlI3Mh7();
+  var init_vidstack_DYbwIVLq = __esm({
+    "node_modules/vidstack/prod/chunks/vidstack-DYbwIVLq.js"() {
+      init_vidstack_BGSTndAW();
     }
   });
 
@@ -3640,7 +3640,7 @@
     }
   });
 
-  // node_modules/vidstack/prod/chunks/vidstack-CP9ACpRU.js
+  // node_modules/vidstack/prod/chunks/vidstack-Ci54COQW.js
   function isTrackCaptionKind(track) {
     return captionRE.test(track.kind);
   }
@@ -3656,11 +3656,11 @@
     return { regions, cues };
   }
   var CROSS_ORIGIN, READY_STATE, UPDATE_ACTIVE_CUES, CAN_LOAD, ON_MODE_CHANGE, NATIVE, NATIVE_HLS, TextTrackSymbol, TextTrack, captionRE;
-  var init_vidstack_CP9ACpRU = __esm({
-    "node_modules/vidstack/prod/chunks/vidstack-CP9ACpRU.js"() {
-      init_vidstack_CRlI3Mh7();
-      init_vidstack_A9j_j6J();
-      init_vidstack_lwuXewh7();
+  var init_vidstack_Ci54COQW = __esm({
+    "node_modules/vidstack/prod/chunks/vidstack-Ci54COQW.js"() {
+      init_vidstack_BGSTndAW();
+      init_vidstack_CTojmhKq();
+      init_vidstack_DYbwIVLq();
       CROSS_ORIGIN = Symbol(0);
       READY_STATE = Symbol(0);
       UPDATE_ACTIVE_CUES = Symbol(0);
@@ -3962,7 +3962,7 @@
     return axis === "y" ? "height" : "width";
   }
   function getSideAxis(placement) {
-    return ["top", "bottom"].includes(getSide(placement)) ? "y" : "x";
+    return yAxisSides.has(getSide(placement)) ? "y" : "x";
   }
   function getAlignmentAxis(placement) {
     return getOppositeAxis(getSideAxis(placement));
@@ -3988,18 +3988,14 @@
     return placement.replace(/start|end/g, (alignment) => oppositeAlignmentMap[alignment]);
   }
   function getSideList(side, isStart, rtl) {
-    const lr = ["left", "right"];
-    const rl = ["right", "left"];
-    const tb = ["top", "bottom"];
-    const bt = ["bottom", "top"];
     switch (side) {
       case "top":
       case "bottom":
-        if (rtl) return isStart ? rl : lr;
-        return isStart ? lr : rl;
+        if (rtl) return isStart ? rlPlacement : lrPlacement;
+        return isStart ? lrPlacement : rlPlacement;
       case "left":
       case "right":
-        return isStart ? tb : bt;
+        return isStart ? tbPlacement : btPlacement;
       default:
         return [];
     }
@@ -4053,7 +4049,7 @@
       y: y2
     };
   }
-  var min, max, round, floor, createCoords, oppositeSideMap, oppositeAlignmentMap;
+  var min, max, round, floor, createCoords, oppositeSideMap, oppositeAlignmentMap, yAxisSides, lrPlacement, rlPlacement, tbPlacement, btPlacement;
   var init_floating_ui_utils = __esm({
     "node_modules/@floating-ui/utils/dist/floating-ui.utils.mjs"() {
       min = Math.min;
@@ -4074,6 +4070,11 @@
         start: "end",
         end: "start"
       };
+      yAxisSides = /* @__PURE__ */ new Set(["top", "bottom"]);
+      lrPlacement = ["left", "right"];
+      rlPlacement = ["right", "left"];
+      tbPlacement = ["top", "bottom"];
+      btPlacement = ["bottom", "top"];
     }
   });
 
@@ -4335,15 +4336,20 @@
               const nextIndex = (((_middlewareData$flip2 = middlewareData.flip) == null ? void 0 : _middlewareData$flip2.index) || 0) + 1;
               const nextPlacement = placements2[nextIndex];
               if (nextPlacement) {
-                return {
-                  data: {
-                    index: nextIndex,
-                    overflows: overflowsData
-                  },
-                  reset: {
-                    placement: nextPlacement
-                  }
-                };
+                const ignoreCrossAxisOverflow = checkCrossAxis === "alignment" ? initialSideAxis !== getSideAxis(nextPlacement) : false;
+                if (!ignoreCrossAxisOverflow || // We leave the current main axis only if every placement on that axis
+                // overflows the main axis.
+                overflowsData.every((d2) => getSideAxis(d2.placement) === initialSideAxis ? d2.overflows[0] > 0 : true)) {
+                  return {
+                    data: {
+                      index: nextIndex,
+                      overflows: overflowsData
+                    },
+                    reset: {
+                      placement: nextPlacement
+                    }
+                  };
+                }
               }
               let resetPlacement = (_overflowsData$filter = overflowsData.filter((d2) => d2.overflows[0] <= 0).sort((a3, b2) => a3.overflows[1] - b2.overflows[1])[0]) == null ? void 0 : _overflowsData$filter.placement;
               if (!resetPlacement) {
@@ -4505,16 +4511,16 @@
       overflowY,
       display
     } = getComputedStyle2(element);
-    return /auto|scroll|overlay|hidden|clip/.test(overflow + overflowY + overflowX) && !["inline", "contents"].includes(display);
+    return /auto|scroll|overlay|hidden|clip/.test(overflow + overflowY + overflowX) && !invalidOverflowDisplayValues.has(display);
   }
   function isTableElement(element) {
-    return ["table", "td", "th"].includes(getNodeName(element));
+    return tableElements.has(getNodeName(element));
   }
   function isTopLayer(element) {
-    return [":popover-open", ":modal"].some((selector) => {
+    return topLayerSelectors.some((selector) => {
       try {
         return element.matches(selector);
-      } catch (e6) {
+      } catch (_e) {
         return false;
       }
     });
@@ -4522,7 +4528,7 @@
   function isContainingBlock(elementOrCss) {
     const webkit2 = isWebKit();
     const css = isElement(elementOrCss) ? getComputedStyle2(elementOrCss) : elementOrCss;
-    return css.transform !== "none" || css.perspective !== "none" || (css.containerType ? css.containerType !== "normal" : false) || !webkit2 && (css.backdropFilter ? css.backdropFilter !== "none" : false) || !webkit2 && (css.filter ? css.filter !== "none" : false) || ["transform", "perspective", "filter"].some((value) => (css.willChange || "").includes(value)) || ["paint", "layout", "strict", "content"].some((value) => (css.contain || "").includes(value));
+    return transformProperties.some((value) => css[value] ? css[value] !== "none" : false) || (css.containerType ? css.containerType !== "normal" : false) || !webkit2 && (css.backdropFilter ? css.backdropFilter !== "none" : false) || !webkit2 && (css.filter ? css.filter !== "none" : false) || willChangeValues.some((value) => (css.willChange || "").includes(value)) || containValues.some((value) => (css.contain || "").includes(value));
   }
   function getContainingBlock(element) {
     let currentNode = getParentNode(element);
@@ -4541,7 +4547,7 @@
     return CSS.supports("-webkit-backdrop-filter", "none");
   }
   function isLastTraversableNode(node) {
-    return ["html", "body", "#document"].includes(getNodeName(node));
+    return lastTraversableNodeNames.has(getNodeName(node));
   }
   function getComputedStyle2(element) {
     return getWindow(element).getComputedStyle(element);
@@ -4601,8 +4607,16 @@
   function getFrameElement(win) {
     return win.parent && Object.getPrototypeOf(win.parent) ? win.frameElement : null;
   }
+  var invalidOverflowDisplayValues, tableElements, topLayerSelectors, transformProperties, willChangeValues, containValues, lastTraversableNodeNames;
   var init_floating_ui_utils_dom = __esm({
     "node_modules/@floating-ui/utils/dist/floating-ui.utils.dom.mjs"() {
+      invalidOverflowDisplayValues = /* @__PURE__ */ new Set(["inline", "contents"]);
+      tableElements = /* @__PURE__ */ new Set(["table", "td", "th"]);
+      topLayerSelectors = [":popover-open", ":modal"];
+      transformProperties = ["transform", "translate", "scale", "rotate", "perspective"];
+      willChangeValues = ["transform", "translate", "scale", "rotate", "perspective", "filter"];
+      containValues = ["paint", "layout", "strict", "content"];
+      lastTraversableNodeNames = /* @__PURE__ */ new Set(["html", "body", "#document"]);
     }
   });
 
@@ -4730,15 +4744,9 @@
     }
     return rect.left + leftScroll;
   }
-  function getHTMLOffset(documentElement, scroll, ignoreScrollbarX) {
-    if (ignoreScrollbarX === void 0) {
-      ignoreScrollbarX = false;
-    }
+  function getHTMLOffset(documentElement, scroll) {
     const htmlRect = documentElement.getBoundingClientRect();
-    const x2 = htmlRect.left + scroll.scrollLeft - (ignoreScrollbarX ? 0 : (
-      // RTL <body> scrollbar.
-      getWindowScrollBarX(documentElement, htmlRect)
-    ));
+    const x2 = htmlRect.left + scroll.scrollLeft - getWindowScrollBarX(documentElement, htmlRect);
     const y2 = htmlRect.top + scroll.scrollTop;
     return {
       x: x2,
@@ -4776,7 +4784,7 @@
         offsets.y = offsetRect.y + offsetParent.clientTop;
       }
     }
-    const htmlOffset = documentElement && !isOffsetParentAnElement && !isFixed ? getHTMLOffset(documentElement, scroll, true) : createCoords(0);
+    const htmlOffset = documentElement && !isOffsetParentAnElement && !isFixed ? getHTMLOffset(documentElement, scroll) : createCoords(0);
     return {
       width: rect.width * scale.x,
       height: rect.height * scale.y,
@@ -4821,6 +4829,19 @@
         x2 = visualViewport.offsetLeft;
         y2 = visualViewport.offsetTop;
       }
+    }
+    const windowScrollbarX = getWindowScrollBarX(html);
+    if (windowScrollbarX <= 0) {
+      const doc = html.ownerDocument;
+      const body = doc.body;
+      const bodyStyles = getComputedStyle(body);
+      const bodyMarginInline = doc.compatMode === "CSS1Compat" ? parseFloat(bodyStyles.marginLeft) + parseFloat(bodyStyles.marginRight) || 0 : 0;
+      const clippingStableScrollbarWidth = Math.abs(html.clientWidth - body.clientWidth - bodyMarginInline);
+      if (clippingStableScrollbarWidth <= SCROLLBAR_MAX) {
+        width -= clippingStableScrollbarWidth;
+      }
+    } else if (windowScrollbarX <= SCROLLBAR_MAX) {
+      width += windowScrollbarX;
     }
     return {
       width,
@@ -4886,7 +4907,7 @@
       if (!currentNodeIsContaining && computedStyle.position === "fixed") {
         currentContainingBlockComputedStyle = null;
       }
-      const shouldDropCurrentNode = elementIsFixed ? !currentNodeIsContaining && !currentContainingBlockComputedStyle : !currentNodeIsContaining && computedStyle.position === "static" && !!currentContainingBlockComputedStyle && ["absolute", "fixed"].includes(currentContainingBlockComputedStyle.position) || isOverflowElement(currentNode) && !currentNodeIsContaining && hasFixedPositionAncestor(element, currentNode);
+      const shouldDropCurrentNode = elementIsFixed ? !currentNodeIsContaining && !currentContainingBlockComputedStyle : !currentNodeIsContaining && computedStyle.position === "static" && !!currentContainingBlockComputedStyle && absoluteOrFixed.has(currentContainingBlockComputedStyle.position) || isOverflowElement(currentNode) && !currentNodeIsContaining && hasFixedPositionAncestor(element, currentNode);
       if (shouldDropCurrentNode) {
         result = result.filter((ancestor) => ancestor !== currentNode);
       } else {
@@ -4942,6 +4963,9 @@
       scrollTop: 0
     };
     const offsets = createCoords(0);
+    function setLeftRTLScrollbarOffset() {
+      offsets.x = getWindowScrollBarX(documentElement);
+    }
     if (isOffsetParentAnElement || !isOffsetParentAnElement && !isFixed) {
       if (getNodeName(offsetParent) !== "body" || isOverflowElement(documentElement)) {
         scroll = getNodeScroll(offsetParent);
@@ -4951,8 +4975,11 @@
         offsets.x = offsetRect.x + offsetParent.clientLeft;
         offsets.y = offsetRect.y + offsetParent.clientTop;
       } else if (documentElement) {
-        offsets.x = getWindowScrollBarX(documentElement);
+        setLeftRTLScrollbarOffset();
       }
+    }
+    if (isFixed && !isOffsetParentAnElement && documentElement) {
+      setLeftRTLScrollbarOffset();
     }
     const htmlOffset = documentElement && !isOffsetParentAnElement && !isFixed ? getHTMLOffset(documentElement, scroll) : createCoords(0);
     const x2 = rect.left + scroll.scrollLeft - offsets.x - htmlOffset.x;
@@ -5007,6 +5034,9 @@
   function isRTL(element) {
     return getComputedStyle2(element).direction === "rtl";
   }
+  function rectsAreEqual(a3, b2) {
+    return a3.x === b2.x && a3.y === b2.y && a3.width === b2.width && a3.height === b2.height;
+  }
   function observeMove(element, onMove) {
     let io = null;
     let timeoutId;
@@ -5025,12 +5055,13 @@
         threshold = 1;
       }
       cleanup2();
+      const elementRectForRootMargin = element.getBoundingClientRect();
       const {
         left,
         top,
         width,
         height
-      } = element.getBoundingClientRect();
+      } = elementRectForRootMargin;
       if (!skip) {
         onMove();
       }
@@ -5061,6 +5092,9 @@
             refresh(false, ratio);
           }
         }
+        if (ratio === 1 && !rectsAreEqual(elementRectForRootMargin, element.getBoundingClientRect())) {
+          refresh();
+        }
         isFirstUpdate = false;
       }
       try {
@@ -5069,7 +5103,7 @@
           // Handle <iframe>s
           root: root2.ownerDocument
         });
-      } catch (e6) {
+      } catch (_e) {
         io = new IntersectionObserver(handleObserve, options);
       }
       io.observe(element);
@@ -5124,7 +5158,7 @@
     }
     function frameLoop() {
       const nextRefRect = getBoundingClientRect(reference);
-      if (prevRefRect && (nextRefRect.x !== prevRefRect.x || nextRefRect.y !== prevRefRect.y || nextRefRect.width !== prevRefRect.width || nextRefRect.height !== prevRefRect.height)) {
+      if (prevRefRect && !rectsAreEqual(prevRefRect, nextRefRect)) {
         update2();
       }
       prevRefRect = nextRefRect;
@@ -5145,13 +5179,15 @@
       }
     };
   }
-  var noOffsets, getElementRects, platform, shift2, flip2, computePosition2;
+  var noOffsets, SCROLLBAR_MAX, absoluteOrFixed, getElementRects, platform, shift2, flip2, computePosition2;
   var init_floating_ui_dom = __esm({
     "node_modules/@floating-ui/dom/dist/floating-ui.dom.mjs"() {
       init_floating_ui_core();
       init_floating_ui_utils();
       init_floating_ui_utils_dom();
       noOffsets = /* @__PURE__ */ createCoords(0);
+      SCROLLBAR_MAX = 25;
+      absoluteOrFixed = /* @__PURE__ */ new Set(["absolute", "fixed"]);
       getElementRects = async function(data) {
         const getOffsetParentFn = this.getOffsetParent || getOffsetParent;
         const getDimensionsFn = this.getDimensions;
@@ -5198,7 +5234,7 @@
     }
   });
 
-  // node_modules/vidstack/prod/chunks/vidstack-DWQEfrPg.js
+  // node_modules/vidstack/prod/chunks/vidstack-C2US-gSO.js
   function isEventInside(el, event2) {
     const target = event2.composedPath()[0];
     return isDOMNode(target) && el.contains(target);
@@ -5418,11 +5454,21 @@
       toggleClass(el, "dark", scheme === "dark");
     }
   }
+  function ariaBool2(value) {
+    return value ? "true" : "false";
+  }
+  function $ariaBool(signal2) {
+    return () => ariaBool2(signal2());
+  }
+  function prefersReducedMotion() {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
   var rafJobs;
-  var init_vidstack_DWQEfrPg = __esm({
-    "node_modules/vidstack/prod/chunks/vidstack-DWQEfrPg.js"() {
+  var init_vidstack_C2US_gSO = __esm({
+    "node_modules/vidstack/prod/chunks/vidstack-C2US-gSO.js"() {
       init_floating_ui_dom();
-      init_vidstack_CRlI3Mh7();
+      init_vidstack_BGSTndAW();
       rafJobs = /* @__PURE__ */ new Set();
       {
         let processJobs = function() {
@@ -5454,11 +5500,11 @@
     }
   });
 
-  // node_modules/vidstack/prod/chunks/vidstack-DSYpsFWk.js
+  // node_modules/vidstack/prod/chunks/vidstack-DqAw8m9J.js
   var RAFLoop;
-  var init_vidstack_DSYpsFWk = __esm({
-    "node_modules/vidstack/prod/chunks/vidstack-DSYpsFWk.js"() {
-      init_vidstack_CRlI3Mh7();
+  var init_vidstack_DqAw8m9J = __esm({
+    "node_modules/vidstack/prod/chunks/vidstack-DqAw8m9J.js"() {
+      init_vidstack_BGSTndAW();
       RAFLoop = class {
         #id;
         #callback;
@@ -5533,9 +5579,9 @@
   var audioContext, gainNodes, elAudioSources, AudioGain, PAGE_EVENTS, PageVisibility, HTMLMediaEvents, NativeAudioTracks, HTMLMediaProvider;
   var init_vidstack_html = __esm({
     "node_modules/vidstack/prod/providers/vidstack-html.js"() {
-      init_vidstack_DwhHIY5e();
-      init_vidstack_CRlI3Mh7();
-      init_vidstack_DSYpsFWk();
+      init_vidstack_xMS8dnYq();
+      init_vidstack_BGSTndAW();
+      init_vidstack_DqAw8m9J();
       init_vidstack_Dihypf8P();
       init_vidstack_D5EzK014();
       audioContext = null;
@@ -6040,11 +6086,11 @@
     }
   });
 
-  // node_modules/vidstack/prod/chunks/vidstack-CGXAe0PE.js
+  // node_modules/vidstack/prod/chunks/vidstack-Bq6c3Bam.js
   var HTMLRemotePlaybackAdapter, HTMLAirPlayAdapter;
-  var init_vidstack_CGXAe0PE = __esm({
-    "node_modules/vidstack/prod/chunks/vidstack-CGXAe0PE.js"() {
-      init_vidstack_CRlI3Mh7();
+  var init_vidstack_Bq6c3Bam = __esm({
+    "node_modules/vidstack/prod/chunks/vidstack-Bq6c3Bam.js"() {
+      init_vidstack_BGSTndAW();
       HTMLRemotePlaybackAdapter = class {
         #media;
         #ctx;
@@ -6109,9 +6155,9 @@
   var AudioProvider;
   var init_vidstack_audio = __esm({
     "node_modules/vidstack/prod/providers/vidstack-audio.js"() {
-      init_vidstack_CRlI3Mh7();
+      init_vidstack_BGSTndAW();
       init_vidstack_html();
-      init_vidstack_CGXAe0PE();
+      init_vidstack_Bq6c3Bam();
       AudioProvider = class extends HTMLMediaProvider {
         $$PROVIDER_TYPE = "AUDIO";
         get type() {
@@ -6151,11 +6197,11 @@
   var NativeHLSTextTracks, VideoPictureInPicture, VideoPresentation, FullscreenPresentationAdapter, PIPPresentationAdapter, VideoProvider;
   var init_vidstack_video = __esm({
     "node_modules/vidstack/prod/providers/vidstack-video.js"() {
-      init_vidstack_CRlI3Mh7();
-      init_vidstack_DwhHIY5e();
+      init_vidstack_BGSTndAW();
+      init_vidstack_xMS8dnYq();
       init_vidstack_html();
-      init_vidstack_CGXAe0PE();
-      init_vidstack_CP9ACpRU();
+      init_vidstack_Bq6c3Bam();
+      init_vidstack_Ci54COQW();
       NativeHLSTextTracks = class {
         #video;
         #ctx;
@@ -6392,14 +6438,14 @@
   var toDOMEventType, HLSController, HLSLibLoader, JS_DELIVR_CDN, HLSProvider;
   var init_vidstack_hls = __esm({
     "node_modules/vidstack/prod/providers/vidstack-hls.js"() {
-      init_vidstack_A9j_j6J();
-      init_vidstack_DwhHIY5e();
+      init_vidstack_CTojmhKq();
+      init_vidstack_xMS8dnYq();
       init_vidstack_video();
-      init_vidstack_CRlI3Mh7();
+      init_vidstack_BGSTndAW();
       init_vidstack_B01xzxC4();
-      init_vidstack_CP9ACpRU();
+      init_vidstack_Ci54COQW();
       init_vidstack_D5EzK014();
-      init_vidstack_DSYpsFWk();
+      init_vidstack_DqAw8m9J();
       init_vidstack_C9vIqaYT();
       toDOMEventType = (type) => camelToKebabCase(type);
       HLSController = class {
@@ -6811,14 +6857,14 @@
   var toDOMEventType2, DASHController, DASHLibLoader, JS_DELIVR_CDN2, DASHProvider;
   var init_vidstack_dash = __esm({
     "node_modules/vidstack/prod/providers/vidstack-dash.js"() {
-      init_vidstack_A9j_j6J();
-      init_vidstack_DwhHIY5e();
+      init_vidstack_CTojmhKq();
+      init_vidstack_xMS8dnYq();
       init_vidstack_video();
-      init_vidstack_CRlI3Mh7();
+      init_vidstack_BGSTndAW();
       init_vidstack_B01xzxC4();
-      init_vidstack_CP9ACpRU();
+      init_vidstack_Ci54COQW();
       init_vidstack_D5EzK014();
-      init_vidstack_DSYpsFWk();
+      init_vidstack_DqAw8m9J();
       init_vidstack_C9vIqaYT();
       toDOMEventType2 = (type) => `dash-${camelToKebabCase(type)}`;
       DASHController = class {
@@ -7241,12 +7287,12 @@
     }
   });
 
-  // node_modules/vidstack/prod/chunks/vidstack-BePVaxm4.js
+  // node_modules/vidstack/prod/chunks/vidstack-DDXt6fpN.js
   var EmbedProvider;
-  var init_vidstack_BePVaxm4 = __esm({
-    "node_modules/vidstack/prod/chunks/vidstack-BePVaxm4.js"() {
-      init_vidstack_CRlI3Mh7();
-      init_vidstack_A9j_j6J();
+  var init_vidstack_DDXt6fpN = __esm({
+    "node_modules/vidstack/prod/chunks/vidstack-DDXt6fpN.js"() {
+      init_vidstack_BGSTndAW();
+      init_vidstack_CTojmhKq();
       EmbedProvider = class {
         #iframe;
         src = signal("");
@@ -7353,14 +7399,14 @@
   var trackedVimeoEvents, VimeoProvider;
   var init_vidstack_vimeo = __esm({
     "node_modules/vidstack/prod/providers/vidstack-vimeo.js"() {
-      init_vidstack_CRlI3Mh7();
+      init_vidstack_BGSTndAW();
       init_vidstack_B01xzxC4();
-      init_vidstack_BmMUBVGQ();
-      init_vidstack_CP9ACpRU();
+      init_vidstack_ChQTHmIQ();
+      init_vidstack_Ci54COQW();
       init_vidstack_D5EzK014();
-      init_vidstack_DSYpsFWk();
-      init_vidstack_A9j_j6J();
-      init_vidstack_BePVaxm4();
+      init_vidstack_DqAw8m9J();
+      init_vidstack_CTojmhKq();
+      init_vidstack_DDXt6fpN();
       init_vidstack_krOAtKMi();
       trackedVimeoEvents = [
         "bufferend",
@@ -7895,9 +7941,9 @@
     }
   });
 
-  // node_modules/vidstack/prod/chunks/vidstack-Zc3I7oOd.js
-  var vidstack_Zc3I7oOd_exports = {};
-  __export(vidstack_Zc3I7oOd_exports, {
+  // node_modules/vidstack/prod/chunks/vidstack-Dm1xEU9Q.js
+  var vidstack_Dm1xEU9Q_exports = {};
+  __export(vidstack_Dm1xEU9Q_exports, {
     findYouTubePoster: () => findYouTubePoster,
     resolveYouTubeVideoId: () => resolveYouTubeVideoId
   });
@@ -7931,9 +7977,9 @@
     return `https://i.ytimg.com/${webp ? "vi_webp" : "vi"}/${videoId}/${size2}.${type}`;
   }
   var videoIdRE2, posterCache, pendingFetch2;
-  var init_vidstack_Zc3I7oOd = __esm({
-    "node_modules/vidstack/prod/chunks/vidstack-Zc3I7oOd.js"() {
-      videoIdRE2 = /(?:youtu\.be|youtube|youtube\.com|youtube-nocookie\.com)\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|)((?:\w|-){11})/;
+  var init_vidstack_Dm1xEU9Q = __esm({
+    "node_modules/vidstack/prod/chunks/vidstack-Dm1xEU9Q.js"() {
+      videoIdRE2 = /(?:youtu\.be|youtube|youtube\.com|youtube-nocookie\.com)(?:\/shorts)?\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|)((?:\w|-){11})/;
       posterCache = /* @__PURE__ */ new Map();
       pendingFetch2 = /* @__PURE__ */ new Map();
     }
@@ -7947,13 +7993,12 @@
   var YouTubePlayerState, YouTubeProvider;
   var init_vidstack_youtube = __esm({
     "node_modules/vidstack/prod/providers/vidstack-youtube.js"() {
-      init_vidstack_CRlI3Mh7();
-      init_vidstack_BmMUBVGQ();
-      init_vidstack_A9j_j6J();
-      init_vidstack_BePVaxm4();
-      init_vidstack_Zc3I7oOd();
+      init_vidstack_BGSTndAW();
+      init_vidstack_ChQTHmIQ();
+      init_vidstack_CTojmhKq();
+      init_vidstack_DDXt6fpN();
+      init_vidstack_Dm1xEU9Q();
       YouTubePlayerState = {
-        Unstarted: -1,
         Ended: 0,
         Playing: 1,
         Paused: 2,
@@ -8071,6 +8116,7 @@
         buildParams() {
           const { keyDisabled } = this.#ctx.$props, { muted, playsInline, nativeControls } = this.#ctx.$state, showControls = nativeControls();
           return {
+            rel: 0,
             autoplay: 0,
             cc_lang_pref: this.language,
             cc_load_policy: showControls ? 1 : void 0,
@@ -8230,7 +8276,7 @@
     }
   });
 
-  // node_modules/vidstack/prod/chunks/vidstack-IHrfMzpQ.js
+  // node_modules/vidstack/prod/chunks/vidstack-BQlOPwOu.js
   function getCastFrameworkURL() {
     return "https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1";
   }
@@ -8272,9 +8318,9 @@
   function listenCastContextEvent(type, handler) {
     return listenEvent(getCastContext(), type, handler);
   }
-  var init_vidstack_IHrfMzpQ = __esm({
-    "node_modules/vidstack/prod/chunks/vidstack-IHrfMzpQ.js"() {
-      init_vidstack_CRlI3Mh7();
+  var init_vidstack_BQlOPwOu = __esm({
+    "node_modules/vidstack/prod/chunks/vidstack-BQlOPwOu.js"() {
+      init_vidstack_BGSTndAW();
     }
   });
 
@@ -8286,11 +8332,11 @@
   var GoogleCastMediaInfoBuilder, GoogleCastTracksManager, GoogleCastProvider;
   var init_vidstack_google_cast = __esm({
     "node_modules/vidstack/prod/providers/vidstack-google-cast.js"() {
-      init_vidstack_CRlI3Mh7();
-      init_vidstack_BmMUBVGQ();
-      init_vidstack_DSYpsFWk();
+      init_vidstack_BGSTndAW();
+      init_vidstack_ChQTHmIQ();
+      init_vidstack_DqAw8m9J();
       init_vidstack_D5EzK014();
-      init_vidstack_IHrfMzpQ();
+      init_vidstack_BQlOPwOu();
       GoogleCastMediaInfoBuilder = class {
         #info;
         constructor(src) {
@@ -8752,18 +8798,18 @@
     }
   });
 
-  // node_modules/vidstack/prod/chunks/vidstack-CWDlegKy.js
-  var vidstack_CWDlegKy_exports = {};
-  __export(vidstack_CWDlegKy_exports, {
+  // node_modules/vidstack/prod/chunks/vidstack-D2pY00kU.js
+  var vidstack_D2pY00kU_exports = {};
+  __export(vidstack_D2pY00kU_exports, {
     GoogleCastLoader: () => GoogleCastLoader
   });
   var GoogleCastLoader;
-  var init_vidstack_CWDlegKy = __esm({
-    "node_modules/vidstack/prod/chunks/vidstack-CWDlegKy.js"() {
-      init_vidstack_DwhHIY5e();
-      init_vidstack_A9j_j6J();
-      init_vidstack_IHrfMzpQ();
-      init_vidstack_CRlI3Mh7();
+  var init_vidstack_D2pY00kU = __esm({
+    "node_modules/vidstack/prod/chunks/vidstack-D2pY00kU.js"() {
+      init_vidstack_xMS8dnYq();
+      init_vidstack_CTojmhKq();
+      init_vidstack_BQlOPwOu();
+      init_vidstack_BGSTndAW();
       GoogleCastLoader = class {
         name = "google-cast";
         target;
@@ -8869,9 +8915,9 @@
     }
   });
 
-  // node_modules/vidstack/prod/chunks/vidstack-D0D6ufFF.js
-  var vidstack_D0D6ufFF_exports = {};
-  __export(vidstack_D0D6ufFF_exports, {
+  // node_modules/vidstack/prod/chunks/vidstack-D_-9AA6_.js
+  var vidstack_D_9AA6_exports = {};
+  __export(vidstack_D_9AA6_exports, {
     insertContent: () => insertContent
   });
   function insertContent(container, $state) {
@@ -8895,25 +8941,25 @@
     });
   }
   var svgTemplate;
-  var init_vidstack_D0D6ufFF = __esm({
-    "node_modules/vidstack/prod/chunks/vidstack-D0D6ufFF.js"() {
-      init_vidstack_CRlI3Mh7();
-      init_vidstack_DWQEfrPg();
+  var init_vidstack_D_9AA6 = __esm({
+    "node_modules/vidstack/prod/chunks/vidstack-D_-9AA6_.js"() {
+      init_vidstack_BGSTndAW();
+      init_vidstack_C2US_gSO();
       svgTemplate = /* @__PURE__ */ createTemplate(
         `<svg viewBox="0 0 32 32" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"></svg>`
       );
     }
   });
 
-  // node_modules/vidstack/prod/chunks/vidstack-H72EDyqs.js
-  var vidstack_H72EDyqs_exports = {};
-  __export(vidstack_H72EDyqs_exports, {
+  // node_modules/vidstack/prod/chunks/vidstack-BTigPj2h.js
+  var vidstack_BTigPj2h_exports = {};
+  __export(vidstack_BTigPj2h_exports, {
     icons: () => icons
   });
   var icons;
-  var init_vidstack_H72EDyqs = __esm({
-    "node_modules/vidstack/prod/chunks/vidstack-H72EDyqs.js"() {
-      init_vidstack_CRlI3Mh7();
+  var init_vidstack_BTigPj2h = __esm({
+    "node_modules/vidstack/prod/chunks/vidstack-BTigPj2h.js"() {
+      init_vidstack_BGSTndAW();
       icons = {
         airplay: Icon$5,
         download: Icon$31,
@@ -8969,16 +9015,16 @@
   });
 
   // node_modules/vidstack/prod/define/vidstack-player.js
-  init_vidstack_CRlI3Mh7();
+  init_vidstack_BGSTndAW();
 
-  // node_modules/vidstack/prod/chunks/vidstack-rW2xANwv.js
-  init_vidstack_CRlI3Mh7();
+  // node_modules/vidstack/prod/chunks/vidstack-CejDJ6BP.js
+  init_vidstack_BGSTndAW();
 
-  // node_modules/vidstack/prod/chunks/vidstack-Cga5GzuB.js
-  init_vidstack_CRlI3Mh7();
+  // node_modules/vidstack/prod/chunks/vidstack-BUfZMlAO.js
+  init_vidstack_BGSTndAW();
 
-  // node_modules/vidstack/prod/chunks/vidstack-Cpte_fRf.js
-  init_vidstack_CRlI3Mh7();
+  // node_modules/vidstack/prod/chunks/vidstack-DJDnh4xT.js
+  init_vidstack_BGSTndAW();
   var mediaContext = createContext();
   function useMediaContext() {
     return useContext(mediaContext);
@@ -8987,19 +9033,19 @@
     return useMediaContext().$state;
   }
 
-  // node_modules/vidstack/prod/chunks/vidstack-Cga5GzuB.js
-  init_vidstack_DwhHIY5e();
-  init_vidstack_BmMUBVGQ();
-  init_vidstack_CP9ACpRU();
+  // node_modules/vidstack/prod/chunks/vidstack-BUfZMlAO.js
+  init_vidstack_xMS8dnYq();
+  init_vidstack_ChQTHmIQ();
+  init_vidstack_Ci54COQW();
   init_vidstack_D5EzK014();
   init_vidstack_B01xzxC4();
   init_vidstack_C9vIqaYT();
-  init_vidstack_A9j_j6J();
-  init_vidstack_DWQEfrPg();
+  init_vidstack_CTojmhKq();
+  init_vidstack_C2US_gSO();
   init_vidstack_Dihypf8P();
 
-  // node_modules/vidstack/prod/chunks/vidstack-DXXgp8ue.js
-  init_vidstack_CRlI3Mh7();
+  // node_modules/vidstack/prod/chunks/vidstack-DsPOyKtl.js
+  init_vidstack_BGSTndAW();
   var $keyboard = signal(false);
   {
     listenEvent(document, "pointerdown", () => {
@@ -9054,7 +9100,7 @@
     setAttribute(el, "data-hover", isHovering);
   }
 
-  // node_modules/vidstack/prod/chunks/vidstack-Cga5GzuB.js
+  // node_modules/vidstack/prod/chunks/vidstack-BUfZMlAO.js
   var List = class extends EventsTarget {
     items = [];
     /** @internal */
@@ -10595,7 +10641,7 @@
         value?.callback?.(event2, this.#media.remote);
         return;
       }
-      if (!method2 && isNumberPress) {
+      if (!method2 && isNumberPress && !modifierKeyPressed(event2)) {
         event2.preventDefault();
         event2.stopPropagation();
         this.#media.remote.seek(this.$state.duration() / 10 * Number(event2.key), event2);
@@ -10716,6 +10762,14 @@
   var SYMBOL_KEY_MAP = ["!", "@", "#", "$", "%", "^", "&", "*", "(", ")"];
   function replaceSymbolKeys(key2) {
     return key2.replace(/Shift\+(\d)/g, (_2, num) => SYMBOL_KEY_MAP[num - 1]);
+  }
+  function modifierKeyPressed(event2) {
+    for (const key2 of MODIFIER_KEYS) {
+      if (event2[key2.toLowerCase() + "Key"]) {
+        return true;
+      }
+    }
+    return false;
   }
   var MediaControls = class extends MediaPlayerController {
     #idleTimer = -2;
@@ -11011,7 +11065,7 @@
       return new (await Promise.resolve().then(() => (init_vidstack_youtube(), vidstack_youtube_exports))).YouTubeProvider(this.target, ctx);
     }
     async loadPoster(src, ctx, abort) {
-      const { findYouTubePoster: findYouTubePoster2, resolveYouTubeVideoId: resolveYouTubeVideoId2 } = await Promise.resolve().then(() => (init_vidstack_Zc3I7oOd(), vidstack_Zc3I7oOd_exports));
+      const { findYouTubePoster: findYouTubePoster2, resolveYouTubeVideoId: resolveYouTubeVideoId2 } = await Promise.resolve().then(() => (init_vidstack_Dm1xEU9Q(), vidstack_Dm1xEU9Q_exports));
       const videoId = isString(src.src) && resolveYouTubeVideoId2(src.src);
       if (videoId) return findYouTubePoster2(videoId, abort);
       return null;
@@ -11134,8 +11188,7 @@
     }
     async ready(info, trigger) {
       return untrack(async () => {
-        this.#media;
-        const {
+        const { logger } = this.#media, {
           autoPlay,
           canPlay,
           started,
@@ -11401,6 +11454,7 @@
       try {
         const provider = peek(this.#$provider);
         throwIfNotReadyForPlayback(provider, peek(canPlay));
+        throwIfAutoplayingWithReducedMotion(isAutoPlaying);
         return await provider.play();
       } catch (error) {
         const errorEvent = this.createEvent("play-fail", {
@@ -11584,7 +11638,7 @@
         }
         preconnect("https://www.gstatic.com");
         if (!this.#googleCastLoader) {
-          const $module = await Promise.resolve().then(() => (init_vidstack_CWDlegKy(), vidstack_CWDlegKy_exports));
+          const $module = await Promise.resolve().then(() => (init_vidstack_D2pY00kU(), vidstack_D2pY00kU_exports));
           this.#googleCastLoader = new $module.GoogleCastLoader();
         }
         await this.#googleCastLoader.prompt(this.#media);
@@ -11881,6 +11935,12 @@
     if (fullscreen?.supported) return;
     throw Error(
       "[vidstack] no fullscreen support"
+    );
+  }
+  function throwIfAutoplayingWithReducedMotion(autoplaying) {
+    if (!prefersReducedMotion() || !autoplaying) return;
+    throw Error(
+      "[vidstack] autoplay blocked"
     );
   }
   var MediaRequestContext = class {
@@ -13708,7 +13768,7 @@
   var mediaprovider__proto = MediaProvider.prototype;
   method(mediaprovider__proto, "load");
 
-  // node_modules/vidstack/prod/chunks/vidstack-rW2xANwv.js
+  // node_modules/vidstack/prod/chunks/vidstack-CejDJ6BP.js
   var MediaProviderElement = class extends Host(HTMLElement, MediaProvider) {
     static tagName = "media-provider";
     #media;
@@ -13790,7 +13850,7 @@
       }
       const container = document.createElement("div");
       container.classList.add("vds-google-cast");
-      Promise.resolve().then(() => (init_vidstack_D0D6ufFF(), vidstack_D0D6ufFF_exports)).then(({ insertContent: insertContent2 }) => {
+      Promise.resolve().then(() => (init_vidstack_D_9AA6(), vidstack_D_9AA6_exports)).then(({ insertContent: insertContent2 }) => {
         insertContent2(container, this.#media.$state);
       });
       return container;
@@ -13812,14 +13872,14 @@
   defineCustomElement(MediaProviderElement);
 
   // node_modules/vidstack/prod/define/vidstack-player-default-layout.js
-  init_vidstack_CRlI3Mh7();
+  init_vidstack_BGSTndAW();
 
   // node_modules/vidstack/prod/define/templates/vidstack-audio-layout.js
-  init_vidstack_CRlI3Mh7();
+  init_vidstack_BGSTndAW();
 
-  // node_modules/vidstack/prod/chunks/vidstack-Ca3C5Xan.js
-  init_vidstack_CRlI3Mh7();
-  init_vidstack_DWQEfrPg();
+  // node_modules/vidstack/prod/chunks/vidstack-DEzlvj53.js
+  init_vidstack_BGSTndAW();
+  init_vidstack_C2US_gSO();
 
   // node_modules/lit-html/lit-html.js
   var t2;
@@ -14093,8 +14153,8 @@
     return l6._$AI(t5), l6;
   };
 
-  // node_modules/vidstack/prod/chunks/vidstack-7xep0lg7.js
-  init_vidstack_CRlI3Mh7();
+  // node_modules/vidstack/prod/chunks/vidstack-Dq5Yu0Vr.js
+  init_vidstack_BGSTndAW();
 
   // node_modules/lit-html/directives/if-defined.js
   var l3 = (l6) => null != l6 ? l6 : A;
@@ -14209,7 +14269,7 @@
     }
   };
 
-  // node_modules/vidstack/prod/chunks/vidstack-7xep0lg7.js
+  // node_modules/vidstack/prod/chunks/vidstack-Dq5Yu0Vr.js
   var SignalDirective = class extends c2 {
     #signal = null;
     #isAttr = false;
@@ -14403,10 +14463,10 @@
     }
   };
 
-  // node_modules/vidstack/prod/chunks/vidstack-Ca3C5Xan.js
-  init_vidstack_lwuXewh7();
+  // node_modules/vidstack/prod/chunks/vidstack-DEzlvj53.js
+  init_vidstack_DYbwIVLq();
 
-  // node_modules/vidstack/prod/chunks/vidstack-BOTZD4tC.js
+  // node_modules/vidstack/prod/chunks/vidstack-BTM4ERc7.js
   function sortVideoQualities(qualities, desc) {
     return [...qualities].sort(desc ? compareVideoQualityDesc : compareVideoQualityAsc);
   }
@@ -14415,12 +14475,6 @@
   }
   function compareVideoQualityDesc(a3, b2) {
     return b2.height === a3.height ? (b2.bitrate ?? 0) - (a3.bitrate ?? 0) : b2.height - a3.height;
-  }
-  function ariaBool2(value) {
-    return value ? "true" : "false";
-  }
-  function $ariaBool(signal2) {
-    return () => ariaBool2(signal2());
   }
 
   // node_modules/lit-html/directives/ref.js
@@ -14454,8 +14508,8 @@
     }
   });
 
-  // node_modules/vidstack/prod/chunks/vidstack-Ca3C5Xan.js
-  init_vidstack_A9j_j6J();
+  // node_modules/vidstack/prod/chunks/vidstack-DEzlvj53.js
+  init_vidstack_CTojmhKq();
   var defaultLayoutContext = createContext();
   function useDefaultLayoutContext() {
     return useContext(defaultLayoutContext);
@@ -14868,7 +14922,7 @@
           ${$i18n(translations, "Chapters")}
         </media-tooltip-content>
       </media-tooltip>
-      ${portal ? MenuPortal(menuPortal, items) : items}
+      ${MenuPortal(menuPortal, items)}
     </media-menu>
   `;
   }
@@ -15755,7 +15809,7 @@
             ${$i18n(translations, "Settings")}
           </media-tooltip-content>
         </media-tooltip>
-        ${portal ? MenuPortal(menuPortal, items) : items}
+        ${MenuPortal(menuPortal, items)}
       </media-menu>
     `;
     });
@@ -15878,7 +15932,7 @@
   }
   var DefaultLayoutIconsLoader = class extends LayoutIconsLoader {
     async loadIcons() {
-      const paths = (await Promise.resolve().then(() => (init_vidstack_H72EDyqs(), vidstack_H72EDyqs_exports))).icons, icons2 = {};
+      const paths = (await Promise.resolve().then(() => (init_vidstack_BTigPj2h(), vidstack_BTigPj2h_exports))).icons, icons2 = {};
       for (const iconName of Object.keys(paths)) {
         icons2[iconName] = Icon({ name: iconName, paths: paths[iconName] });
       }
@@ -15887,7 +15941,7 @@
   };
 
   // node_modules/vidstack/prod/define/templates/vidstack-audio-layout.js
-  init_vidstack_DWQEfrPg();
+  init_vidstack_C2US_gSO();
 
   // node_modules/vidstack/prod/chunks/vidstack-CwTj4H1w.js
   var LitElement = class extends HTMLElement {
@@ -16055,7 +16109,7 @@
   };
 
   // node_modules/vidstack/prod/define/templates/vidstack-video-layout.js
-  init_vidstack_CRlI3Mh7();
+  init_vidstack_BGSTndAW();
 
   // node_modules/lit-html/directives/keyed.js
   var i3 = e3(class extends i2 {
@@ -16071,7 +16125,7 @@
   });
 
   // node_modules/vidstack/prod/define/templates/vidstack-video-layout.js
-  init_vidstack_DWQEfrPg();
+  init_vidstack_C2US_gSO();
   var DefaultVideoLayout = class extends DefaultLayout {
     static props = {
       ...super.props,
@@ -16243,7 +16297,7 @@
 
         ${DefaultControlsSpacer()}
 
-        <media-controls-group class="vds-controls-group">
+        <media-controls-group class="vds-controls-group" style="pointer-events: none;">
           ${[
         DefaultControlsSpacer(),
         DefaultPlayButton({ tooltip: "top" }),
@@ -16372,23 +16426,23 @@
   defineCustomElement(MediaVideoLayoutElement);
 
   // node_modules/vidstack/prod/define/vidstack-player-ui.js
-  init_vidstack_CRlI3Mh7();
+  init_vidstack_BGSTndAW();
 
-  // node_modules/vidstack/prod/chunks/vidstack-DGY-5qpR.js
-  init_vidstack_CRlI3Mh7();
+  // node_modules/vidstack/prod/chunks/vidstack-cVFilYwh.js
+  init_vidstack_BGSTndAW();
 
-  // node_modules/vidstack/prod/chunks/vidstack-CCNf7j4j.js
-  init_vidstack_CRlI3Mh7();
-  init_vidstack_DWQEfrPg();
+  // node_modules/vidstack/prod/chunks/vidstack-0dMjVFPr.js
+  init_vidstack_BGSTndAW();
+  init_vidstack_C2US_gSO();
 
-  // node_modules/vidstack/prod/chunks/vidstack-Dfy6aedI.js
-  init_vidstack_CRlI3Mh7();
-  init_vidstack_DWQEfrPg();
-  init_vidstack_CP9ACpRU();
+  // node_modules/vidstack/prod/chunks/vidstack-B5rN6wRF.js
+  init_vidstack_BGSTndAW();
+  init_vidstack_C2US_gSO();
+  init_vidstack_Ci54COQW();
   init_vidstack_Dihypf8P();
   init_vidstack_C9vIqaYT();
-  init_vidstack_A9j_j6J();
-  init_vidstack_lwuXewh7();
+  init_vidstack_CTojmhKq();
+  init_vidstack_DYbwIVLq();
   var ARIAKeyShortcuts = class extends ViewController {
     #shortcut;
     constructor(shortcut) {
@@ -19317,10 +19371,10 @@
     }
   };
 
-  // node_modules/vidstack/prod/chunks/vidstack-CCNf7j4j.js
+  // node_modules/vidstack/prod/chunks/vidstack-0dMjVFPr.js
   init_vidstack_Dihypf8P();
-  init_vidstack_lwuXewh7();
-  init_vidstack_CP9ACpRU();
+  init_vidstack_DYbwIVLq();
+  init_vidstack_Ci54COQW();
   var MediaAnnouncer = class extends Component {
     static props = {
       translations: null
@@ -20117,8 +20171,8 @@
       this.#activeIndex.set(currentActiveIndex);
     }
     #watchPointerPercent() {
-      let { pointing, pointerPercent } = this.#sliderState;
-      if (!pointing()) {
+      let { hidden, pointerPercent } = this.#sliderState;
+      if (hidden()) {
         this.#activePointerIndex.set(-1);
         return;
       }
@@ -20811,13 +20865,13 @@
     }
   };
 
-  // node_modules/vidstack/prod/chunks/vidstack-DGY-5qpR.js
-  init_vidstack_lwuXewh7();
-  init_vidstack_DWQEfrPg();
+  // node_modules/vidstack/prod/chunks/vidstack-cVFilYwh.js
+  init_vidstack_DYbwIVLq();
+  init_vidstack_C2US_gSO();
 
-  // node_modules/vidstack/prod/chunks/vidstack-DvuMxVXP.js
-  init_vidstack_CRlI3Mh7();
-  init_vidstack_DWQEfrPg();
+  // node_modules/vidstack/prod/chunks/vidstack-K_Jbv5ge.js
+  init_vidstack_BGSTndAW();
+  init_vidstack_C2US_gSO();
   var imgTemplate = /* @__PURE__ */ createTemplate(
     '<img loading="eager" decoding="async" aria-hidden="true">'
   );
@@ -20989,7 +21043,7 @@
     static tagName = "media-volume-slider";
   };
 
-  // node_modules/vidstack/prod/chunks/vidstack-DGY-5qpR.js
+  // node_modules/vidstack/prod/chunks/vidstack-cVFilYwh.js
   var MediaCaptionsElement = class extends Host(HTMLElement, Captions) {
     static tagName = "media-captions";
   };
@@ -21180,7 +21234,7 @@
     static tagName = "media-slider";
   };
   var videoTemplate = /* @__PURE__ */ createTemplate(
-    `<video muted playsinline preload="none"></video>`
+    `<video muted playsinline preload="none" style="max-width: unset;"></video>`
   );
   var MediaSliderVideoElement = class extends Host(HTMLElement, SliderVideo) {
     static tagName = "media-slider-video";
@@ -21252,12 +21306,12 @@
     }
   };
 
-  // node_modules/vidstack/prod/chunks/vidstack-QR8zGkwr.js
-  init_vidstack_CRlI3Mh7();
+  // node_modules/vidstack/prod/chunks/vidstack-D3ltXc3a.js
+  init_vidstack_BGSTndAW();
 
-  // node_modules/vidstack/prod/chunks/vidstack-DGstw8fa.js
-  init_vidstack_CRlI3Mh7();
-  init_vidstack_A9j_j6J();
+  // node_modules/vidstack/prod/chunks/vidstack-BiyXcJ_M.js
+  init_vidstack_BGSTndAW();
+  init_vidstack_CTojmhKq();
   var Poster = class extends Component {
     static props = {
       src: null,
@@ -21360,7 +21414,7 @@
     }
   };
 
-  // node_modules/vidstack/prod/chunks/vidstack-QR8zGkwr.js
+  // node_modules/vidstack/prod/chunks/vidstack-D3ltXc3a.js
   var MediaPosterElement = class extends Host(HTMLElement, Poster) {
     static tagName = "media-poster";
     static attrs = {
@@ -21442,6 +21496,10 @@
 /*! Bundled license information:
 
 lit-html/lit-html.js:
+lit-html/directive.js:
+lit-html/directives/unsafe-html.js:
+lit-html/directives/unsafe-svg.js:
+lit-html/async-directive.js:
   (**
    * @license
    * Copyright 2017 Google LLC
@@ -21455,41 +21513,7 @@ lit-html/directives/if-defined.js:
    * SPDX-License-Identifier: BSD-3-Clause
    *)
 
-lit-html/directive.js:
-  (**
-   * @license
-   * Copyright 2017 Google LLC
-   * SPDX-License-Identifier: BSD-3-Clause
-   *)
-
-lit-html/directives/unsafe-html.js:
-  (**
-   * @license
-   * Copyright 2017 Google LLC
-   * SPDX-License-Identifier: BSD-3-Clause
-   *)
-
-lit-html/directives/unsafe-svg.js:
-  (**
-   * @license
-   * Copyright 2017 Google LLC
-   * SPDX-License-Identifier: BSD-3-Clause
-   *)
-
 lit-html/directive-helpers.js:
-  (**
-   * @license
-   * Copyright 2020 Google LLC
-   * SPDX-License-Identifier: BSD-3-Clause
-   *)
-
-lit-html/async-directive.js:
-  (**
-   * @license
-   * Copyright 2017 Google LLC
-   * SPDX-License-Identifier: BSD-3-Clause
-   *)
-
 lit-html/directives/ref.js:
   (**
    * @license

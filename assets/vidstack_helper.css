@@ -1,3 +1,12 @@
+/**
+ * Vidstack Helper Styles
+ * Core styles for Vidstack player, accessibility, and FFmpeg integration
+ */
+
+/* ===================================
+   MEDIA PLAYER BASE
+   =================================== */
+
 .video-container {
     margin-bottom: 0px;
 }
@@ -9,10 +18,12 @@
 .video-container media-player {
     width: 100%;
 }
-.video-description, .video-transcript, .alternative-links {
-    margin-top: 10px;
-    display: none;
-}
+
+/* ===================================
+   ACCESSIBILITY (A11Y)
+   =================================== */
+
+/* Screen reader only content (hidden visually but accessible) */
 .js .a11y-content {
     position: absolute;
     width: 1px;
@@ -24,59 +35,10 @@
     white-space: nowrap;
     border: 0;
 }
-.no-js .a11y-content {
-    display: block;
-}
-.skip-link {
-    position: absolute;
-    top: -40px;
-    left: 0;
-    background: #000;
-    color: white;
-    padding: 8px;
-    z-index: 100;
-}
-.skip-link:focus {
-    top: 0;
-}
-.video-wrapper {
-    position: relative;
-    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-    height: 0;
-    overflow: hidden;
-}
-.video-wrapper media-player {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-.consent-placeholder {
-    background-color: #f0f0f0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 20px;
-    box-sizing: border-box;
-}
 
-.consent-placeholder button {
-    margin-top: 10px;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.consent-placeholder button:hover {
-    background-color: #0056b3;
-}
-noscript  .js .a11y-content {
+/* Show a11y content when JS is disabled */
+.no-js .a11y-content,
+noscript .js .a11y-content {
     position: static;
     width: auto;
     height: auto;
@@ -87,7 +49,44 @@ noscript  .js .a11y-content {
     white-space: normal;
 }
 
-/* Video-Informationen Styling */
+/* Skip link for keyboard navigation */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #000;
+    color: white;
+    padding: 8px;
+    z-index: 100;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* ===================================
+   RESPONSIVE VIDEO WRAPPER
+   =================================== */
+
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    height: 0;
+    overflow: hidden;
+}
+
+.video-wrapper media-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* ===================================
+   FFMPEG VIDEO INFO (BACKEND)
+   =================================== */
+
 .vidstack-video-info {
     margin-top: 15px;
     padding: 12px;
@@ -123,23 +122,23 @@ noscript  .js .a11y-content {
     display: inline-block;
 }
 
-@media (max-width: 768px) {
-    .vidstack-video-info {
-        font-size: 11px;
-        padding: 10px;
-    }
-    
-    .vidstack-video-info h4 {
-        font-size: 12px;
-    }
-    
-    .vidstack-video-info .btn {
-        font-size: 10px;
-        padding: 2px 6px;
-    }
+/* FFmpeg Action Buttons */
+.vidstack-action-buttons {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid #dee2e6;
 }
 
-/* Button-Styles für FFmpeg-Tools */
+.vidstack-action-buttons-label {
+    margin-bottom: 6px;
+}
+
+.vidstack-action-buttons-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
 .vidstack-video-info .btn {
     display: inline-flex;
     align-items: center;
@@ -188,11 +187,40 @@ noscript  .js .a11y-content {
     color: white;
 }
 
-/* CSP-compliant styles to replace inline styles */
+/* ===================================
+   VIDSTACK FIXES
+   =================================== */
+
+/* Fix for controls pointer events */
 .vds-controls-group {
     pointer-events: none;
 }
 
+/* Fix for video slider thumbnails */
 media-slider-video video {
     max-width: unset;
+}
+
+/* ===================================
+   RESPONSIVE ADJUSTMENTS
+   =================================== */
+
+@media (max-width: 768px) {
+    .vidstack-video-info {
+        font-size: 11px;
+        padding: 10px;
+    }
+    
+    .vidstack-video-info h4 {
+        font-size: 12px;
+    }
+    
+    .vidstack-video-info .btn {
+        font-size: 10px;
+        padding: 2px 6px;
+    }
+    
+    .vidstack-action-buttons-group {
+        flex-direction: column;
+    }
 }

@@ -1,0 +1,24 @@
+{
+  "name": "friendsofredaxo/vidstack_player",
+  "description": "Modern media player (video & audio) with full Vidstack.io support for REDAXO CMS",
+  "license": "MIT",
+  "type": "redaxo-addon",
+  "keywords": ["redaxo", "video", "audio", "player", "vidstack", "media"],
+  "authors": [
+    {
+      "name": "Friends Of REDAXO",
+      "homepage": "https://github.com/FriendsOfREDAXO"
+    }
+  ],
+  "require": {
+    "php": ">=8.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "FriendsOfRedaxo\\VidstackPlayer\\": "lib/"
+    }
+  },
+  "scripts": {
+    "build": "cd build && npm run build"
+  }
+}

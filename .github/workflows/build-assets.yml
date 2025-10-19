@@ -1,0 +1,52 @@
+name: Build Assets & ESLint
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+    types: [opened, synchronize, reopened, ready_for_review]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: build/package.json
+
+      - name: Install Node dependencies
+        working-directory: build
+        run: npm ci
+
+      - name: Run ESLint
+        working-directory: build
+        run: npx eslint config/vs_components.js config/vs_js.js
+
+      - name: Build assets
+        working-directory: build
+        run: npm run build
+
+      - name: Check if assets were built
+        run: |
+          ls -la assets/vidstack.js
+          ls -la assets/vidstack.css
+          ls -la assets/vidstack_helper.js
+          ls -la assets/vidstack_helper.css
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: built-assets
+          path: |
+            assets/vidstack.js
+            assets/vidstack.css
+            assets/vidstack_helper.js
+            assets/vidstack_helper.css
+          retention-days: 7
