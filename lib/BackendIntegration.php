@@ -71,7 +71,7 @@ class BackendIntegration
 
         try {
             /** @phpstan-ignore undefinedClass */
-            $videoInfo = \FriendsOfRedaxo\FFmpeg\VideoInfo::getInfo($filename);
+            $videoInfo = \FriendsOfRedaxo\FFmpeg\VideoInfo::getBasicInfo($filename);
 
             if (!$videoInfo) {
                 return null;
