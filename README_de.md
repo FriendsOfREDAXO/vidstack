@@ -247,15 +247,33 @@ Features mit FFmpeg:
 
 ### CKE5-Integration
 
-oEmbed-Tags aus CKEditor 5 werden automatisch zu Vidstack-Playern konvertiert:
+Das AddOn bietet einen oEmbed-Parser, um CKEditor 5 oEmbed-Tags in Vidstack-Player umzuwandeln.
+
+**Manuelle Aktivierung erforderlich** (z.B. in der `boot.php` deines Projekt-AddOns):
+
+```php
+<?php
+// In der boot.php deines Projekt-AddOns
+use FriendsOfRedaxo\VidstackPlayer\OembedParser;
+
+// oEmbed-Parser für CKE5 registrieren
+OembedParser::register();
+```
+
+**So funktioniert es:**
 
 ```html
 <!-- CKE5 fügt ein: -->
 <oembed url="https://youtube.com/watch?v=abc"></oembed>
 
-<!-- Wird automatisch zu: -->
+<!-- Wird konvertiert zu: -->
 <media-player src="..." title="...">...</media-player>
 ```
+
+**Warum manuelle Aktivierung?**
+- Du nutzt möglicherweise eigene Consent-Management-Lösungen
+- Gibt dir volle Kontrolle über wann und wie Videos eingebettet werden
+- Verhindert Konflikte mit bestehenden oEmbed-Handlern
 
 ## Architektur
 

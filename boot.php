@@ -36,6 +36,3 @@ if (rex::isBackend() && is_object(rex::getUser())) {
         return BackendIntegration::renderMediapoolSidebar($ep);
     });
 }
-
-// Frontend: Register oEmbed parser for CKE5
-OembedParser::register();
