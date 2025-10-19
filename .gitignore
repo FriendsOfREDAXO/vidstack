@@ -15,3 +15,5 @@ modules.xml
 node_modules/
 build/dist/
 build/node_modules/
+assets/vidstack_helper.js
+assets/vidstack_helper.css

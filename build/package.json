@@ -8,9 +8,11 @@
         "esbuild": "^0.25.0"
     },
     "scripts": {
-        "build_components": "esbuild config/vs_components.js --bundle --outfile=dist/vidstack.js",
-        "build_js": "esbuild config/vs_js.js --bundle --outfile=dist/vs_js_out.js",
-        "copy": "cp dist/vidstack.js ../assets/vidstack.js && cp dist/vidstack.css ../assets/vidstack.css",
-        "build": "npm run build_components && npm run build_js && npm run copy"
+        "build_components": "esbuild config/vs_components.js --bundle --minify --outfile=dist/vidstack.js",
+        "build_helper_js": "esbuild ../assets/vidstack_helper.js --minify --outfile=dist/vidstack_helper.min.js",
+        "build_helper_css": "esbuild ../assets/vidstack_helper.css --minify --outfile=dist/vidstack_helper.min.css --loader:.css=css",
+        "copy": "cp dist/vidstack.js ../assets/vidstack.min.js && cp dist/vidstack.css ../assets/vidstack.min.css && cp dist/vidstack_helper.min.js ../assets/vidstack_helper.min.js && cp dist/vidstack_helper.min.css ../assets/vidstack_helper.min.css",
+        "clean": "rm -f ../assets/vs_js_out.* ../assets/vidstack.js ../assets/vidstack.css ../assets/vidstack_helper.js ../assets/vidstack_helper.css",
+        "build": "npm run build_components && npm run build_helper_js && npm run build_helper_css && npm run copy"
     }
 }

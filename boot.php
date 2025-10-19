@@ -27,10 +27,10 @@ if (rex::isBackend() && is_object(rex::getUser())) {
         static $assetsLoaded = false;
         if (!$assetsLoaded) {
             $addon = rex_addon::get('vidstack_player');
-            rex_view::addCssFile($addon->getAssetsUrl('vidstack.css'));
-            rex_view::addCssFile($addon->getAssetsUrl('vidstack_helper.css'));
-            rex_view::addJsFile($addon->getAssetsUrl('vidstack.js'));
-            rex_view::addJsFile($addon->getAssetsUrl('vidstack_helper.js'));
+            rex_view::addCssFile($addon->getAssetsUrl('vidstack.min.css'));
+            rex_view::addCssFile($addon->getAssetsUrl('vidstack_helper.min.css'));
+            rex_view::addJsFile($addon->getAssetsUrl('vidstack.min.js'));
+            rex_view::addJsFile($addon->getAssetsUrl('vidstack_helper.min.js'));
             $assetsLoaded = true;
         }
         return BackendIntegration::renderMediapoolSidebar($ep);
