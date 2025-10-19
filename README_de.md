@@ -271,9 +271,9 @@ OembedParser::register();
 ```
 
 **Warum manuelle Aktivierung?**
-- Du nutzt möglicherweise eigene Consent-Management-Lösungen
 - Gibt dir volle Kontrolle über wann und wie Videos eingebettet werden
-- Verhindert Konflikte mit bestehenden oEmbed-Handlern
+- Verhindert Konflikte mit bestehenden oEmbed-Handlern oder eigenen Implementierungen
+- Opt-in-Ansatz - aktiviere nur wenn du es brauchst
 
 ## Architektur
 

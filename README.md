@@ -271,9 +271,9 @@ OembedParser::register();
 ```
 
 **Why manual activation?**
-- You might use custom consent management solutions
 - Gives you full control over when and how videos are embedded
-- Prevents conflicts with existing oEmbed handlers
+- Prevents conflicts with existing oEmbed handlers or custom implementations
+- Opt-in approach - activate only if you need it
 
 ## Architecture
 
