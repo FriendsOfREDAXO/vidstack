@@ -5,35 +5,35 @@
  * Consent management should be handled by an external addon (e.g., Consent Manager)
  */
 (function () {
-    let translations = {};
+    let vidstackTranslations = {};
 
     /**
      * Load translations from JSON file
      */
-    async function loadTranslations() {
+    async function vidstackLoadTranslations() {
         try {
-            translations = await (await fetch('/assets/addons/vidstack_player/translations.json')).json();
+            vidstackTranslations = await (await fetch('/assets/addons/vidstack_player/translations.json')).json();
         } catch (error) {
             console.error('Vidstack: Error loading translations:', error);
-            translations = { de: {}, en: {} };
+            vidstackTranslations = { de: {}, en: {} };
         }
     }
 
     /**
      * Apply translations to all media players
      */
-    function applyTranslations() {
+    function vidstackApplyTranslations() {
         ['media-video-layout', 'media-audio-layout'].forEach(selector => {
             document.querySelectorAll(selector).forEach(layout => {
                 const player = layout.closest('media-player');
                 const lang = player?.getAttribute('lang') || document.documentElement.lang || 'en';
                 
                 // Apply translations from loaded JSON
-                if (translations[lang]) {
-                    layout.translations = translations[lang];
-                } else if (translations['en']) {
+                if (vidstackTranslations[lang]) {
+                    layout.translations = vidstackTranslations[lang];
+                } else if (vidstackTranslations['en']) {
                     // Fallback to English
-                    layout.translations = translations['en'];
+                    layout.translations = vidstackTranslations['en'];
                 }
             });
         });
@@ -42,21 +42,21 @@
     /**
      * Initialize media players with translations
      */
-    function initializeMediaPlayers() {
+    function vidstackInitializeMediaPlayers() {
         document.querySelectorAll('media-player').forEach(player => {
-            // Translations are applied automatically via applyTranslations()
+            // Translations are applied automatically via vidstackApplyTranslations()
             // No consent handling here - that should be managed by external addon
         });
         
-        applyTranslations();
+        vidstackApplyTranslations();
     }
 
     /**
      * Main initialization function
      */
-    async function initialize() {
-        await loadTranslations();
-        initializeMediaPlayers();
+    async function vidstackInitialize() {
+        await vidstackLoadTranslations();
+        vidstackInitializeMediaPlayers();
 
         // Watch for dynamically added players (AJAX, etc.)
         const observer = new MutationObserver((mutations) => {
@@ -76,7 +76,7 @@
             });
             
             if (needsUpdate) {
-                applyTranslations();
+                vidstackApplyTranslations();
             }
         });
 
@@ -85,23 +85,23 @@
 
     // Initialize on various events (cover different CMS scenarios)
     ['DOMContentLoaded', 'vsrun'].forEach(event => 
-        document.addEventListener(event, initialize)
+        document.addEventListener(event, vidstackInitialize)
     );
 
     // REDAXO backend support - multiple events to ensure initialization
     if (typeof jQuery !== 'undefined') {
         jQuery(document).on('rex:ready', function() {
-            initialize();
+            vidstackInitialize();
         });
         
         // Also initialize on pjax updates (mediapool, content edit)
         jQuery(document).on('pjax:end', function() {
-            initialize();
+            vidstackInitialize();
         });
     }
 
     // If already loaded, initialize immediately
     if (['complete', 'interactive'].includes(document.readyState)) {
-        initialize();
+        vidstackInitialize();
     }
 })();

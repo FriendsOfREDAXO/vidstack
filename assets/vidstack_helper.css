@@ -7,7 +7,7 @@
    MEDIA PLAYER BASE
    =================================== */
 
-.video-container {
+.vidstack-video-container {
     margin-bottom: 0px;
 }
 
@@ -15,67 +15,22 @@
     contain: layout; 
 }
 
-.video-container media-player {
+.vidstack-video-container media-player {
     width: 100%;
-}
-
-/* ===================================
-   ACCESSIBILITY (A11Y)
-   =================================== */
-
-/* Screen reader only content (hidden visually but accessible) */
-.js .a11y-content {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-}
-
-/* Show a11y content when JS is disabled */
-.no-js .a11y-content,
-noscript .js .a11y-content {
-    position: static;
-    width: auto;
-    height: auto;
-    padding: initial;
-    margin: initial;
-    overflow: visible;
-    clip: auto;
-    white-space: normal;
-}
-
-/* Skip link for keyboard navigation */
-.skip-link {
-    position: absolute;
-    top: -40px;
-    left: 0;
-    background: #000;
-    color: white;
-    padding: 8px;
-    z-index: 100;
-}
-
-.skip-link:focus {
-    top: 0;
 }
 
 /* ===================================
    RESPONSIVE VIDEO WRAPPER
    =================================== */
 
-.video-wrapper {
+.vidstack-video-wrapper {
     position: relative;
     padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
     height: 0;
     overflow: hidden;
 }
 
-.video-wrapper media-player {
+.vidstack-video-wrapper media-player {
     position: absolute;
     top: 0;
     left: 0;
