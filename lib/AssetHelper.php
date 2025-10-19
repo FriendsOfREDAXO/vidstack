@@ -17,8 +17,8 @@ use const PHP_EOL;
 class AssetHelper
 {
     private const ADDON_NAME = 'vidstack_player';
-    private const CSS_FILES = ['vidstack.min.css', 'vidstack_helper.min.css'];
-    private const JS_FILES = ['vidstack.min.js', 'vidstack_helper.min.js'];
+    private const CSS_FILES = ['vidstack.min.css'];
+    private const JS_FILES = ['vidstack.min.js'];
 
     /**
      * Get all CSS tags for frontend integration.

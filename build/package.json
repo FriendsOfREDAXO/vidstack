@@ -11,8 +11,9 @@
         "build_components": "esbuild config/vs_components.js --bundle --minify --outfile=dist/vidstack.js",
         "build_helper_js": "esbuild ../assets/src/vidstack_helper.js --minify --outfile=dist/vidstack_helper.min.js",
         "build_helper_css": "esbuild ../assets/src/vidstack_helper.css --minify --outfile=dist/vidstack_helper.min.css --loader:.css=css",
-        "copy": "cp dist/vidstack.js ../assets/vidstack.min.js && cp dist/vidstack.css ../assets/vidstack.min.css && cp dist/vidstack_helper.min.js ../assets/vidstack_helper.min.js && cp dist/vidstack_helper.min.css ../assets/vidstack_helper.min.css",
+        "merge_frontend": "cat dist/vidstack.js dist/vidstack_helper.min.js > ../assets/vidstack.min.js && cat dist/vidstack.css dist/vidstack_helper.min.css > ../assets/vidstack.min.css",
+        "copy_backend": "cp dist/vidstack.js ../assets/vidstack-backend.min.js && cp dist/vidstack.css ../assets/vidstack-backend.min.css",
         "clean": "rm -rf dist/*",
-        "build": "npm run build_components && npm run build_helper_js && npm run build_helper_css && npm run copy"
+        "build": "npm run build_components && npm run build_helper_js && npm run build_helper_css && npm run merge_frontend && npm run copy_backend"
     }
 }

@@ -23,14 +23,12 @@ Translator::load();
 if (rex::isBackend() && is_object(rex::getUser())) {
     // Mediapool sidebar with lazy asset loading
     rex_extension::register('MEDIA_DETAIL_SIDEBAR', static function (rex_extension_point $ep) {
-        // Load assets only when needed
+        // Load backend assets only when needed (no translations needed)
         static $assetsLoaded = false;
         if (!$assetsLoaded) {
             $addon = rex_addon::get('vidstack_player');
-            rex_view::addCssFile($addon->getAssetsUrl('vidstack.min.css'));
-            rex_view::addCssFile($addon->getAssetsUrl('vidstack_helper.min.css'));
-            rex_view::addJsFile($addon->getAssetsUrl('vidstack.min.js'));
-            rex_view::addJsFile($addon->getAssetsUrl('vidstack_helper.min.js'));
+            rex_view::addCssFile($addon->getAssetsUrl('vidstack-backend.min.css'));
+            rex_view::addJsFile($addon->getAssetsUrl('vidstack-backend.min.js'));
             $assetsLoaded = true;
         }
         return BackendIntegration::renderMediapoolSidebar($ep);
