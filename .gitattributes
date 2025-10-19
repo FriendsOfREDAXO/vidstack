@@ -1,1 +1,20 @@
-build/ export-ignore
+# Export ignore for release ZIP
+# Development and build files
+/build export-ignore
+/tests export-ignore
+/.github export-ignore
+/.tools export-ignore
+
+# Configuration files
+/.gitattributes export-ignore
+/.gitignore export-ignore
+/.php-cs-fixer.dist.php export-ignore
+/.php-cs-fixer.cache export-ignore
+/composer.json export-ignore
+/composer.lock export-ignore
+/phpstan.neon export-ignore
+/psalm.xml export-ignore
+
+# Documentation (optional - entfernen falls README im Release sein soll)
+# /README.md export-ignore
+# /CHANGELOG.md export-ignore
