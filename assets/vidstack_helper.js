@@ -18,9 +18,34 @@
     let videoConsent = JSON.parse(localStorage.getItem(consentKey) || '{}');
 
     function setConsent(platform) {
+        // Vidstack eigenes Consent-System
         videoConsent[platform] = true;
         localStorage.setItem(consentKey, JSON.stringify(videoConsent));
         document.cookie = `${platform}_consent=true; path=/; max-age=${30 * 24 * 60 * 60}; SameSite=Lax; Secure`;
+        
+        // Optional: Consent Manager Logging (falls installiert)
+        if (typeof consent_manager_util !== 'undefined') {
+            // Nutze Standard-UIDs: 'youtube' oder 'vimeo'
+            try {
+                // API Call für DSGVO-konformes Logging
+                fetch('?rex-api-call=consent_manager_inline_log', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        service: platform,
+                        consent_type: 'inline',
+                        source: 'vidstack'
+                    })
+                }).catch(err => console.warn('Vidstack: Consent Manager Logging fehlgeschlagen', err));
+                
+                // Consent Manager Cookie setzen (parallel zu Vidstack)
+                consent_manager_util.set_consent(platform);
+            } catch (e) {
+                console.warn('Vidstack: Consent Manager Integration Fehler', e);
+            }
+        }
     }
 
     function hasConsent(platform) {
