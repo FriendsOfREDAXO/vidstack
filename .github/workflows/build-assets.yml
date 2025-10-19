@@ -2,7 +2,7 @@ name: Build Assets & ESLint
 
 on:
   push:
-    branches: [ master, main ]
+    branches: [ master, main, renovatio ]
   pull_request:
     branches: [ master, main ]
     types: [opened, synchronize, reopened, ready_for_review]
@@ -12,12 +12,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
           cache-dependency-path: build/package.json
 
@@ -25,9 +25,13 @@ jobs:
         working-directory: build
         run: npm ci
 
-      - name: Run ESLint
+      - name: Run ESLint on build config
         working-directory: build
-        run: npx eslint config/vs_components.js config/vs_js.js
+        run: npx eslint config/**/*.js
+      
+      - name: Run ESLint on source files
+        working-directory: assets/src
+        run: npx eslint *.js --config ../../build/eslint.config.js
 
       - name: Build assets
         working-directory: build
