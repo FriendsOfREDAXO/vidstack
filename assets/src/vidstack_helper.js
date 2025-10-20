@@ -23,8 +23,11 @@
      * Apply translations to all media players
      */
     function vidstackApplyTranslations() {
+        console.log('Vidstack: Applying translations...');
         ['media-video-layout', 'media-audio-layout'].forEach(selector => {
-            document.querySelectorAll(selector).forEach(layout => {
+            const layouts = document.querySelectorAll(selector);
+            console.log('Vidstack: Found', layouts.length, selector, 'elements');
+            layouts.forEach(layout => {
                 const player = layout.closest('media-player');
                 const lang = player?.getAttribute('lang') || document.documentElement.lang || 'en';
                 
@@ -55,7 +58,9 @@
      * Main initialization function
      */
     async function vidstackInitialize() {
+        console.log('Vidstack: Starting initialization...');
         await vidstackLoadTranslations();
+        console.log('Vidstack: Translations loaded, found', Object.keys(vidstackTranslations).length, 'languages');
         vidstackInitializeMediaPlayers();
 
         // Watch for dynamically added players (AJAX, etc.)
@@ -103,6 +108,9 @@
     // If DOM is already ready or script loads late (e.g., with defer), initialize immediately
     if (document.readyState === 'complete' || 
         (document.readyState === 'interactive' && document.body)) {
+        console.log('Vidstack: Initializing immediately (readyState:', document.readyState + ')');
         vidstackInitialize();
+    } else {
+        console.log('Vidstack: Waiting for DOM (readyState:', document.readyState + ')');
     }
 })();
