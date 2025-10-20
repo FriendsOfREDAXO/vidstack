@@ -2,8 +2,8 @@
     "type": "module",
     "dependencies": {
         "media-captions": "^1.0.4",
-        "media-icons": "^0.10.0",
-        "vidstack": "^1.11.24"
+        "media-icons": "^1.1.2",
+        "vidstack": "^1.12.13"
     },
     "devDependencies": {
         "esbuild": "^0.25.0"

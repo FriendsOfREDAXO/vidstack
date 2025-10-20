@@ -1,6 +1,7 @@
 import 'vidstack/player';
 import 'vidstack/player/layouts/default';
 import 'vidstack/player/ui';
+import 'vidstack/icons';
 
 import { defineCustomElement, MediaPosterElement } from "vidstack/elements";
 
