@@ -2,6 +2,7 @@
     "type": "module",
     "dependencies": {
         "media-captions": "^1.0.4",
+        "media-icons": "^0.10.0",
         "vidstack": "^1.11.24"
     },
     "devDependencies": {
