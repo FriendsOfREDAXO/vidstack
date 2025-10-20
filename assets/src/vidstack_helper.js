@@ -84,7 +84,7 @@
     }
 
     // Initialize on various events (cover different CMS scenarios)
-    ['DOMContentLoaded', 'vsrun'].forEach(event => 
+    ['DOMContentLoaded', 'load', 'vsrun'].forEach(event => 
         document.addEventListener(event, vidstackInitialize)
     );
 
@@ -100,8 +100,9 @@
         });
     }
 
-    // If already loaded, initialize immediately
-    if (['complete', 'interactive'].includes(document.readyState)) {
+    // If DOM is already ready or script loads late (e.g., with defer), initialize immediately
+    if (document.readyState === 'complete' || 
+        (document.readyState === 'interactive' && document.body)) {
         vidstackInitialize();
     }
 })();
