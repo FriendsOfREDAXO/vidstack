@@ -4,7 +4,10 @@
  * Handles loading and applying translations for Vidstack player
  * Consent management should be handled by an external addon (e.g., Consent Manager)
  */
+console.log('Vidstack Helper: Script loaded and executing!');
+
 (function () {
+    console.log('Vidstack Helper: IIFE starting');
     let vidstackTranslations = {};
 
     /**
