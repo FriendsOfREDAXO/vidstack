@@ -65,12 +65,16 @@ class BackendIntegration
             return null;
         }
 
+        // Check if FFmpeg VideoInfo class exists
+        if (!class_exists('\FriendsOfRedaxo\FFmpeg\VideoInfo')) {
+            return null;
+        }
+
         if (PlatformDetector::isAudio($filename)) {
             return null;
         }
 
         try {
-            /** @phpstan-ignore undefinedClass */
             $videoInfo = \FriendsOfRedaxo\FFmpeg\VideoInfo::getBasicInfo($filename);
 
             if (!$videoInfo) {
