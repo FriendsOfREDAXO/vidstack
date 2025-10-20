@@ -48,8 +48,6 @@ jobs:
         run: |
           ls -la assets/vidstack.min.js
           ls -la assets/vidstack.min.css
-          ls -la assets/vidstack-backend.min.js
-          ls -la assets/vidstack-backend.min.css
 
       - name: Commit and push built assets
         if: github.event.inputs.commit_assets == 'true'
@@ -57,7 +55,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add assets/vidstack.min.js assets/vidstack.min.css
-          git add assets/vidstack-backend.min.js assets/vidstack-backend.min.css
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
@@ -72,6 +69,4 @@ jobs:
           path: |
             assets/vidstack.min.js
             assets/vidstack.min.css
-            assets/vidstack-backend.min.js
-            assets/vidstack-backend.min.css
           retention-days: 7
