@@ -21,9 +21,9 @@ Translator::load();
 
 // Backend integration
 if (rex::isBackend()) {
-    // Load backend assets on all backend pages
-    rex_view::addCssFile($addon->getAssetsUrl('vidstack-backend.min.css'));
-    rex_view::addJsFile($addon->getAssetsUrl('vidstack-backend.min.js'));
+    // Load assets on all backend pages (same as frontend)
+    rex_view::addCssFile($addon->getAssetsUrl('vidstack.min.css'));
+    rex_view::addJsFile($addon->getAssetsUrl('vidstack.min.js'));
 
     // Mediapool sidebar
     rex_extension::register('MEDIA_DETAIL_SIDEBAR', static function (rex_extension_point $ep) {
