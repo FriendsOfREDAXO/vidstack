@@ -35,7 +35,10 @@ class BackendIntegration
             return $existing;
         }
 
-        $player = (new VidstackPlayer($filename))
+        // Build media URL for player
+        $mediaUrl = rex_url::media($filename);
+
+        $player = (new VidstackPlayer($mediaUrl))
             ->attributes(['controls' => true, 'playsinline' => true]);
 
         $html = $player->render();
