@@ -30,7 +30,45 @@ echo '<script src="' . rex_url::addonAssets('vidstack', 'vidstack_helper.js') . 
 
 Was passiert hier? Wir benutzen `rex_url::addonAssets()`, um die richtigen URLs für unsere Assets zu generieren. Das ist wie ein Zauberstab, der immer auf die korrekten Dateien in deinem REDAXO-Setup zeigt, egal wo sie sich versteckt haben.
 
-Die `vidstack.css` und `vidstack.js` sind die Hauptdarsteller - sie bringen den Video-Player zum Laufen. Die `*_helper`-Dateien sind wie die fleißigen Backstage-Helfer. Sie kümmern sich um Extras wie die DSGVO-Abfrage und andere nützliche Funktionen.
+
+Die `vidstack.css` und `vidstack.js` sind die Hauptdarsteller - sie bringen den Video-Player zum Laufen. Die `*_helper`-Dateien sind wie die fleißigen Backstage-Helfer. Sie kümmern sich um Extras wie die DSGVO-Abfrage, technische Workarounds und andere nützliche Funktionen.
+
+### Hinweis zu YouTube/Vimeo & `referrerpolicy`
+
+**Wichtig:** Für YouTube- und Vimeo-Embeds wird automatisch das Attribut `referrerpolicy="strict-origin-when-cross-origin"` gesetzt, wenn die `vidstack_helper.js` eingebunden ist. Dies ist notwendig, um Einbindungsfehler (z. B. YouTube Error 153) und Datenschutzprobleme zu vermeiden.
+
+**Du nutzt die Helper nicht?**
+
+Wenn du die Helper-JS nicht einbindest, musst du das Attribut selbst setzen! Beispiel für Vanilla-JS:
+
+```js
+document.addEventListener('provider-change', function(e) {
+    const provider = e.detail;
+    if (provider && (provider.type === 'youtube' || provider.type === 'vimeo')) {
+        provider.referrerPolicy = 'strict-origin-when-cross-origin';
+        if (provider.iframe) {
+            provider.iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+        }
+    }
+}, true);
+```
+
+Oder in React:
+
+```js
+const handleProviderChange = (e) => {
+    const provider = e.detail;
+    if (provider && (provider.type === 'youtube' || provider.type === 'vimeo')) {
+        provider.referrerPolicy = 'strict-origin-when-cross-origin';
+        if (provider.iframe) {
+            provider.iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+        }
+    }
+};
+<MediaPlayer onProviderChange={handleProviderChange} ... />
+```
+
+**Empfehlung:** Für maximale Kompatibilität und weniger Wartungsaufwand immer die Helper-Dateien nutzen!
 
 Übrigens: Wenn du nur die `generate()`-Methode verwendest und auf den ganzen Schnickschnack wie Consent-Abfragen verzichten möchtest, kannst du die Helper-Dateien weglassen. Aber für das volle Programm mit `generateFull()` braucht man alle vier Dateien.
 

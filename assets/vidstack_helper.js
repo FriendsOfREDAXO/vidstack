@@ -138,7 +138,6 @@
         const platform = player.dataset.videoPlatform;
         if (hasConsent(platform)) {
             const videoId = player.dataset.videoId;
-            
             // Check if src is already set - if so, the player is already properly configured
             if (player.hasAttribute('src')) {
                 // Make sure the player is visible and the placeholder is hidden
@@ -147,13 +146,36 @@
                 if (placeholder?.classList.contains('consent-placeholder')) {
                     placeholder.style.display = 'none';
                 }
+                // --- ReferrerPolicy Patch für YouTube/Vimeo ---
+                setReferrerPolicyOnProvider(player);
                 return;
             }
-            
             // Only recreate the player if no src is set
             const placeholder = player.previousElementSibling;
             rebuildMediaPlayer(player, platform, videoId, placeholder);
         }
+    }
+
+    // Setzt referrerPolicy auf YouTube/Vimeo-Provider, falls vorhanden
+    function setReferrerPolicyOnProvider(player) {
+        // Warte, bis der Provider geladen ist
+        player.addEventListener('provider-change', function handler(e) {
+            const provider = e.detail;
+            if (!provider) return;
+            // YouTube oder Vimeo Provider?
+            if (provider.type === 'youtube' || provider.type === 'vimeo') {
+                try {
+                    provider.referrerPolicy = 'strict-origin-when-cross-origin';
+                    if (provider.iframe) {
+                        provider.iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+                    }
+                } catch (err) {
+                    // Ignorieren, falls nicht möglich
+                }
+            }
+            // Nur einmal ausführen
+            player.removeEventListener('provider-change', handler);
+        });
     }
 
     function applyTranslations() {
