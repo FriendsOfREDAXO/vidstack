@@ -1,9 +1,14 @@
 (function () {
     let translations = {};
 
+    // Derive translations URL from the script's own src to support subfolder installations
+    const translationsUrl = document.currentScript?.src
+        ? new URL('translations.json', document.currentScript.src).href
+        : '/assets/addons/vidstack/translations.json';
+
     async function loadTranslations() {
         try {
-            translations = await (await fetch('/assets/addons/vidstack/translations.json')).json();
+            translations = await (await fetch(translationsUrl)).json();
         } catch (error) {
             console.error('Fehler beim Laden der Übersetzungen:', error);
             translations = { de: {}, en: {} };
